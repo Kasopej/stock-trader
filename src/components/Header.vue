@@ -1,10 +1,9 @@
 <template>
-    <div>
-        <nav class="flex justify-content-between">
-        <div class="px-2 bg-secondary"></div>
-        <div class="px-2 bg-secondary"></div>
-  </nav>
-    </div>
+    <nav class="d-flex justify-content-between">
+        <div class="px-2 bg-secondary">t</div>
+        <div class="px-2 bg-secondary">t</div>
+    </nav>
+
 </template>
 
 <script>
