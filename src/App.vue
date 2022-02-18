@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-      <Header></Header>
+    <Header></Header>
     <router-view />
   </div>
 </template>
@@ -9,16 +9,14 @@
 import Header from "@/components/Header.vue";
 export default {
   data() {
-    return {
-      
-    }
+    return {};
   },
   components: {
     Header,
-  }
-}
+  },
+};
 </script>
 
-<style>
-
+<style scoped>
+#app{padding: 24px 35px;}
 </style>

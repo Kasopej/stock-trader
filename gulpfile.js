@@ -17,3 +17,11 @@ gulp.task("sass", function () {
     .pipe(gulp.dest("public/assets/css"))
     .pipe(browserSync.stream());
 });
+
+// Inject bootstrap js files into public folder
+gulp.task("js", function () {
+  return gulp
+    .src(["node_modules/bootstrap/dist/js/bootstrap.bundle.min.js", "node_modules/bootstrap/dist/js/bootstrap.min.js", "node_modules/bootstrap/js/dist/collapse.js", "node_modules/bootstrap/js/dist/dropdown.js"])
+    .pipe(gulp.dest("public/assets/js"))
+    .pipe(browserSync.stream());
+});
