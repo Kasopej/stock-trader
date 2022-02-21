@@ -25,6 +25,22 @@
           to="/login"
           ><a class="nav-link">Login</a></router-link
         >
+        <router-link
+          tag="li"
+          class="nav-item"
+          active-class="active"
+          exact
+          to="/register"
+          ><a class="nav-link">Register</a></router-link
+        >
+        <router-link
+          tag="li"
+          class="nav-item"
+          active-class="active"
+          exact
+          to="/register"
+          ><a class="nav-link">{{name}}</a></router-link
+        >
         <li class="nav-link fw-bold" style="vertical-align: middle">
           ${{ 200.25 }}
         </li>
@@ -36,7 +52,9 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      name: "Kasope"
+    };
   },
 };
 </script>

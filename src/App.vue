@@ -29,11 +29,11 @@ export default {
 }
 /*#app aside{float: left; width: 20%; position: absolute; top: 0; bottom: 0;}*/
 #app aside {
-  flex-basis: 20%;
+  flex-basis: 30%;
   min-height: 100vh;
 }
 #app main {
-  flex-basis: 80%;
+  flex-basis: 70%;
 }
 
 /* Common styles for Stock & PortfolioAsset components */
@@ -54,5 +54,15 @@ export default {
 .stockPurchaseBtn,
 .sellAssetsBtn {
   right: 1rem;
+}
+
+@media (min-width: 992px) {
+  #app aside {
+  flex-basis: 20%;
+  min-height: 100vh;
+  }
+  #app main {
+    flex-basis: 80%;
+  }
 }
 </style>
