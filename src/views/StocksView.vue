@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid">
+  <div class="container-fluid d-flex flex-wrap justify-content-between px-4">
       <Stock v-for="stock in stocks" :key="stock.id"></Stock>
   </div>
 </template>
@@ -9,7 +9,7 @@ import Stock from "@/components/Stock.vue";
 export default {
     data() {
         return {
-            stocks: []
+            stocks: [{name: "Stock 1", id: 1}, {name: "Stock 1", id: 2}, {name: "Stock 1", id: 3}, {name: "Stock 1", id: 4}]
         }
     },
     components: {
@@ -18,6 +18,6 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
     
 </style>

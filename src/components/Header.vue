@@ -1,6 +1,6 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light px-3 py-2">
-    <router-link class="navbar-brand" to="/">Home</router-link>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light px-3">
+    <router-link class="navbar-brand" to="/" exact>Home</router-link>
     <button
       class="navbar-toggler"
       type="button"
@@ -20,7 +20,7 @@
       </ul>
       <ul class="navbar-nav justify-content-end">
         <router-link tag="li" class="nav-item" active-class="active" exact to="/login"><a class="nav-link">Login</a></router-link>
-        <li class="nav-link fw-bold" style="vertical-align: middle;">${{funds}}</li>
+        <li class="nav-link fw-bold" style="vertical-align: middle;">${{200.25}}</li>
       </ul>
     </div>
   </nav>
@@ -30,7 +30,6 @@
 export default {
     data() {
         return {
-            funds: "25.00"
         }
     },
 };
@@ -38,8 +37,10 @@ export default {
 
 <style scoped>
 @media (min-width: 992px){
+    nav{padding-top: 0; padding-bottom: 0;}
     .navbar-expand-lg{justify-content: space-around;}
     .navbar-collapse{position: relative; top: 2px;}
+    li.active{background-color: rgb(219, 216, 216);}
 }
 
 </style>

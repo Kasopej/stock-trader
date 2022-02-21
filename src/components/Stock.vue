@@ -1,12 +1,11 @@
 <template>
-  <div class="card">
+  <div class="card stock my-2">
     <div class="card-header">
         Featured
     </div>
     <div class="card-body">
-        <h5 class="card-title">Special title treatment</h5>
-        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-        <a href="#" class="btn btn-primary">Go somewhere</a>
+        <input class="stockQtyInput" type="number" name="stockQty">
+        <a href="#" class="btn btn-sm btn-success stockPurchaseBtn">Buy</a>
     </div>
 </div>
 </template>
@@ -17,6 +16,13 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+    .stock{
+        flex-basis: 30%; flex-grow: 0;
+    }
+    .card-header{background-color: rgb(155, 219, 155); color: rgb(19, 77, 19); font-weight: 5px;}
+    .card-body{position: relative;}
+    .stockPurchaseBtn, .stockQty{position: absolute;}
+    .stockQtyInput{left: 0px; width: 65%;}
+    .stockPurchaseBtn{right: 1rem;}
 </style>
