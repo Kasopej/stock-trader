@@ -37,7 +37,7 @@ export default {
 
 <style scoped>
 @media (min-width: 992px){
-    nav{padding-top: 0; padding-bottom: 0;}
+    nav{padding-top: 0; padding-bottom: 2px;}
     .navbar-expand-lg{justify-content: space-around;}
     .navbar-collapse{position: relative; top: 2px;}
     li.active{background-color: rgb(219, 216, 216);}

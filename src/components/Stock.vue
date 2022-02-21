@@ -1,13 +1,13 @@
 <template>
-  <div class="card stock my-2">
-    <div class="card-header">
-        Featured
+    <div class="card stock my-2">
+        <div class="card-header">
+            Featured
+        </div>
+        <div class="card-body">
+            <input class="stockQtyInput" type="number" name="stockQty">
+            <a href="#" class="btn btn-sm btn-success stockPurchaseBtn">Buy</a>
+        </div>
     </div>
-    <div class="card-body">
-        <input class="stockQtyInput" type="number" name="stockQty">
-        <a href="#" class="btn btn-sm btn-success stockPurchaseBtn">Buy</a>
-    </div>
-</div>
 </template>
 
 <script>
