@@ -1,6 +1,5 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-light bg-light px-3">
-    <router-link class="navbar-brand" to="/" exact>Home</router-link>
     <button
       class="navbar-toggler btn"
       type="button"
@@ -13,11 +12,7 @@
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="collapse navbar-collapse justify-content-lg-between" id="navbarSupportedContent">
-      <ul class="navbar-nav">
-        <router-link tag="li" class="nav-item" active-class="active" exact to="/portfolio"><a class="nav-link">Portfolio</a></router-link>
-        <router-link tag="li" class="nav-item" active-class="active" exact to="/stocks"><a class="nav-link">Stocks</a></router-link>
-      </ul>
+    <div class="collapse navbar-collapse justify-content-lg-end" id="navbarSupportedContent">
       <ul class="navbar-nav justify-content-end">
         <router-link tag="li" class="nav-item" active-class="active" exact to="/login"><a class="nav-link">Login</a></router-link>
         <li class="nav-link fw-bold" style="vertical-align: middle;">${{200.25}}</li>
