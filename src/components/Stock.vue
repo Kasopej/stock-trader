@@ -17,12 +17,7 @@ export default {
 </script>
 
 <style scoped>
-    .stock{
-        flex-basis: 30%; flex-grow: 0;
-    }
     .card-header{background-color: rgb(155, 219, 155); color: rgb(19, 77, 19); font-weight: 5px;}
     .card-body{position: relative;}
-    .stockPurchaseBtn, .stockQty{position: absolute;}
-    .stockQtyInput{left: 0px; width: 65%;}
-    .stockPurchaseBtn{right: 1rem;}
+    
 </style>
