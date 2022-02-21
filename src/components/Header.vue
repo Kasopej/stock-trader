@@ -2,10 +2,10 @@
   <nav class="navbar navbar-expand-lg navbar-light bg-light px-3">
     <router-link class="navbar-brand" to="/" exact>Home</router-link>
     <button
-      class="navbar-toggler"
+      class="navbar-toggler btn"
       type="button"
-      data-toggle="collapse"
-      data-target="#navbarSupportedContent"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent"
       aria-controls="navbarSupportedContent"
       aria-expanded="false"
       aria-label="Toggle navigation"
