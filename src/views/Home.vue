@@ -20,6 +20,13 @@
       <p class="lead mb-4">of your $1,200 goal</p>
       <button class="btn btn-success btn-md rounded-pill">Adjust Goal</button>
     </div>
+
+    <div class="homePane border rounded my-4">
+      <p class="lead">Your Balance</p>
+      <h2>${{125000}}</h2>
+      <p class="lead mb-4">of your $1,200 goal</p>
+      <button class="btn btn-success btn-md rounded-pill">Adjust Goal</button>
+    </div>
   </div>
 </template>
 
