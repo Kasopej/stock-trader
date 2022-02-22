@@ -38,7 +38,7 @@
           class="nav-item"
           active-class="active"
           exact
-          to="/register"
+          to="/profile"
           ><a class="nav-link">{{ name }}</a></router-link
         >
         <li class="nav-link fw-bold" style="vertical-align: middle">

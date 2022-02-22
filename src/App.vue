@@ -4,6 +4,7 @@
     <main>
       <Header></Header>
       <router-view />
+      <SignOutModal v-show="false"></SignOutModal>
     </main>
   </div>
 </template>
