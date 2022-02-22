@@ -42,7 +42,7 @@
           ><a class="nav-link">{{name}}</a></router-link
         >
         <li class="nav-link fw-bold" style="vertical-align: middle">
-          ${{ 200.25 }}
+          ${{ "1,000" }}
         </li>
       </ul>
     </div>
