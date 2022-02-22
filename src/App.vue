@@ -58,8 +58,8 @@ export default {
 
 @media (min-width: 992px) {
   #app aside {
-  flex-basis: 20%;
-  min-height: 100vh;
+    flex-basis: 20%;
+    min-height: 100vh;
   }
   #app main {
     flex-basis: 80%;

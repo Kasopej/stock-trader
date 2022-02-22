@@ -39,7 +39,7 @@
           active-class="active"
           exact
           to="/register"
-          ><a class="nav-link">{{name}}</a></router-link
+          ><a class="nav-link">{{ name }}</a></router-link
         >
         <li class="nav-link fw-bold" style="vertical-align: middle">
           ${{ "1,000" }}
@@ -53,7 +53,7 @@
 export default {
   data() {
     return {
-      name: "Kasope"
+      name: "Kasope",
     };
   },
 };
