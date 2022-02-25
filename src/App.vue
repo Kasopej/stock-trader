@@ -16,14 +16,13 @@ import Sidebar from "./components/Sidebar.vue";
 export default {
   data() {
     return {
-      userAuthenticated: false
+      userAuthenticated: false,
     };
   },
   components: {
     Header,
     Sidebar,
-},
-
+  },
 };
 </script>
 

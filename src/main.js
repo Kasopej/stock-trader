@@ -21,12 +21,7 @@ new Vue({
   render: (h) => h(App),
 }).$mount("#app");
 
-
-
-
-
-
-function installFirebase(){
+function installFirebase() {
   // Your web app's Firebase configuration
   const firebaseConfig = {
     apiKey: "AIzaSyDHcX11Hra8hH42TUNKyHltC8B-lgaifzg",
@@ -34,10 +29,10 @@ function installFirebase(){
     projectId: "personalstocktrader-7717a",
     storageBucket: "personalstocktrader-7717a.appspot.com",
     messagingSenderId: "137494008472",
-    appId: "1:137494008472:web:224cbfab527ba96ffe76ed"
+    appId: "1:137494008472:web:224cbfab527ba96ffe76ed",
   };
 
   // Initialize Firebase
   const app = initializeApp(firebaseConfig);
-  return app
+  return app;
 }
