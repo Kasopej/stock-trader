@@ -3,8 +3,7 @@
     <Sidebar></Sidebar>
     <main>
       <Header></Header>
-      <Login v-if="!userAuthenticated"></Login>
-      <router-view v-else />
+      <router-view />
       <SignOutModal v-if="false"></SignOutModal>
     </main>
   </div>
@@ -15,9 +14,7 @@ import Header from "@/components/Header.vue";
 import Sidebar from "./components/Sidebar.vue";
 export default {
   data() {
-    return {
-      userAuthenticated: false,
-    };
+    return {};
   },
   components: {
     Header,

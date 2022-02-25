@@ -77,5 +77,9 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes,
 });
+router.beforeEach((to, from, next) => {
+  if (to.name !== "login" && true) next("/login");
+  else next();
+});
 
 export default router;
