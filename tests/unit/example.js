@@ -1,7 +1,6 @@
 import { shallowMount, createLocalVue } from "@vue/test-utils";
 import Header from "@/components/Header.vue";
 import { screen, fireEvent } from "@testing-library/vue";
-import "@testing-library/jest-dom";
 import VueRouter from "vue-router";
 
 describe("Header.vue", () => {

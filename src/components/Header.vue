@@ -33,6 +33,7 @@
           to="/register"
           ><a class="nav-link">Register</a></router-link
         >
+        
         <router-link
           tag="li"
           class="nav-item"
@@ -41,6 +42,7 @@
           to="/profile"
           ><a class="nav-link">{{ name }}</a></router-link
         >
+        
         <li class="nav-link fw-bold" style="vertical-align: middle">
           ${{ "1,000" }}
         </li>
