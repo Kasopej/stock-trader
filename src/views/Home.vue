@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!userAuthenticated">
+  <!-- <div v-if="!userAuthenticated">
             <section class="p-5 bg-primary text-white mb-0" id="about">
                 <div class="container">
                     <h2 class="page-section-heading text-center text-uppercase text-white">About</h2>
@@ -10,7 +10,7 @@
                 </div>
             </section>
 
-            <!-- Contact Section-->
+            
             <section class="p-5" id="contact">
                 <div class="container">
                     <h2 class="text-center text-uppercase text-secondary mb-2">Login</h2>
@@ -36,8 +36,8 @@
                     </div>
                 </div>
             </section>
-        </div>
-  <div v-else
+  </div> -->
+  <div
     class="home d-flex flex-wrap justify-content-lg-between justify-content-around px-5 py-3"
   >
     <div
@@ -89,7 +89,7 @@ export default {
   name: "Home",
   data() {
     return {
-      userAuthenticated: true
+      userAuthenticated: false
     };
   },
   components: {},

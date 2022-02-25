@@ -1,7 +1,6 @@
-import { shallowMount, createLocalVue, mount } from "@vue/test-utils";
+import { createLocalVue, mount } from "@vue/test-utils";
 import Header from "@/components/Header.vue";
-import Home from "@/views/Home.vue";
-import { fireEvent, getByText, screen } from "@testing-library/vue";
+import { screen } from "@testing-library/vue";
 import VueRouter from "vue-router";
 
 let localVue, router;
@@ -30,7 +29,6 @@ function setupRouter() {
       {
         path: "/",
         name: "landingPage",
-        component: Home,
       },
       {
         path: "/home",

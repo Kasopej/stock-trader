@@ -3,6 +3,7 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import SignOutModal from "./components/UtilityComponents/SignOutModal.vue";
+import Login from "./views/Login.vue";
 //Vue.config.productionTip = false;
 
 // Import the functions you need from the SDKs you need
@@ -11,7 +12,9 @@ import { initializeApp } from "firebase/app";
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 const firebaseApp = installFirebase();
+console.log(firebaseApp);
 Vue.component("SignOutModal", SignOutModal);
+Vue.component("Login", Login);
 new Vue({
   router,
   store,
