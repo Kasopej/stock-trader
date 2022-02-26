@@ -20,6 +20,9 @@ export default {
     Header,
     Sidebar,
   },
+  created() {
+    console.log("created", this.$route.name);
+  },
 };
 </script>
 
