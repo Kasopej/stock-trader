@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
@@ -79,9 +80,13 @@ const router = new VueRouter({
   routes,
 });
 router.beforeEach((to, from, next) => {
-  if (to.name !== "login" && !store.state.authStoreModule.authenticated)
+  if (
+    to.name !== "login" &&
+    to.name !== "register" &&
+    !store.state.authStoreModule.authenticated
+  ) {
     next("/login");
-  else next();
+  } else next();
 });
 
 export default router;

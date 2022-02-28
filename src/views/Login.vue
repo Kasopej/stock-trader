@@ -21,13 +21,12 @@
       Submit
     </button>
     <p class="text-center text-muted mt-5 mb-0">
-              Don't have an account?
-              <router-link to="/register" class="fw-bold text-body"
-                ><u>Register</u></router-link
-              >
-            </p>
+      Don't have an account?
+      <router-link to="/register" class="fw-bold text-body"
+        ><u>Register</u></router-link
+      >
+    </p>
   </form>
-
 </template>
 
 <script>

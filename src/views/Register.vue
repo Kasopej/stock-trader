@@ -86,15 +86,21 @@ import { mapActions } from "vuex";
 export default {
   data() {
     return {
-      user: {email: "", password: "",},
+      user: { email: "", password: "" },
       termsAreAgreed: false,
       formValidated: true,
-    }
+    };
   },
   methods: {
-    ...mapActions({registerUser: "attemptUserRegistration"}),
-    submitLoginForm(){
-      if(this.formValidated) this.$store.dispatch("attemptUserRegistration", this.user)
+    ...mapActions({ registerUser: "attemptUserRegistration" }),
+    submitLoginForm() {
+      if (this.formValidated)
+        this.$store.dispatch("attemptUserRegistration", this.user);
+    },
+  },
+  watch: {
+    ["$store.state.authStoreModule.authenticated"](){
+      this.$router.push("/home")
     }
   },
 };

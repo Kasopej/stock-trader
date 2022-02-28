@@ -50,8 +50,7 @@
 export default {
   name: "Home",
   data() {
-    return {
-    };
+    return {};
   },
   components: {},
   methods: {
