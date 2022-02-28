@@ -4,7 +4,7 @@
       <div class="row d-flex justify-content-center align-items-center">
         <div class="col-12 col-md-9 col-lg-7 col-xl-6">
           <h2 class="text-center mb-3">Create your account</h2>
-          <form>
+          <form @submit.prevent="submitLoginForm">
             <div class="form-outline mb-2">
               <input
                 type="text"
@@ -19,6 +19,7 @@
                 type="email"
                 id="registerEmail"
                 class="form-control form-control-lg"
+                v-model="user.email"
               />
               <label class="form-label" for="registerEmail">Your Email</label>
             </div>
@@ -37,6 +38,7 @@
                 type="password"
                 id="registerConfirmPassword"
                 class="form-control form-control-lg"
+                v-model="user.password"
               />
               <label class="form-label" for="registerConfirmPassword"
                 >Repeat your password</label
@@ -48,17 +50,18 @@
                 class="form-check-input me-2"
                 type="checkbox"
                 value=""
-                id="form2Example3cg"
+                id="agreement"
+                v-model="termsAreAgreed"
               />
-              <label class="form-check-label" for="form2Example3g">
-                I agree all statements in
+              <label class="form-check-label" for="agreement">
+                I agree to all statements in
                 <a href="#!" class="text-body"><u>Terms of service</u></a>
               </label>
             </div>
 
             <div class="d-flex justify-content-center">
               <button
-                type="button"
+                type="submit"
                 class="btn btn-success btn-block btn-lg gradient-custom-4 text-body"
               >
                 Register
@@ -79,7 +82,22 @@
 </template>
 
 <script>
-export default {};
+import { mapActions } from "vuex";
+export default {
+  data() {
+    return {
+      user: {email: "", password: "",},
+      termsAreAgreed: false,
+      formValidated: true,
+    }
+  },
+  methods: {
+    ...mapActions({registerUser: "attemptUserRegistration"}),
+    submitLoginForm(){
+      if(this.formValidated) this.$store.dispatch("attemptUserRegistration", this.user)
+    }
+  },
+};
 </script>
 
 <style></style>
