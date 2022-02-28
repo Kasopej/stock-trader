@@ -1,11 +1,12 @@
-import { createLocalVue, mount } from "@vue/test-utils";
+import { createLocalVue, mount, shallowMount } from "@vue/test-utils";
 import VueRouter from "vue-router";
 import Vuex from "vuex";
 import App from "@/App.vue";
+import Login from "../../src/views/Login.vue";
 
-let router, store;
-describe("App is the root vue instance", () => {
-  it("loads a home component", function () {
+let router, store, toLogin;
+describe("App.vue is the root vue instance", () => {
+  it("routes to login page if user is not authenticated", async function (done) {
     const localVue = createLocalVue();
     localVue.use(Vuex);
     localVue.use(VueRouter);
@@ -15,12 +16,23 @@ describe("App is the root vue instance", () => {
         authenticated: false,
       },
     });
-    const wrapper = mount(App, { localVue, store, router });
-    expect(wrapper.vm.$route.name).toBe("login");
-    console.log(window.location.href);
+    const wrapper = mount(App, {
+      localVue,
+      store,
+      router,
+      attachTo: document.body,
+      created() {
+        this.$router.onReady(() => {
+          if (toLogin) {
+            expect(this.$route.name).toBe("login");
+            done();
+          }
+        });
+      },
+    });
     wrapper.destroy();
   });
-  it("routes to login page if user is not authenticated", function () {
+  it("routes to home component if user is authenticated", function () {
     const localVue = createLocalVue();
     localVue.use(Vuex);
     localVue.use(VueRouter);
@@ -32,18 +44,19 @@ describe("App is the root vue instance", () => {
     });
     const wrapper = mount(App, { localVue, store, router });
     expect(wrapper.vm.$route.name).toBe("home");
-    console.log(window.location.href);
     wrapper.destroy();
   });
 });
 
 function setUpRouterInstance() {
-  window.location.href = window.location.origin;
+  //window.location.href = window.location.origin;
+  console.log(window.location);
   router = new VueRouter({
     routes: [
       {
         path: "/login",
         name: "login",
+        component: Login,
       },
       {
         path: "/",
@@ -53,8 +66,8 @@ function setUpRouterInstance() {
     mode: "history",
   });
   router.beforeEach((to, from, next) => {
-    console.log(from.name, store.state.authenticated, to.name);
     if (to.name !== "login" && !store.state.authenticated) {
+      toLogin = true;
       next("/login");
     } else next();
   });

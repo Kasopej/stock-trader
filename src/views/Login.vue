@@ -24,7 +24,11 @@
 </template>
 
 <script>
-export default {};
+export default {
+  created() {
+    console.log("created login");
+  },
+};
 </script>
 
 <style scoped>
