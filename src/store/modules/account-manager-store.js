@@ -1,13 +1,14 @@
 /* eslint-disable no-unused-vars */
 import { axios } from "../../services/network-services/axios-global";
-import store from "..";
+
 const state = {
   account: null,
 };
 const getters = {};
 const actions = {
   createNewUserAccount({ state, commit, rootState }, payload) {
-    payload = { ...payload, wallet: 0, portfolio: [] };
+    delete payload.password;
+    payload = { ...payload, wallet: 0, portfolio: {} };
     axios
       .post(
         "users.json" + `?auth=${rootState.authStoreModule.idToken}`,

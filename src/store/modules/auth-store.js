@@ -1,10 +1,11 @@
 /* eslint-disable no-unused-vars */
 import { axiosAuthInstance } from "../../services/network-services/axios-auth";
-import axios from "axios";
 
 const state = {
   authenticated: false,
-  authData: {},
+  idToken: "",
+  tokenExpiresBy: 0,
+  refreshToken: "",
 };
 const getters = {};
 
@@ -21,9 +22,7 @@ const actions = {
         const authData = res.data;
         authData.expiresIn *= 1000;
         commit("storeAuthData", authData);
-        setTimeout(() => {
-          dispatch("createNewUserAccount", payload);
-        }, 500);
+        dispatch("createNewUserAccount", payload);
       })
       .catch((error) => {
         commit("throwError", { type: "registerationError", value: error });
