@@ -1,32 +1,69 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view />
+  <div id="app" class="d-flex">
+    <Sidebar></Sidebar>
+    <main>
+      <Header></Header>
+      <router-view />
+      <SignOutModal v-if="false"></SignOutModal>
+    </main>
   </div>
 </template>
 
+<script>
+import Header from "@/components/Header.vue";
+import Sidebar from "./components/Sidebar.vue";
+export default {
+  data() {
+    return {};
+  },
+  components: {
+    Header,
+    Sidebar,
+  },
+};
+</script>
+
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+  height: -webkit-fill-available;
+  flex-wrap: nowrap;
+}
+/*#app aside{float: left; width: 20%; position: absolute; top: 0; bottom: 0;}*/
+#app aside {
+  flex-basis: 30%;
+  min-height: 100vh;
+}
+#app main {
+  flex-basis: 70%;
 }
 
-#nav {
-  padding: 30px;
+/* Common styles for Stock & PortfolioAsset components */
+.asset,
+.stock {
+  flex-basis: 30%;
+  flex-grow: 0;
+}
+.stockPurchaseBtn,
+.sellAssetsBtn {
+  position: absolute;
+}
+.stockQtyInput,
+.qtyToSell {
+  left: 0px;
+  width: 65%;
+}
+.stockPurchaseBtn,
+.sellAssetsBtn {
+  right: 1rem;
 }
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
+@media (min-width: 992px) {
+  #app aside {
+    flex-basis: 20%;
+    min-height: 100vh;
+  }
+  #app main {
+    flex-basis: 80%;
+  }
 }
 </style>
