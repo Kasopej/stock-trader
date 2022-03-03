@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { axios } from "../../services/network-services/axios-global";
 
 const state = {
@@ -6,7 +5,7 @@ const state = {
 };
 const getters = {};
 const actions = {
-  createNewUserAccount({ state, commit, rootState }, payload) {
+  createNewUserAccount({ commit, rootState }, payload) {
     delete payload.password;
     payload = { ...payload, wallet: 0, portfolio: {} };
     axios
@@ -51,3 +50,5 @@ export default {
   actions,
   mutations,
 };
+
+/* eslint-disable no-unused-vars */

@@ -11,6 +11,11 @@ export default new Vuex.Store({
   state: {
     email: "",
   },
+  getters: {
+    name(state) {
+      return state.email.slice;
+    },
+  },
   mutations: {
     throwError(state, error) {
       state.error = error;

@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { axiosAuthInstance } from "../../services/network-services/axios-auth";
 
 const state = {
@@ -10,12 +9,15 @@ const state = {
 const getters = {};
 
 const actions = {
-  attemptUserRegistration({ commit, dispatch, rootState }, payload) {
+  attemptUserRegistration({ commit, dispatch }, payload) {
     axiosAuthInstance
       .post("accounts:signUp?key=AIzaSyDHcX11Hra8hH42TUNKyHltC8B-lgaifzg", {
         email: payload.email,
         password: payload.password,
         returnSecureToken: true,
+      })
+      .catch((error) => {
+        commit("throwError", { type: "registeration error", value: error });
       })
       .then((res) => {
         console.log(res);
@@ -23,18 +25,33 @@ const actions = {
         authData.expiresIn *= 1000;
         commit("storeAuthData", authData);
         dispatch("createNewUserAccount", payload);
-      })
-      .catch((error) => {
-        commit("throwError", { type: "registerationError", value: error });
       });
   },
-  attemptLogin() {},
+  attemptLogin({ commit }, payload) {
+    axiosAuthInstance
+      .post(
+        "accounts:signInWithPassword?key=AIzaSyDHcX11Hra8hH42TUNKyHltC8B-lgaifzg",
+        {
+          email: payload.email,
+          password: payload.password,
+          returnSecureToken: true,
+        }
+      )
+      .catch((error) => {
+        commit("throwError", { type: "login error", value: error });
+      })
+      .then((res) => {
+        const authData = res.data;
+        authData.expiresIn *= 1000;
+        commit("storeAuthData", authData);
+        commit("login");
+      });
+  },
   logout() {},
 };
 
 const mutations = {
-  storeAuthData(state, authData, rootState) {
-    console.log("locak storeAuthData mutation");
+  storeAuthData(state, authData) {
     state.idToken = authData.idToken;
     state.tokenExpiresBy = new Date(
       new Date().valueOf() + authData.expiresIn
@@ -53,3 +70,5 @@ export default {
   actions,
   mutations,
 };
+
+/* eslint-disable no-unused-vars */
