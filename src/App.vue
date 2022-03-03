@@ -1,10 +1,10 @@
 <template>
   <div id="app" class="d-flex">
-    <Sidebar></Sidebar>
+    <Sidebar @openSignOut="closeSignOutModal = false"></Sidebar>
     <main>
       <Header></Header>
       <router-view />
-      <SignOutModal v-if="false"></SignOutModal>
+      <sign-out-modal v-if="!closeSignOutModal" @close="closeSignOutModal = true"></sign-out-modal>
     </main>
   </div>
 </template>
@@ -14,11 +14,18 @@ import Header from "@/components/Header.vue";
 import Sidebar from "./components/Sidebar.vue";
 export default {
   data() {
-    return {};
+    return {
+      closeSignOutModal: false
+    };
   },
   components: {
     Header,
     Sidebar,
+  },
+  methods: {
+    closeSignOut(){
+      this.closeSignOutModal = true;
+    }
   },
 };
 </script>

@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+
 import Vue from "vue";
 import Vuex from "vuex";
 import authStoreModule from "./modules/auth-store.js";
@@ -6,7 +7,10 @@ import accountMangementModule from "./modules/account-manager-store";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  state: {},
+  /* eslint-disable no-undef */
+  state: {
+    email: "",
+  },
   mutations: {
     throwError(state, error) {
       state.error = error;

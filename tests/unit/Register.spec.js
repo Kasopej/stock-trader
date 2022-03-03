@@ -71,7 +71,29 @@ describe("Register.vue is the component where new users are onboarded", () => {
     expect(wrapper.vm.$store.state.authStoreModule.authenticated).toBeTruthy();
     wrapper.destroy();
   });
-  it("");
+  it("records a registeration error if signup authentication is unsuccessful", async () => {
+    const error = {
+      message: "Network Error",
+    };
+    axios.post = jest.fn().mockRejectedValueOnce(error);
+    wrapper = mount(Register, {
+      localVue,
+      store,
+      mocks: {
+        $router,
+      },
+      stubs: ["router-link"],
+      attachTo: document.body,
+    });
+    await wrapper.vm.$store.dispatch("attemptUserRegistration", {
+      email: "kasopej@gmail.com",
+      password: "password",
+      returnSecureToken: true,
+    });
+    expect(axios.post).toHaveBeenCalledTimes(1);
+    expect(wrapper.vm.$store.state.error.type).toBe("registerationError");
+    wrapper.destroy();
+  });
 });
 
 function getStoreModules() {
@@ -141,8 +163,6 @@ function getStoreModules() {
             .then(() => {
               commit("storeEmail", { email: payload.email });
               commit("login");
-              console.log(rootState.authStoreModule);
-              console.log(rootState.accountMangementModule);
             })
             .catch((error) => {
               commit("throwError", {
