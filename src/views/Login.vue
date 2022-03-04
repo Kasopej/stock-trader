@@ -44,11 +44,13 @@ export default {
   methods: {
     ...mapActions(["attemptLogin"])
   },
+  /*
   watch: {
     ["$store.state.authStoreModule.authenticated"](){
       this.$router.push("/home")
     }
   },
+  */
 };
 </script>
 

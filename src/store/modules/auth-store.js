@@ -26,7 +26,7 @@ const actions = {
       .then((res) => {
         console.log(res);
         const authData = res.data;
-        authData.expiresIn *= 1000;
+        authData.expiresIn = authData.expiresIn * 1000 + new Date().valueOf();
         commit("storeAuthData", authData);
         dispatch("createNewUserAccount", payload);
       });
@@ -46,7 +46,7 @@ const actions = {
       })
       .then((res) => {
         const authData = res.data;
-        authData.expiresIn = authData.expiresIn * 1000 + new Date().valueOf();
+        authData.expiresIn = authData.expiresIn *1000 + new Date().valueOf();
         commit("storeAuthData", authData);
         commit("storeEmail", { email: payload.email });
         commit("login");
@@ -90,10 +90,10 @@ const actions = {
         commit("storeAuthData", {
           idToken: data.id_token,
           refreshToken: data.refresh_token,
-          expiresIn: data.expires_in * 1000 + new Date().valueOf(),
+          expiresIn: data.expires_in *1000 + new Date().valueOf(),
         });
         commit("login");
-        dispatch("scheduleAuthRefresh");
+        dispatch("persistAuthData");
       });
   },
   attemptLoginOnLoad({ commit, dispatch }) {

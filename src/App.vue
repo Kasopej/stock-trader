@@ -34,6 +34,12 @@ export default {
     this.attemptLoginOnLoad()
     this["stockMangementModule/getSharesFromMarket"]();
   },
+  watch: {
+    ["$store.state.authStoreModule.authenticated"](){
+      if(this.$store.state.authStoreModule.authenticated) this.$router.push("/home")
+      else this.$router.push("/login")
+    }
+  },
 };
 </script>
 
