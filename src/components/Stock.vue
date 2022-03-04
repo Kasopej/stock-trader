@@ -1,6 +1,6 @@
 <template>
   <div class="card stock my-2">
-    <div class="card-header">Featured</div>
+    <div class="card-header">{{share.symbol}}</div>
     <div class="card-body">
       <input class="stockQtyInput" type="number" name="stockQty" />
       <a href="#" class="btn btn-sm btn-success stockPurchaseBtn">Buy</a>
@@ -9,7 +9,9 @@
 </template>
 
 <script>
-export default {};
+export default {
+  props: ["share"]
+};
 </script>
 
 <style scoped>
