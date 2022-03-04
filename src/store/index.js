@@ -13,7 +13,7 @@ export default new Vuex.Store({
   },
   getters: {
     name(state) {
-      return state.email.slice;
+      return state.email.slice(0, state.email.indexOf("@"));
     },
   },
   mutations: {

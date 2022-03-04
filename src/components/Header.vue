@@ -23,6 +23,7 @@
           active-class="active"
           exact
           to="/login"
+          v-if="!isAuthenticated"
           ><a class="nav-link">Login</a></router-link
         >
         <router-link
@@ -31,6 +32,7 @@
           active-class="active"
           exact
           to="/register"
+          v-if="!isAuthenticated"
           ><a class="nav-link">Register</a></router-link
         >
 
@@ -40,7 +42,7 @@
           active-class="active"
           exact
           to="/profile"
-          ><a class="nav-link">{{ name }}</a></router-link
+          ><a v-show="name" class="nav-link">{{ name }}</a></router-link
         >
 
         <li class="nav-link fw-bold" style="vertical-align: middle">
@@ -52,11 +54,14 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 export default {
   data() {
     return {
-      name: "Kasope",
     };
+  },
+  computed: {
+    ...mapGetters(["name", "isAuthenticated"])
   },
 };
 </script>

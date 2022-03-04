@@ -3,10 +3,14 @@ import { axiosAuthInstance } from "../../services/network-services/axios-auth";
 const state = {
   authenticated: false,
   idToken: "",
-  tokenExpiresBy: 0,
+  expiresIn: 0,
   refreshToken: "",
 };
-const getters = {};
+const getters = {
+  isAuthenticated(state) {
+    return state.authenticated;
+  },
+};
 
 const actions = {
   attemptUserRegistration({ commit, dispatch }, payload) {
@@ -27,7 +31,7 @@ const actions = {
         dispatch("createNewUserAccount", payload);
       });
   },
-  attemptLogin({ commit }, payload) {
+  attemptLogin({ commit, dispatch }, payload) {
     axiosAuthInstance
       .post(
         "accounts:signInWithPassword?key=AIzaSyDHcX11Hra8hH42TUNKyHltC8B-lgaifzg",
@@ -44,16 +48,81 @@ const actions = {
         const authData = res.data;
         authData.expiresIn *= 1000;
         commit("storeAuthData", authData);
+        commit("storeEmail", { email: payload.email });
         commit("login");
+        dispatch("persistAuthData");
+      })
+      .catch((err) => {
+        console.log(err);
       });
   },
-  logout() {},
+  persistAuthData({ rootState, dispatch }) {
+    localStorage.setItem("email", rootState.email);
+    const { refreshToken, expiresIn } = rootState.authStoreModule;
+    localStorage.setItem("data", JSON.stringify({ refreshToken, expiresIn }));
+    dispatch("scheduleAuthRefresh");
+  },
+  scheduleAuthRefresh({ dispatch, state }) {
+    setTimeout(function () {
+      dispatch("refreshAuth");
+    }, state.expiresIn - new Date().valueOf());
+  },
+  refreshAuth({ dispatch, commit, state }) {
+    axiosAuthInstance
+      .post(
+        "",
+        {
+          grant_type: "refresh_token",
+          refresh_token: state.refreshToken,
+        },
+        {
+          baseURL:
+            "https://securetoken.googleapis.com/v1/token?key=AIzaSyDHcX11Hra8hH42TUNKyHltC8B-lgaifzg",
+          headers: { "Content-Type": "application/json" },
+        }
+      )
+      .catch((error) => {
+        commit("throwError", { type: "auth refresh error", value: error });
+        commit("logout");
+      })
+      .then((res) => {
+        const data = res.data;
+        commit("storeAuthData", {
+          idToken: data.id_token,
+          refreshToken: data.refresh_token,
+          expiresIn: data.expires_in * 1000,
+        });
+        commit("login");
+        dispatch("scheduleAuthRefresh");
+      });
+  },
+  attemptLoginOnLoad({ commit, dispatch }) {
+    try {
+      const email = localStorage.getItem("email");
+      const authData = JSON.parse(localStorage.getItem("data"));
+      if (authData.expiresIn < new Date().valueOf()) {
+        dispatch("logout");
+        return;
+      }
+      commit("storeAuthData", authData);
+      commit("storeEmail", { email });
+      commit("login");
+      dispatch("persistAuthData");
+    } catch (error) {
+      console.log(error);
+      dispatch("logout");
+    }
+  },
+  logout({ commit }) {
+    commit("logout");
+    commit("clearEmail");
+  },
 };
 
 const mutations = {
   storeAuthData(state, authData) {
     state.idToken = authData.idToken;
-    state.tokenExpiresBy = new Date(
+    state.expiresIn = new Date(
       new Date().valueOf() + authData.expiresIn
     ).valueOf();
     state.refreshToken = authData.refreshToken;
@@ -61,7 +130,11 @@ const mutations = {
   login(state) {
     state.authenticated = true;
   },
-  logout() {},
+  logout(state) {
+    for (const key in state) {
+      state[key] = "";
+    }
+  },
 };
 
 export default {

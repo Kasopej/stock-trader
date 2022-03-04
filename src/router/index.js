@@ -86,6 +86,11 @@ router.beforeEach((to, from, next) => {
     !store.state.authStoreModule.authenticated
   ) {
     next("/login");
+  } else if (
+    (to.name === "login" || to.name === "register") &&
+    store.state.authStoreModule.authenticated
+  ) {
+    next("/home");
   } else next();
 });
 

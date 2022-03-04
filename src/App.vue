@@ -11,6 +11,7 @@
 
 <script>
 import Header from "@/components/Header.vue";
+import { mapActions } from "vuex";
 import Sidebar from "./components/Sidebar.vue";
 export default {
   data() {
@@ -23,9 +24,13 @@ export default {
     Sidebar,
   },
   methods: {
+    ...mapActions(["attemptLoginOnLoad"]),
     closeSignOut(){
       this.closeSignOutModal = true;
-    }
+    },
+  },
+  mounted() {
+    this.attemptLoginOnLoad()
   },
 };
 </script>

@@ -5,7 +5,7 @@ const state = {
 };
 const getters = {};
 const actions = {
-  createNewUserAccount({ commit, rootState }, payload) {
+  createNewUserAccount({ dispatch, commit, rootState }, payload) {
     delete payload.password;
     payload = { ...payload, wallet: 0, portfolio: {} };
     axios
@@ -16,6 +16,7 @@ const actions = {
       .then(() => {
         commit("storeEmail", { email: payload.email });
         commit("login");
+        dispatch("persistAuthData");
       })
       .catch((error) => {
         commit("throwError", { type: "createUserAccountError", value: error });

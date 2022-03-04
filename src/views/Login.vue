@@ -49,6 +49,9 @@ export default {
       this.$router.push("/home")
     }
   },
+  beforeMount() {
+    if(this.$store.state.authStoreModule.authenticated) this.$router.push("/home")
+  },
 };
 </script>
 
