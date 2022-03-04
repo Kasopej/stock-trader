@@ -24,13 +24,14 @@ export default {
     Sidebar,
   },
   methods: {
-    ...mapActions(["attemptLoginOnLoad"]),
+    ...mapActions(["attemptLoginOnLoad", "stockMangementModule/getSharesFromMarket"]),
     closeSignOut(){
       this.closeSignOutModal = true;
     },
   },
-  mounted() {
+  created() {
     this.attemptLoginOnLoad()
+    this["stockMangementModule/getSharesFromMarket"]();
   },
 };
 </script>

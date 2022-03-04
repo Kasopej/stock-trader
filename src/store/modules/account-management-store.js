@@ -1,4 +1,4 @@
-import { axios } from "../../services/network-services/axios-global";
+import { axiosAccountInstance } from "../../services/network-services/axios-account";
 
 const state = {
   account: null,
@@ -8,7 +8,7 @@ const actions = {
   createNewUserAccount({ dispatch, commit, rootState }, payload) {
     delete payload.password;
     payload = { ...payload, wallet: 0, portfolio: {} };
-    axios
+    axiosAccountInstance
       .post(
         "users.json" + `?auth=${rootState.authStoreModule.idToken}`,
         payload
@@ -24,7 +24,7 @@ const actions = {
   },
   updateUserAccount() {},
   fetchUserAccount({ commit, rootState }) {
-    axios
+    axiosAccountInstance
       .get("users.json" + `?auth=${rootState.authStoreModule.idToken}`)
       .then((res) => {
         const data = res.data;
