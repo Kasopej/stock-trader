@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import PortfolioAsset from "./PortfolioAsset.vue";
+import PortfolioAsset from "../components/PortfolioAsset.vue";
 export default {
   data() {
     return {
