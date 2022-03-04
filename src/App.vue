@@ -10,9 +10,9 @@
 </template>
 
 <script>
-import Header from "@/components/Header.vue";
+import Header from "@/components/navigation-components/Header.vue";
 import { mapActions } from "vuex";
-import Sidebar from "./components/Sidebar.vue";
+import Sidebar from "./components/navigation-components/Sidebar.vue";
 export default {
   data() {
     return {

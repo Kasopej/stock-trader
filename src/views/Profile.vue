@@ -33,7 +33,6 @@
 </template>
 
 <script>
-//import SignOutModal from '../components/UtilityComponents/SignOutModal.vue'
 export default {
   data() {
     return {

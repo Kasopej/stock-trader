@@ -78,7 +78,7 @@
 </template>
 
 <script>
-import TableBodyElement from "../components/UtilityComponents/TableBodyElement.vue";
+import TableBodyElement from "../components/reused-components/TableBodyElement.vue";
 export default {
   components: { TableBodyElement },
 };
