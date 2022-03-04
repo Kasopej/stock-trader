@@ -80,18 +80,20 @@ const router = new VueRouter({
   routes,
 });
 router.beforeEach((to, from, next) => {
-  if (
-    to.name !== "login" &&
-    to.name !== "register" &&
-    !store.state.authStoreModule.authenticated
-  ) {
-    next("/login");
-  } else if (
-    (to.name === "login" || to.name === "register") &&
-    store.state.authStoreModule.authenticated
-  ) {
-    next("/home");
-  } else next();
+  setTimeout(() => {
+    if (
+      to.name !== "login" &&
+      to.name !== "register" &&
+      !store.state.authStoreModule.authenticated
+    ) {
+      next("/login");
+    } else if (
+      (to.name === "login" || to.name === "register") &&
+      store.state.authStoreModule.authenticated
+    ) {
+      next("/home");
+    } else next();
+  }, 300);
 });
 
 export default router;
