@@ -30,6 +30,7 @@ export default {
     },
   },
   created() {
+    console.log("created App");
     this.attemptLoginOnLoad()
     this["stockMangementModule/getSharesFromMarket"]();
   },

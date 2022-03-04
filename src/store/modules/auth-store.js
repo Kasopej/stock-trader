@@ -46,7 +46,7 @@ const actions = {
       })
       .then((res) => {
         const authData = res.data;
-        authData.expiresIn *= 1000;
+        authData.expiresIn = authData.expiresIn * 1000 + new Date().valueOf();
         commit("storeAuthData", authData);
         commit("storeEmail", { email: payload.email });
         commit("login");
@@ -90,7 +90,7 @@ const actions = {
         commit("storeAuthData", {
           idToken: data.id_token,
           refreshToken: data.refresh_token,
-          expiresIn: data.expires_in * 1000,
+          expiresIn: data.expires_in * 1000 + new Date().valueOf(),
         });
         commit("login");
         dispatch("scheduleAuthRefresh");
@@ -101,8 +101,7 @@ const actions = {
       const email = localStorage.getItem("email");
       const authData = JSON.parse(localStorage.getItem("data"));
       if (authData.expiresIn < new Date().valueOf()) {
-        dispatch("logout");
-        return;
+        throw new Error("Authentication has expired");
       }
       commit("storeAuthData", authData);
       commit("storeEmail", { email });
@@ -122,9 +121,7 @@ const actions = {
 const mutations = {
   storeAuthData(state, authData) {
     state.idToken = authData.idToken;
-    state.expiresIn = new Date(
-      new Date().valueOf() + authData.expiresIn
-    ).valueOf();
+    state.expiresIn = authData.expiresIn;
     state.refreshToken = authData.refreshToken;
   },
   login(state) {
@@ -134,6 +131,8 @@ const mutations = {
     for (const key in state) {
       state[key] = "";
     }
+    localStorage.removeItem("data");
+    localStorage.removeItem("email");
   },
 };
 
