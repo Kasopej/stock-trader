@@ -4,7 +4,7 @@ import { screen } from "@testing-library/vue";
 import Vuex from "vuex";
 import axios from "axios";
 
-describe("Register.vue is the component where new users are onboarded", () => {
+xdescribe("Register.vue is the component where new users are onboarded", () => {
   let wrapper, localVue, store, $router;
   beforeEach(() => {
     localVue = createLocalVue();
@@ -37,7 +37,7 @@ describe("Register.vue is the component where new users are onboarded", () => {
   afterEach(() => {
     jest.resetAllMocks();
   });
-  it("posts a new account to DB & authenticates session if the signup is successful", async () => {
+  xit("posts a new account to DB & authenticates session if the signup is successful", async () => {
     const authResponse = {
       data: {
         idToken: "sjhshhshs",
@@ -71,7 +71,7 @@ describe("Register.vue is the component where new users are onboarded", () => {
     expect(wrapper.vm.$store.state.authStoreModule.authenticated).toBeTruthy();
     wrapper.destroy();
   });
-  it("records a registeration error if signup authentication is unsuccessful", async () => {
+  xit("records a registeration error if signup authentication is unsuccessful", async () => {
     const error = {
       message: "Network Error",
     };

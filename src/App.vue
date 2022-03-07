@@ -24,22 +24,27 @@ export default {
     Sidebar,
   },
   methods: {
-    ...mapActions(["attemptLoginOnLoad", "stockMangementModule/getSharesFromMarket"]),
+    ...mapActions(["attemptLoginOnLoad", "stockMangementModule/getSymbolsFromMarket"]),
     closeSignOut(){
       this.closeSignOutModal = true;
     },
   },
+
   created() {
-    console.log("created App");
     this.attemptLoginOnLoad()
-    this["stockMangementModule/getSharesFromMarket"]();
   },
+
   watch: {
     ["$store.state.authStoreModule.authenticated"](){
-      if(this.$store.state.authStoreModule.authenticated) this.$router.push("/home")
+      console.log("auth changed");
+      if(this.$store.state.authStoreModule.authenticated) {
+        this.$router.push("/home")
+        this["stockMangementModule/getSymbolsFromMarket"]()
+      }
       else this.$router.push("/login")
     }
   },
+
 };
 </script>
 
@@ -65,16 +70,12 @@ export default {
 }
 .stockPurchaseBtn,
 .sellAssetsBtn {
-  position: absolute;
+  
 }
 .stockQtyInput,
 .qtyToSell {
   left: 0px;
   width: 65%;
-}
-.stockPurchaseBtn,
-.sellAssetsBtn {
-  right: 1rem;
 }
 
 @media (min-width: 992px) {

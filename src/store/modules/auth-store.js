@@ -46,7 +46,7 @@ const actions = {
       })
       .then((res) => {
         const authData = res.data;
-        authData.expiresIn = authData.expiresIn *1000 + new Date().valueOf();
+        authData.expiresIn = authData.expiresIn * 1000 + new Date().valueOf();
         commit("storeAuthData", authData);
         commit("storeEmail", { email: payload.email });
         commit("login");
@@ -90,7 +90,7 @@ const actions = {
         commit("storeAuthData", {
           idToken: data.id_token,
           refreshToken: data.refresh_token,
-          expiresIn: data.expires_in *1000 + new Date().valueOf(),
+          expiresIn: data.expires_in * 1000 + new Date().valueOf(),
         });
         commit("login");
         dispatch("persistAuthData");
@@ -125,6 +125,7 @@ const mutations = {
     state.refreshToken = authData.refreshToken;
   },
   login(state) {
+    console.log("logging in");
     state.authenticated = true;
   },
   logout(state) {

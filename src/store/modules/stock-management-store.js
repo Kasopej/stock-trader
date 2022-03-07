@@ -1,28 +1,38 @@
+/* eslint-disable no-unused-vars */
 import { axiosStocksInstance } from "../../services/network-services/axios-stocks";
+import { prices } from "./shares";
 const state = {
   shares: [],
   portfolio: [],
 };
 const mutations = {
-  storeShares(state, payload) {
+  setSharesData(state, payload) {
     state.shares.splice(0, state.shares.length, ...payload);
   },
-  storeAndOrderMissingShares(state, payload) {
+  addMissingSymbols(state, payload) {
     state.shares.splice(state.shares.length - 1, 0, payload[0]);
     state.shares.sort((a, b) => {
-      return a.symbol < b.symbol ? -1 : 1;
+      return a.ticker < b.ticker ? -1 : 1;
+    });
+  },
+  setSharePrices(state, payload) {
+    state.shares.forEach((share, index) => {
+      share.currentPrice = payload[index].regularMarketPrice;
+      share.priceChange = payload[index].regularMarketChangePercent;
     });
   },
 };
 const actions = {
-  getSharesFromMarket({ state, commit }) {
+  /*
+  getSymbolsFromMarket({ state, commit, dispatch }) {
     axiosStocksInstance
       .get(
-        "v3/search-ticker?query=&limit=50&exchange=NASDAQ&apikey=92f991cbed3c4ac053149578277389e5"
+        "v3/search-ticker?query=&limit=5&exchange=NASDAQ&apikey=92f991cbed3c4ac053149578277389e5"
       )
       .then((res) => {
         const data = res.data;
-        commit("storeShares", data);
+        console.log(data);
+        commit("setSharesSymbols", data);
         const arrayOfSymbols = data.map((element) => {
           return element.symbol;
         });
@@ -34,7 +44,7 @@ const actions = {
               )
               .then((res) => {
                 if (res.data.length === 1) {
-                  commit("storeAndOrderMissingShares", res.data);
+                  commit("addMissingSymbols", res.data);
                 } else {
                   throw new Error(
                     "asset not found in stock market! Kindly send us a mail"
@@ -44,7 +54,72 @@ const actions = {
               .catch((error) => console.log(error));
           }
         }
+      })
+      .finally(() => {
+        dispatch("getHistoricalRangeOfPricesOfShares");
       });
+  },
+  */
+  getSymbolsFromMarket({ commit, dispatch, state }) {
+    axiosStocksInstance
+      .get("", {
+        baseURL:
+          "https://api.polygon.io/v3/reference/tickers?market=stocks&exchange=XNAS&active=true&sort=ticker&order=asc&limit=50&apiKey=YtTjMC3PISJ78qtZOK7W2zGcTsNfpK9x",
+      })
+      .then((res) => {
+        const data = res.data.results;
+        commit("setSharesData", data);
+        const arrayOfSymbols = state.shares.map((element) => {
+          return element.ticker;
+        });
+        return arrayOfSymbols;
+      })
+      .then((symbols) => {
+        dispatch("getPriceData");
+      });
+  },
+  getPriceData({ commit }) {
+    //let start = 0;
+    //let end = 10;
+    //const priceDataArray = [];
+    /*
+    let interval = setInterval(() => {
+      let endInterval;
+      let queryURLForTenShares = symbols.slice(start, end).join("%2C");
+      console.log(queryURLForTenShares);
+      axiosStocksInstance
+        .get("", {
+          baseURL: `https://yfapi.net/v6/finance/quote?region=US&lang=en&symbols=${queryURLForTenShares}`,
+          headers: {
+            "X-API-KEY": "pYMadBtrXJ63bgaGeALZW7IJjzNjpZll25ESNoLV",
+            accept: "application/json",
+          },
+        })
+        .then((res) => {
+          console.log("pricesss");
+          priceDataArray.splice(
+            priceDataArray.length,
+            0,
+            ...res.data.quoteResponse.result
+          );
+          if (res.data.quoteResponse.result.length < 10) {
+            endInterval = true;
+          }
+          console.log(priceDataArray);
+        });
+      console.log("prices");
+      start += 11;
+      end += 11;
+      //end = end > symbols.length ? symbols.length : end;
+      console.log(start, end);
+      if (endInterval) {
+        console.log("clearing");
+        clearInterval(interval);
+        commit("setSharePrices", priceDataArray);
+      }
+    }, 30000);
+    */
+    commit("setSharePrices", prices);
   },
 };
 const getters = {};
