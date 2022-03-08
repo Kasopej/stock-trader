@@ -105,5 +105,4 @@ export default {
 .card-body {
   position: relative;
 }
-
 </style>
