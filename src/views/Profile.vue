@@ -92,15 +92,4 @@ export default {
     ),
     /* your image */ url(../../public/assets/img/profile-background.jpg);
 }
-.myModal {
-  position: fixed;
-  top: 20%;
-  left: 15%;
-  z-index: 1055;
-  width: 100%;
-  height: 100%;
-  overflow-x: hidden;
-  overflow-y: auto;
-  outline: 0;
-}
 </style>

@@ -22,12 +22,12 @@
           sharePurchaseCost
         }}
       </p>
-      <button
-        class="btn btn-sm btn-success stockPurchaseBtn d-block ml-auto"
+      <a
+        class="btn btn-sm btn-success stockPurchaseBtn d-block mr-auto"
         @click="showModal('confirmBuyStock')"
       >
         Buy
-      </button>
+      </a>
     </div>
     <div v-if="shows.confirmBuyStock" class="myModal" tabindex="-1">
       <div class="modal-dialog">
@@ -105,15 +105,5 @@ export default {
 .card-body {
   position: relative;
 }
-.myModal {
-  position: fixed;
-  top: 20%;
-  left: 15%;
-  z-index: 1055;
-  width: 100%;
-  height: 100%;
-  overflow-x: hidden;
-  overflow-y: auto;
-  outline: 0;
-}
+
 </style>

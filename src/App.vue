@@ -38,13 +38,11 @@ export default {
   },
 
   created() {
+    this.attemptLoginOnLoad();
     //just while I am persisting my full store because of API issues
     if (this.$store.state.authStoreModule.authenticated) {
-      this.$router.push("/home").then(() => {
-        this["stockMangementModule/getSymbolsFromMarket"]();
-        this.fetchUserAccount();
-      });
-    } else this.attemptLoginOnLoad();
+      this["stockMangementModule/getSymbolsFromMarket"]();
+    }
   },
 
   watch: {
@@ -79,13 +77,26 @@ export default {
   flex-basis: 30%;
   flex-grow: 0;
 }
+/*
 .stockPurchaseBtn,
 .sellAssetsBtn {
 }
+*/
 .stockQtyInput,
 .qtyToSell {
   left: 0px;
   width: 65%;
+}
+.myModal {
+  position: fixed;
+  top: 20%;
+  left: 15%;
+  z-index: 1055;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  outline: 0;
 }
 
 @media (min-width: 992px) {
