@@ -20,7 +20,10 @@
                 This is your profile page. You can see the progress you've made
                 with your work and manage your projects or assigned tasks
               </p>
-              <a href="#0" class="btn btn-info" @click="showModal = !showModal"
+              <a
+                href="#0"
+                class="btn btn-info"
+                @click.prevent="showModal('confirmSignout')"
                 >Sign Out</a
               >
             </div>
@@ -28,23 +31,54 @@
         </div>
       </div>
     </div>
-    <SignOutModal v-show="showModal" @close="closeSignOutModal"></SignOutModal>
+    <div v-if="shows.confirmSignout" class="myModal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Confirmation</h5>
+            <button
+              type="button"
+              class="btn-close"
+              aria-label="Close"
+              @click="closeModal('confirmSignout')"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p>Buy stock?</p>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              @click="closeModal('confirmSignout')"
+            >
+              No
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              @click="closeModal('confirmSignout')"
+            >
+              Yes
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </main>
 </template>
 
 <script>
+import { modalControlMixin } from "../mixins/mixins";
+import { mapGetters } from "vuex";
 export default {
+  mixins: [modalControlMixin],
   data() {
-    return {
-      name: "Kasope",
-      showModal: false,
-    };
+    return {};
   },
-  methods: {
-    closeSignOutModal(response) {
-      this.showModal = !this.showModal;
-      console.log(response);
-    },
+  methods: {},
+  computed: {
+    ...mapGetters(["name"]),
   },
 };
 </script>
@@ -57,5 +91,16 @@ export default {
       rgba(139, 138, 199, 0.5)
     ),
     /* your image */ url(../../public/assets/img/profile-background.jpg);
+}
+.myModal {
+  position: fixed;
+  top: 20%;
+  left: 15%;
+  z-index: 1055;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  outline: 0;
 }
 </style>

@@ -11,22 +11,20 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   /* eslint-disable no-undef */
   plugins: [createPersistedState()],
-  state: {
-    email: "",
-  },
+  state: {},
   getters: {},
   mutations: {
     throwError(state, error) {
       state.error = error;
     },
-    storeEmail(state, payload) {
-      state.email = payload.email;
-    },
     clearError(state) {
       state.error = null;
     },
-    clearEmail(state) {
-      state.email = "";
+    storeEmail(state, email) {
+      state.email = email;
+    },
+    clearStore(state) {
+      state = {};
     },
   },
   actions: {},

@@ -51,7 +51,7 @@ export default {
   name: "Home",
   data() {
     return {
-      total: 125000
+      total: 125000,
     };
   },
   components: {},

@@ -4,7 +4,10 @@
     <main>
       <Header></Header>
       <router-view />
-      <sign-out-modal v-if="!closeSignOutModal" @close="closeSignOutModal = true"></sign-out-modal>
+      <sign-out-modal
+        v-if="!closeSignOutModal"
+        @close="closeSignOutModal = true"
+      ></sign-out-modal>
     </main>
   </div>
 </template>
@@ -16,7 +19,7 @@ import Sidebar from "./components/navigation-components/Sidebar.vue";
 export default {
   data() {
     return {
-      closeSignOutModal: true
+      closeSignOutModal: true,
     };
   },
   components: {
@@ -24,34 +27,35 @@ export default {
     Sidebar,
   },
   methods: {
-    ...mapActions(["attemptLoginOnLoad", "stockMangementModule/getSymbolsFromMarket", "fetchUserAccount"]),
-    closeSignOut(){
+    ...mapActions([
+      "attemptLoginOnLoad",
+      "stockMangementModule/getSymbolsFromMarket",
+      "fetchUserAccount",
+    ]),
+    closeSignOut() {
       this.closeSignOutModal = true;
     },
   },
 
   created() {
     //just while I am persisting my full store because of API issues
-    if(this.$store.state.authStoreModule.authenticated) {
-        this.$router.push("/home").then(()=>{
-          this["stockMangementModule/getSymbolsFromMarket"]();
-          this.fetchUserAccount()
-        })
-      }
-    else this.attemptLoginOnLoad()
+    if (this.$store.state.authStoreModule.authenticated) {
+      this.$router.push("/home").then(() => {
+        this["stockMangementModule/getSymbolsFromMarket"]();
+        this.fetchUserAccount();
+      });
+    } else this.attemptLoginOnLoad();
   },
 
   watch: {
-    ["$store.state.authStoreModule.authenticated"](){
+    ["$store.state.authStoreModule.authenticated"]() {
       console.log("auth changed");
-      if(this.$store.state.authStoreModule.authenticated) {
-        this.$router.push("/home")
+      if (this.$store.state.authStoreModule.authenticated) {
+        this.$router.push("/home");
         this["stockMangementModule/getSymbolsFromMarket"]();
-      }
-      else this.$router.push("/login")
-    }
+      } else this.$router.push("/login");
+    },
   },
-
 };
 </script>
 
@@ -77,7 +81,6 @@ export default {
 }
 .stockPurchaseBtn,
 .sellAssetsBtn {
-  
 }
 .stockQtyInput,
 .qtyToSell {

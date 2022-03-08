@@ -15,7 +15,7 @@ export default {
     Stock,
   },
   computed: {
-    ...mapState("stockMangementModule", ["shares"])
+    ...mapState("stockMangementModule", ["shares"]),
   },
 };
 </script>

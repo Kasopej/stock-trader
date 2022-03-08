@@ -15,11 +15,7 @@
           <p>Should we sign you out?</p>
         </div>
         <div class="modal-footer">
-          <button
-            type="button"
-            class="btn btn-secondary"
-            @click="close(false)"
-          >
+          <button type="button" class="btn btn-secondary" @click="close(false)">
             No
           </button>
           <button type="button" class="btn btn-primary" @click="close(true)">

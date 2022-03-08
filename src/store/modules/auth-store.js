@@ -28,8 +28,7 @@ const actions = {
         const authData = res.data;
         authData.expiresIn = authData.expiresIn * 1000 + new Date().valueOf();
         commit("storeAuthData", authData);
-        dispatch("createNewUserAccount", payload).then(()=>{
-        });
+        dispatch("createNewUserAccount", payload);
       });
   },
   attemptLogin({ commit, dispatch }, payload) {
@@ -49,8 +48,8 @@ const actions = {
         const authData = res.data;
         authData.expiresIn = authData.expiresIn * 1000 + new Date().valueOf();
         commit("storeAuthData", authData);
-        commit("storeEmail", { email: payload.email });
-        commit("login");
+        commit("storeEmail", payload.email);
+        dispatch("fetchUserAccount");
         dispatch("persistAuthData");
       })
       .catch((err) => {
@@ -60,9 +59,11 @@ const actions = {
   persistAuthData({ rootState, dispatch }) {
     localStorage.setItem("email", rootState.email);
     const { refreshToken, expiresIn, idToken } = rootState.authStoreModule;
-    localStorage.setItem("data", JSON.stringify({ refreshToken, expiresIn, idToken }));
+    localStorage.setItem(
+      "data",
+      JSON.stringify({ refreshToken, expiresIn, idToken })
+    );
     dispatch("scheduleAuthRefresh");
-    dispatch("fetchUserAccount", null, { root: true });
   },
   scheduleAuthRefresh({ dispatch, state }) {
     setTimeout(function () {
@@ -98,16 +99,16 @@ const actions = {
         dispatch("persistAuthData");
       });
   },
-  attemptLoginOnLoad({ commit, dispatch }) {
+  attemptLoginOnLoad({ commit, dispatch, rootState }) {
     try {
       const email = localStorage.getItem("email");
       const authData = JSON.parse(localStorage.getItem("data"));
-      if (authData.expiresIn < new Date().valueOf()) {
+      if (authData.expiresIn < new Date().valueOf() || !rootState.email) {
         throw new Error("Authentication has expired");
       }
+      commit("storeEmail", email);
       commit("storeAuthData", authData);
-      commit("storeEmail", { email });
-      commit("login");
+      dispatch("fetchUserAccount");
       dispatch("persistAuthData");
     } catch (error) {
       console.log(error);
@@ -116,7 +117,7 @@ const actions = {
   },
   logout({ commit }) {
     commit("logout");
-    commit("clearEmail");
+    commit("clearStore");
   },
 };
 
@@ -130,10 +131,7 @@ const mutations = {
     console.log("logging in");
     state.authenticated = true;
   },
-  logout(state) {
-    for (const key in state) {
-      state[key] = "";
-    }
+  logout() {
     localStorage.removeItem("data");
     localStorage.removeItem("email");
   },

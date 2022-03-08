@@ -12,8 +12,12 @@
     </div>
     <div class="mb-4">
       <label for="exampleInputPassword" class="form-label">Password</label>
-      <input type="password" class="form-control" id="exampleInputPassword"
-      v-model="loginDetails.password" />
+      <input
+        type="password"
+        class="form-control"
+        id="exampleInputPassword"
+        v-model="loginDetails.password"
+      />
       <i class="inputIcon fa-solid fa-eye"></i>
     </div>
     <button
@@ -32,17 +36,18 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
       loginDetails: {
-        email: "", password: ""
-      }
-    }
+        email: "",
+        password: "",
+      },
+    };
   },
   methods: {
-    ...mapActions(["attemptLogin"])
+    ...mapActions(["attemptLogin"]),
   },
   /*
   watch: {

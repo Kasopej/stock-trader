@@ -20,7 +20,7 @@ const actions = {
         payload
       )
       .then(() => {
-        commit("login");
+        dispatch("fetchUserAccount");
         dispatch("persistAuthData");
       })
       .catch((error) => {
@@ -33,12 +33,14 @@ const actions = {
       .get("users.json" + `?auth=${rootState.authStoreModule.idToken}`)
       .then((res) => {
         const data = res.data;
+        console.log(data);
         let userAccount;
         for (const userIndex in data) {
           if (data[userIndex].email === rootState.email) {
             userAccount = data[userIndex];
             console.log(userAccount);
             commit("storeUserAccount", { id: userIndex, ...userAccount });
+            commit("login");
             break;
           }
         }

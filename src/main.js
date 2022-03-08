@@ -2,7 +2,6 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store/index";
-import SignOutModal from "./components/reused-components/SignOutModal.vue";
 //Vue.config.productionTip = false;
 
 // Import the functions you need from the SDKs you need
@@ -12,7 +11,6 @@ import { initializeApp } from "firebase/app";
 
 const firebaseApp = installFirebase();
 console.log(firebaseApp);
-Vue.component("SignOutModal", SignOutModal);
 Vue.filter("setCommas", function (value) {
   try {
     value.toFixed(2);

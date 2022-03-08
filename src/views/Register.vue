@@ -99,9 +99,9 @@ export default {
     },
   },
   watch: {
-    ["$store.state.authStoreModule.authenticated"](){
-      this.$router.push("/home")
-    }
+    ["$store.state.authStoreModule.authenticated"]() {
+      this.$router.push("/home");
+    },
   },
 };
 </script>
