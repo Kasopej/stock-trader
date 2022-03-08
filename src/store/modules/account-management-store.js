@@ -3,18 +3,23 @@ import { axiosAccountInstance } from "../../services/network-services/axios-acco
 const state = {
   account: null,
 };
-const getters = {};
+const getters = {
+  name(state) {
+    if (state.account?.email) {
+      return state.account.email.slice(0, state.account.email.indexOf("@"));
+    }
+  },
+};
 const actions = {
   createNewUserAccount({ dispatch, commit, rootState }, payload) {
     delete payload.password;
-    payload = { ...payload, wallet: 0, portfolio: {} };
+    payload = { ...payload, wallet: 2000, portfolio: {} };
     axiosAccountInstance
       .post(
         "users.json" + `?auth=${rootState.authStoreModule.idToken}`,
         payload
       )
       .then(() => {
-        commit("storeEmail", { email: payload.email });
         commit("login");
         dispatch("persistAuthData");
       })
@@ -32,7 +37,8 @@ const actions = {
         for (const userIndex in data) {
           if (data[userIndex].email === rootState.email) {
             userAccount = data[userIndex];
-            commit("storeUserAccount", userAccount);
+            console.log(userAccount);
+            commit("storeUserAccount", { id: userIndex, ...userAccount });
             break;
           }
         }
@@ -40,8 +46,8 @@ const actions = {
   },
 };
 const mutations = {
-  storeUserAccount(state, userAccount) {
-    state.account = userAccount;
+  storeUserAccount(state, payload) {
+    state.account = payload;
   },
 };
 

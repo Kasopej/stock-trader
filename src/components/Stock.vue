@@ -8,7 +8,7 @@
       <p>{{share.name}}</p>
       <input class="stockQtyInput" type="number" name="stockQty" v-model="qtyToPurchase" />
       <p class="m-0 p-0">{{qtyToPurchase}} x {{share.currentPrice}} = ${{sharePurchaseCost}}</p>
-      <a href="#0" class="btn btn-sm btn-success stockPurchaseBtn d-block m-auto">Buy</a>
+      <a href="#0" class="btn btn-sm btn-success stockPurchaseBtn d-block m-auto" @click="confirmBuyStock">Buy</a>
     </div>
   </div>
 </template>

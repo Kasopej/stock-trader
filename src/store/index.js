@@ -14,11 +14,7 @@ export default new Vuex.Store({
   state: {
     email: "",
   },
-  getters: {
-    name(state) {
-      return state.email.slice(0, state.email.indexOf("@"));
-    },
-  },
+  getters: {},
   mutations: {
     throwError(state, error) {
       state.error = error;

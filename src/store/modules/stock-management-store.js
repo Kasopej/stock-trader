@@ -77,6 +77,9 @@ const actions = {
       .then((symbols) => {
         dispatch("getPriceData");
       });
+      setTimeout(() => {
+        dispatch("getSymbolsFromMarket");
+      }, 43200000);
   },
   getPriceData({ commit }) {
     //let start = 0;

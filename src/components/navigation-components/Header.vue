@@ -46,7 +46,7 @@
         >
 
         <li class="nav-link fw-bold" style="vertical-align: middle">
-          ${{ "1,000" }}
+          ${{ account.wallet | setCommas }}
         </li>
       </ul>
     </div>
@@ -54,14 +54,15 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapState } from 'vuex';
 export default {
   data() {
     return {
     };
   },
   computed: {
-    ...mapGetters(["name", "isAuthenticated"])
+    ...mapGetters(["name", "isAuthenticated"]),
+    ...mapState({account: (state)=> state.accountMangementModule.account})
   },
 };
 </script>

@@ -24,14 +24,21 @@ export default {
     Sidebar,
   },
   methods: {
-    ...mapActions(["attemptLoginOnLoad", "stockMangementModule/getSymbolsFromMarket"]),
+    ...mapActions(["attemptLoginOnLoad", "stockMangementModule/getSymbolsFromMarket", "fetchUserAccount"]),
     closeSignOut(){
       this.closeSignOutModal = true;
     },
   },
 
   created() {
-    this.attemptLoginOnLoad()
+    //just while I am persisting my full store because of API issues
+    if(this.$store.state.authStoreModule.authenticated) {
+        this.$router.push("/home").then(()=>{
+          this["stockMangementModule/getSymbolsFromMarket"]();
+          this.fetchUserAccount()
+        })
+      }
+    else this.attemptLoginOnLoad()
   },
 
   watch: {
@@ -39,7 +46,7 @@ export default {
       console.log("auth changed");
       if(this.$store.state.authStoreModule.authenticated) {
         this.$router.push("/home")
-        this["stockMangementModule/getSymbolsFromMarket"]()
+        this["stockMangementModule/getSymbolsFromMarket"]();
       }
       else this.$router.push("/login")
     }

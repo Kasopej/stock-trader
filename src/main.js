@@ -13,6 +13,14 @@ import { initializeApp } from "firebase/app";
 const firebaseApp = installFirebase();
 console.log(firebaseApp);
 Vue.component("SignOutModal", SignOutModal);
+Vue.filter("setCommas", function (value) {
+  try {
+    value.toFixed(2);
+  } catch (error) {
+    console.log(error);
+  }
+  return value.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+});
 new Vue({
   router,
   store,

@@ -8,7 +8,7 @@
       @mouseleave="removeHoverStyle"
     >
       <p class="lead mb-4">My Portfolio Growth</p>
-      <h2>${{ 125000 }}</h2>
+      <h2>${{ total | setCommas }}</h2>
       <button class="btn btn-success btn-md rounded-pill">View More</button>
     </div>
 
@@ -18,7 +18,7 @@
       @mouseleave="removeHoverStyle"
     >
       <p class="lead">Best Performing Asset</p>
-      <h2 class="mb-4">${{ 125000 }}</h2>
+      <h2 class="mb-4">${{ total | setCommas }}</h2>
       <button class="btn btn-success btn-md rounded-pill">View More</button>
     </div>
 
@@ -28,7 +28,7 @@
       @mouseleave="removeHoverStyle"
     >
       <p class="lead">Worst Performing Asset</p>
-      <h2 class="mb-4">${{ 125000 }}</h2>
+      <h2 class="mb-4">${{ total | setCommas }}</h2>
       <button class="btn btn-success btn-md rounded-pill">View More</button>
     </div>
 
@@ -38,7 +38,7 @@
       @mouseleave="removeHoverStyle"
     >
       <p class="lead">Your Balance</p>
-      <h2>${{ 125000 }}</h2>
+      <h2>${{ total | setCommas }}</h2>
       <button class="btn btn-success btn-md rounded-pill">Fund Wallet</button>
     </div>
   </div>
@@ -50,7 +50,9 @@
 export default {
   name: "Home",
   data() {
-    return {};
+    return {
+      total: 125000
+    };
   },
   components: {},
   methods: {

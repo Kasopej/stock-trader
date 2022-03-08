@@ -28,7 +28,8 @@ const actions = {
         const authData = res.data;
         authData.expiresIn = authData.expiresIn * 1000 + new Date().valueOf();
         commit("storeAuthData", authData);
-        dispatch("createNewUserAccount", payload);
+        dispatch("createNewUserAccount", payload).then(()=>{
+        });
       });
   },
   attemptLogin({ commit, dispatch }, payload) {
@@ -58,9 +59,10 @@ const actions = {
   },
   persistAuthData({ rootState, dispatch }) {
     localStorage.setItem("email", rootState.email);
-    const { refreshToken, expiresIn } = rootState.authStoreModule;
-    localStorage.setItem("data", JSON.stringify({ refreshToken, expiresIn }));
+    const { refreshToken, expiresIn, idToken } = rootState.authStoreModule;
+    localStorage.setItem("data", JSON.stringify({ refreshToken, expiresIn, idToken }));
     dispatch("scheduleAuthRefresh");
+    dispatch("fetchUserAccount", null, { root: true });
   },
   scheduleAuthRefresh({ dispatch, state }) {
     setTimeout(function () {
