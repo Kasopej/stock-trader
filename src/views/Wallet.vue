@@ -8,7 +8,7 @@
           <hr />
           <div class="px-2 d-flex justify-content-center">
             <div class="w-100">
-              <button class="btn btn-success w-50" @click="makeWalletDeposit">
+              <button class="btn btn-success w-50" @click="showModal('fundWalletDialog')">
                 <i class="fa-solid fa-arrow-right"></i>
               </button>
               <span class="d-block">Deposit</span>
@@ -24,7 +24,7 @@
           <hr />
           <div class="px-2 d-flex justify-content-center">
             <div class="w-100">
-              <button class="btn btn-success w-50" @click="withdrawFromProfit">
+              <button class="btn btn-success w-50" @click="showModal('profitWalletDialog')">
                 <i class="fa-solid fa-arrow-left"></i>
               </button>
               <span class="d-block">Withdraw</span>
@@ -46,26 +46,95 @@
               <th scope="col">Wallet</th>
             </tr>
           </thead>
-          <TableBodyElement></TableBodyElement>
+          <tbody>
+            <TableBodyElement v-for="(record, index) in cardTransactionLog" :key="record.timestamp" :record="record" :index="index"></TableBodyElement>
+          </tbody>
         </table>
       </section>
     </div>
+    <InputModal
+      v-if="modals.fundWalletDialog.show"
+      :text="modals.fundWalletDialog.text"
+      :customEventName="modals.fundWalletDialog.customEventName"
+      @[modals.fundWalletDialog.customEventName]="fundWallet"
+    ></InputModal>
+    <InputModal
+      v-if="modals.profitWalletDialog.show"
+      :text="modals.profitWalletDialog.text"
+      :customEventName="modals.profitWalletDialog.customEventName"
+      @[modals.profitWalletDialog.customEventName]="debitProfitWallet"
+    ></InputModal>
   </div>
 </template>
 
 <script>
 import TableBodyElement from "../components/reused-components/TableBodyElement.vue";
-import { mapGetters, mapState } from "vuex";
+import { mapGetters, mapState, mapActions } from "vuex";
+import InputModal from "../components/reused-components/InputModal.vue";
 export default {
-  components: { TableBodyElement },
+  data() {
+    return {
+      modals: {
+        fundWalletDialog: {
+          text: `please specify how much you want to deposit`,
+          customEventName: "fundWallet",
+          show: false,
+        },
+        profitWalletDialog: {
+          text: `please specify how much you want to withdraw`,
+          customEventName: "debitProfitWallet",
+          show: false,
+        },
+      },
+    }
+  },
+  components: { TableBodyElement, InputModal },
   computed: {
     ...mapGetters("stockMangementModule", ["netGrowth"]),
     ...mapState({
       wallet: (state) => state.accountMangementModule.account.wallet,
+      cardTransactionLog: (state) => state.accountMangementModule.account.cardTransactionsLog
     }),
   },
   methods: {
-    makeWalletDeposit() {},
+    ...mapActions(["performTransactionOnProfitWallet", "performTransaction", "fetchUserAccount", "updateCardTransactionLog"]),
+    fundWallet(event) {
+      if(event.response) {
+        console.log("performing transaction");
+        this.performTransaction(event.value)
+          .then(() =>
+            this.updateCardTransactionLog({timestamp: new Date().valueOf(), type: "Deposit", amount: event.value, location: "Main Wallet"})
+          )
+          .then(() => this.fetchUserAccount())
+          .then(() => {
+            this.qtyToPurchase = 0;
+            this.closeModal("fundWalletDialog");
+          });
+        }
+        else this.closeModal("fundWalletDialog")
+    },
+    debitProfitWallet(event){
+      if(event.response) {
+        console.log("performing transaction");
+        this.performTransactionOnProfitWallet(event.value)
+          .then(() =>
+            this.updateCardTransactionLog({timestamp: new Date().valueOf(), type: "Withdrawal", amount: event.value, location: "Profit Wallet"})
+          )
+          .then(() => this.fetchUserAccount())
+          .then(() => {
+            this.closeModal("confirmBuyStock");
+          });
+
+      this.closeModal("profitWalletDialog")
+        }
+        else this.closeModal("profitWalletDialog")
+    },
+    showModal(name) {
+      this.modals[name].show = true;
+    },
+    closeModal(name) {
+      this.modals[name].show = false;
+    },
   },
 };
 </script>

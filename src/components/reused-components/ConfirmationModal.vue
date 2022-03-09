@@ -8,17 +8,17 @@
             type="button"
             class="btn-close"
             aria-label="Close"
-            @click="close(false)"
+            @click="close({response: false})"
           ></button>
         </div>
         <div class="modal-body">
           <p>{{ text }}</p>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" @click="close(false)">
+          <button type="button" class="btn btn-secondary" @click="close({response: false})">
             No
           </button>
-          <button type="button" class="btn btn-primary" @click="close(true)">
+          <button type="button" class="btn btn-primary" @click="close({response: true})">
             Yes
           </button>
         </div>

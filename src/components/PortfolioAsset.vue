@@ -143,15 +143,15 @@ export default {
       if (mode === "sell") this.qtyToSell = +event.target.value;
       else if (mode === "purchase") this.qtyToPurchase = +event.target.value;
     },
-    buyStock(isConfirmed) {
-      if (isConfirmed) {
+    buyStock(event) {
+      if (event.response === true) {
         if (this.wallet >= this.sharePurchaseCost) {
           console.log("performing transaction");
-          this.performTransaction(this.sharePurchaseCost)
+          this.performTransaction(this.sharePurchaseCost * -1)
             .then(() =>
               this.updatePortfolioFromAsset({
                 asset: this.asset,
-                quantity: +this.qtyToPurchase,
+                quantity: this.qtyToPurchase,
               })
             )
             .then(() => this.fetchUserAccount())
@@ -162,15 +162,15 @@ export default {
         }
       } else this.closeModal("confirmBuyStock");
     },
-    sellStock(isConfirmed) {
-      if (isConfirmed) {
+    sellStock(event) {
+      if (event.response === true) {
         if (+this.qtyToSell) {
           console.log("performing transaction");
           this.updatePortfolioFromAsset({
             asset: this.asset,
-            quantity: +this.qtyToSell * -1,
+            quantity: this.qtyToSell * -1,
           })
-            .then(() => this.performTransaction(this.assetSaleValue * -1))
+            .then(() => this.performTransaction(this.assetSaleValue))
             .then(() => this.fetchUserAccount())
             .then(() => {
               this.qtyToSell = 0;
