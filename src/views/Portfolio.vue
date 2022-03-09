@@ -28,7 +28,7 @@ export default {
   },
   components: { PortfolioAsset },
   computed: {
-    ...mapState("stockMangementModule", ["portfolio"]),
+    ...mapState({portfolio: (state) => state.accountMangementModule.account.portfolio}),
   },
 };
 </script>

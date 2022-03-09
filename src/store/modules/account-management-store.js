@@ -13,7 +13,7 @@ const getters = {
 const actions = {
   createNewUserAccount({ dispatch, commit, rootState }, payload) {
     delete payload.password;
-    payload = { ...payload, wallet: 2000, profitWallet: 0, portfolio: null };
+    payload = { ...payload, wallet: 0, profitWallet: 0, portfolio: null };
     axiosAccountInstance
       .post(
         "users.json" + `?auth=${rootState.authStoreModule.idToken}`,
@@ -58,6 +58,13 @@ const actions = {
     commit("updateWallet", amount);
     return dispatch("updateUserAccount", { wallet: state.account.wallet });
   },
+  performTransactionOnProfitWallet({ commit, dispatch, state }, amount) {
+    console.log("in profit wallet");
+    commit("updateProfitWallet", amount);
+    return dispatch("updateUserAccount", {
+      profitWallet: state.account.profitWallet,
+    });
+  },
   updateCardTransactionLog({ commit, dispatch, state }, payload) {
     commit("updateCardTransactionLog", payload);
     return dispatch("updateUserAccount", {
@@ -74,6 +81,9 @@ const mutations = {
   },
   updateWallet(state, amount) {
     state.account.wallet += amount;
+  },
+  updateProfitWallet(state, amount) {
+    state.account.profitWallet += amount;
   },
   updateCardTransactionLog(state, payload) {
     console.log("updating log");

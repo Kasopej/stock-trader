@@ -17,7 +17,6 @@ const getters = {
     );
   },
   bestPerformingAsset(state) {
-    console.log("best");
     let highestGrowthRate = -1_000_000_000;
     let bestPerformingAssetIndex;
     state.portfolio.forEach((asset, index) => {
@@ -189,8 +188,8 @@ const actions = {
       { root: true }
     );
   },
-  updatePortfolioFromAsset({ commit, dispatch, state }, payload) {
-    console.log("portfolio from asset");
+  updatePortfolioFromAsset({ commit, dispatch, rootState }, payload) {
+    console.log("portfolio from asset", JSON.stringify(payload));
     commit("updatePortfolioAssetAmount", {
       asset: payload.asset,
       quantity: payload.quantity,
@@ -198,7 +197,7 @@ const actions = {
     return dispatch(
       "updateUserAccount",
       {
-        portfolio: state.portfolio,
+        portfolio: rootState.accountMangementModule.account.portfolio,
       },
       { root: true }
     );
@@ -258,8 +257,9 @@ const mutations = {
   },
   updatePortfolioAssetAmount(state, payload) {
     /* eslint-disable no-unused-vars */
-    console.log("updated asset");
+    console.log("updated asset", JSON.stringify(payload));
     payload.asset.quantity += payload.quantity;
+    console.log("fully updated asset", JSON.stringify(payload));
   },
   createPortfolioAsset(state, payload) {
     state.portfolio.push({
