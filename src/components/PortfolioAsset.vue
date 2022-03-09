@@ -11,56 +11,76 @@
     </div>
     <div class="card-body">
       <p>{{ assetDetails.name }}</p>
-      <hr>
-      <p class="">No. of my shares: <span class="badge bg-secondary">{{asset.quantity}}</span></p>
-      <p class="">Current value: <span class="badge bg-secondary">{{asset.quantity * assetDetails.currentPrice | setCommas}}</span></p>
+      <hr />
+      <p class="">
+        No. of my shares:
+        <span class="badge bg-secondary">{{ asset.quantity }}</span>
+      </p>
+      <p class="">
+        Current value:
+        <span class="badge bg-secondary">{{
+          (asset.quantity * assetDetails.currentPrice) | setCommas
+        }}</span>
+      </p>
     </div>
     <!-- Card footer -->
     <div class="card-footer d-flex justify-content-between p-0">
       <div class="text-center border-end border-dark p-2">
         <input
-        class="stockQtyInput"
-        type="number"
-        name="stockQty"
-        v-model="qtyToPurchase"
-      />
-      <p class="m-0 p-0">
-        {{ qtyToPurchase }} x {{ assetDetails.currentPrice | setCommas }} = ${{
-          sharePurchaseCost | setCommas
-        }}
-      </p>
-      <a
-        class="btn btn-sm btn-success stockPurchaseBtn"
-        @click="showModal('confirmBuyStock')"
-      >
-        Buy
-      </a>
+          class="stockQtyInput"
+          type="number"
+          name="stockQty"
+          :value="qtyToPurchase"
+          @input="updateQty($event, 'purchase')"
+        />
+        <p class="m-0 p-0">
+          {{ qtyToPurchase }} x {{ assetDetails.currentPrice | setCommas }} =
+          ${{ sharePurchaseCost | setCommas }}
+        </p>
+        <button
+          class="btn btn-sm btn-success stockPurchaseBtn"
+          :disabled="!+qtyToPurchase"
+          @click="showModal('confirmBuyStock')"
+        >
+          Buy
+        </button>
       </div>
       <div class="text-center p-2">
         <input
-        class="stockQtyInput"
-        type="number"
-        name="stockQty"
-        v-model="qtyToSell"
-      />
-      <p class="m-0 p-0">
-        {{ qtyToSell }} x {{ assetDetails.currentPrice | setCommas }} = ${{
-          assetSaleValue | setCommas
-        }}
-      </p>
-      <a
-        class="btn btn-sm btn-success stockPurchaseBtn"
-        @click="showModal('confirmBuyStock')"
-      >
-        Sell
-      </a>
+          class="stockQtyInput"
+          type="number"
+          name="stockQty"
+          :value="qtyToSell"
+          @input="updateQty($event, 'sell')"
+        />
+        <p class="m-0 p-0">
+          {{ qtyToSell }} x {{ assetDetails.currentPrice | setCommas }} = ${{
+            assetSaleValue | setCommas
+          }}
+        </p>
+        <button
+          class="btn btn-sm btn-success stockPurchaseBtn"
+          :disabled="!+qtyToSell"
+          @click="showModal('confirmSellStock')"
+        >
+          Sell
+        </button>
       </div>
     </div>
 
     <!-- Modal -->
-    <ConfirmationModal v-if="modals.confirmBuyStock.show" :text="modals.confirmBuyStock.text" :customEventName="modals.confirmBuyStock.customEventName" @[modals.confirmBuyStock.customEventName]="buyStock"></ConfirmationModal>
-
-    
+    <ConfirmationModal
+      v-if="modals.confirmBuyStock.show"
+      :text="modals.confirmBuyStock.text"
+      :customEventName="modals.confirmBuyStock.customEventName"
+      @[modals.confirmBuyStock.customEventName]="buyStock"
+    ></ConfirmationModal>
+    <ConfirmationModal
+      v-if="modals.confirmSellStock.show"
+      :text="modals.confirmSellStock.text"
+      :customEventName="modals.confirmSellStock.customEventName"
+      @[modals.confirmSellStock.customEventName]="sellStock"
+    ></ConfirmationModal>
   </div>
 </template>
 
@@ -69,69 +89,104 @@
 import { mapActions, mapState } from "vuex";
 import ConfirmationModal from "./reused-components/ConfirmationModal.vue";
 export default {
-    props: {
-        asset: {
-            type: Object,
-            default: () => ({})
+  props: {
+    asset: {
+      type: Object,
+      default: () => ({}),
+    },
+  },
+  data() {
+    return {
+      qtyToPurchase: 0,
+      qtyToSell: 0,
+      modals: {
+        confirmBuyStock: {
+          text: `buy ${this.asset.assetDetails.name} share?`,
+          customEventName: "buyStock",
+          show: false,
+        },
+        confirmSellStock: {
+          text: `sell ${this.asset.assetDetails.name} stock?`,
+          customEventName: "sellStock",
+          show: false,
+        },
+      },
+    };
+  },
+  computed: {
+    ...mapState({
+      wallet: (state) => state.accountMangementModule.account.wallet,
+    }),
+    assetDetails() {
+      return this.asset.assetDetails;
+    },
+    sharePurchaseCost() {
+      return this.assetDetails.currentPrice * this.qtyToPurchase;
+    },
+    assetSaleValue() {
+      return this.assetDetails.currentPrice * this.qtyToSell;
+    },
+    percentageStyle() {
+      return {
+        color: this.assetDetails.priceChange > 0 ? "green" : "red",
+      };
+    },
+  },
+  methods: {
+    ...mapActions(["performTransaction", "fetchUserAccount"]),
+    ...mapActions("stockMangementModule", ["updatePortfolioFromAsset"]),
+    updateQty(event, mode) {
+      if (+event.target.value < 0) {
+        event.target.value = 0;
+        return;
+      }
+      if (mode === "sell") this.qtyToSell = +event.target.value;
+      else if (mode === "purchase") this.qtyToPurchase = +event.target.value;
+    },
+    buyStock(isConfirmed) {
+      if (isConfirmed) {
+        if (this.wallet >= this.sharePurchaseCost) {
+          console.log("performing transaction");
+          this.performTransaction(this.sharePurchaseCost)
+            .then(() =>
+              this.updatePortfolioFromAsset({
+                asset: this.asset,
+                quantity: +this.qtyToPurchase,
+              })
+            )
+            .then(() => this.fetchUserAccount())
+            .then(() => {
+              this.qtyToPurchase = 0;
+              this.closeModal("confirmBuyStock");
+            });
         }
+      } else this.closeModal("confirmBuyStock");
     },
-    data() {
-        return {
-            qtyToPurchase: 0,
-            qtyToSell: 0,
-            modals: {
-              confirmBuyStock: {
-                text: `buy ${this.asset.assetDetails.name} stock?`, customEventName: "buyStock", show: false
-              }
-            }
-        };
-    },
-    computed: {
-        ...mapState({ wallet: (state) => state.accountMangementModule.account.wallet }),
-        assetDetails() {
-            return this.asset.assetDetails;
-        },
-        sharePurchaseCost() {
-            return this.assetDetails.currentPrice * this.qtyToPurchase;
-        },
-        assetSaleValue() {
-            return this.assetDetails.currentPrice * this.qtyToSell;
-        },
-        percentageStyle() {
-            return {
-                color: this.assetDetails.priceChange > 0 ? "green" : "red",
-            };
-        },
-    },
-    methods: {
-        ...mapActions([
-            "performTransaction",
-            "fetchUserAccount",
-        ]),
-        ...mapActions("stockMangementModule", ["updatePortfolioFromAsset"]),
-        buyStock(isConfirmed) {
-          if(isConfirmed){
-            if (this.wallet >= this.sharePurchaseCost) {
-                console.log("performing transaction");
-                this.performTransaction(this.sharePurchaseCost)
-                    .then(() => this.updatePortfolioFromAsset({ asset: this.asset, quantity: +this.qtyToPurchase }))
-                    .then(() => this.fetchUserAccount())
-                    .then(() => {
-                    this.qtyToPurchase = 0;
-                    this.closeModal("confirmBuyStock");
-                });
-            }
-          }
-          else this.closeModal("confirmBuyStock");
-        },
-        showModal(name){
-          this.modals[name].show = true;
-        },
-        closeModal(name){
-          this.modals[name].show = false;
+    sellStock(isConfirmed) {
+      if (isConfirmed) {
+        if (+this.qtyToSell) {
+          console.log("performing transaction");
+          this.updatePortfolioFromAsset({
+            asset: this.asset,
+            quantity: +this.qtyToSell * -1,
+          })
+            .then(() => this.performTransaction(this.assetSaleValue * -1))
+            .then(() => this.fetchUserAccount())
+            .then(() => {
+              this.qtyToSell = 0;
+              this.closeModal("confirmSellStock");
+            });
         }
+      } else this.closeModal("confirmSellStock");
     },
-    components: { ConfirmationModal }
+    showModal(name) {
+      this.modals[name].show = true;
+    },
+    closeModal(name) {
+      this.modals[name].show = false;
+    },
+  },
+  components: { ConfirmationModal },
 };
 </script>
 

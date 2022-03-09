@@ -19,7 +19,9 @@
     >
       <p class="lead">Best Performing Asset</p>
       <span>{{ bestPerformingAsset.assetDetails.ticker }}</span>
-      <h2 class="mb-4">{{ bestPerformingAsset.assetDetails.priceChange.toFixed(2) }}%</h2>
+      <h2 class="mb-4">
+        {{ bestPerformingAsset.assetDetails.priceChange.toFixed(2) }}%
+      </h2>
       <button class="btn btn-success btn-md rounded-pill">View More</button>
     </div>
 
@@ -30,7 +32,9 @@
     >
       <p class="lead">Worst Performing Asset</p>
       <span>{{ worstPerformingAsset.assetDetails.ticker }}</span>
-      <h2 class="mb-4">{{ worstPerformingAsset.assetDetails.priceChange.toFixed(2) }}%</h2>
+      <h2 class="mb-4">
+        {{ worstPerformingAsset.assetDetails.priceChange.toFixed(2) }}%
+      </h2>
       <button class="btn btn-success btn-md rounded-pill">View More</button>
     </div>
 
@@ -66,7 +70,12 @@ export default {
     },
   },
   computed: {
-    ...mapGetters("stockMangementModule", ["portfolioValue", "bestPerformingAsset", "worstPerformingAsset", "netGrowth"]),
+    ...mapGetters("stockMangementModule", [
+      "portfolioValue",
+      "bestPerformingAsset",
+      "worstPerformingAsset",
+      "netGrowth",
+    ]),
   },
 };
 </script>

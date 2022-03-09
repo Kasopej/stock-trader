@@ -4,14 +4,14 @@
       <section class="card mainWallet text-center">
         <div class="card-body">
           <h6 class="card-subtitle">Main Wallet</h6>
-          <h4 class="card-title">${{wallet | setCommas}}</h4>
+          <h4 class="card-title">${{ wallet | setCommas }}</h4>
           <hr />
           <div class="px-2 d-flex justify-content-center">
             <div class="w-100">
-              <button class="btn btn-success  w-50" @click="makeWalletDeposit">
+              <button class="btn btn-success w-50" @click="makeWalletDeposit">
                 <i class="fa-solid fa-arrow-right"></i>
               </button>
-              <span class="d-block ">Deposit</span>
+              <span class="d-block">Deposit</span>
             </div>
           </div>
         </div>
@@ -20,7 +20,7 @@
       <section class="card profitWallet text-center">
         <div class="card-body">
           <h6 class="card-subtitle">Profit Wallet</h6>
-          <h4 class="card-title">${{netGrowth | setCommas}}</h4>
+          <h4 class="card-title">${{ netGrowth | setCommas }}</h4>
           <hr />
           <div class="px-2 d-flex justify-content-center">
             <div class="w-100">
@@ -60,12 +60,12 @@ export default {
   components: { TableBodyElement },
   computed: {
     ...mapGetters("stockMangementModule", ["netGrowth"]),
-    ...mapState({ wallet: (state) => state.accountMangementModule.account.wallet })
+    ...mapState({
+      wallet: (state) => state.accountMangementModule.account.wallet,
+    }),
   },
   methods: {
-    makeWalletDeposit(){
-
-    }
+    makeWalletDeposit() {},
   },
 };
 </script>

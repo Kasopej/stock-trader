@@ -61,7 +61,7 @@
         data-bs-toggle="dropdown"
         aria-expanded="false"
       >
-        <strong>{{name}}</strong>
+        <strong>{{ name }}</strong>
       </a>
       <ul
         class="dropdown-menu dropdown-menu-dark text-small shadow"
@@ -81,7 +81,7 @@
 import { mapGetters } from "vuex";
 export default {
   computed: {
-    ...mapGetters(["name"])
+    ...mapGetters(["name"]),
   },
 };
 </script>
