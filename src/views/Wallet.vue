@@ -99,6 +99,7 @@ export default {
   },
   methods: {
     ...mapActions(["performTransactionOnProfitWallet", "performTransaction", "fetchUserAccount", "updateCardTransactionLog"]),
+    ...mapActions("stockMangementModule", ["getHistoricalPriceDataForAssets"]),
     fundWallet(event) {
       if(event.response) {
         console.log("performing transaction");
@@ -116,19 +117,19 @@ export default {
     },
     debitProfitWallet(event){
       if(event.response) {
-        console.log("performing transaction");
-        this.performTransactionOnProfitWallet(event.value * -1)
+        if(event.value <= this.profitWallet){
+          console.log("performing transaction");
+          this.performTransactionOnProfitWallet(event.value * -1)
           .then(() =>
             this.updateCardTransactionLog({timestamp: new Date().valueOf(), type: "Withdrawal", amount: event.value, location: "Profit Wallet"})
           )
           .then(() => this.fetchUserAccount())
           .then(() => {
-            this.closeModal("confirmBuyStock");
+            this.closeModal("profitWalletDialog");
           });
-
-      this.closeModal("profitWalletDialog")
         }
-        else this.closeModal("profitWalletDialog")
+      this.closeModal("profitWalletDialog")
+      } else this.closeModal("profitWalletDialog")
     },
     showModal(name) {
       this.modals[name].show = true;
@@ -136,6 +137,9 @@ export default {
     closeModal(name) {
       this.modals[name].show = false;
     },
+  },
+  created() {
+    this.getHistoricalPriceDataForAssets()
   },
 };
 </script>

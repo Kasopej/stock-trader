@@ -188,7 +188,7 @@ const actions = {
       { root: true }
     );
   },
-  updatePortfolioFromAsset({ commit, dispatch, rootState }, payload) {
+  updatePortfolioFromAsset({ commit, dispatch, state }, payload) {
     console.log("portfolio from asset", JSON.stringify(payload));
     commit("updatePortfolioAssetAmount", {
       asset: payload.asset,
@@ -197,7 +197,7 @@ const actions = {
     return dispatch(
       "updateUserAccount",
       {
-        portfolio: rootState.accountMangementModule.account.portfolio,
+        portfolio: state.portfolio,
       },
       { root: true }
     );
@@ -206,36 +206,41 @@ const actions = {
     let index = 0;
     const priceDataArray = [];
     let endInterval;
-    let interval = setInterval(() => {
-      console.log("getting historical update");
-      axiosStocksInstance
-        .get("", {
-          baseURL: `https://financialmodelingprep.com/api/v3/historical-price-full/${state.portfolio[index].assetDetails.ticker}?from=2019-03-12&to=2019-03-12&apikey=92f991cbed3c4ac053149578277389e5`,
-        })
-        .then((res) => {
-          console.log("historical update", res.data);
-          try {
-            priceDataArray.splice(
-              priceDataArray.length,
-              0,
-              res.data.historical[0].close
-            );
-            throw new Error("no historical data found in database");
-          } catch (error) {
-            priceDataArray.splice(priceDataArray.length, 0, 0);
-          }
-          console.log(priceDataArray);
-          if (endInterval) {
-            console.log("clearing historical");
-            clearInterval(interval);
-            commit("setHistoricalPricesOnAssets", priceDataArray);
-          }
-        });
-      index++;
-      if (index === state.portfolio.length) {
-        endInterval = true;
-      }
-    }, 30000);
+    if (state.portfolio.length) {
+      let interval = setInterval(() => {
+        if (index === state.portfolio.length - 1) {
+          endInterval = true;
+          console.log("clearing historical");
+          clearInterval(interval);
+        }
+        console.log(
+          "getting historical update for portfolio:",
+          state.portfolio
+        );
+        axiosStocksInstance
+          .get("", {
+            baseURL: `https://financialmodelingprep.com/api/v3/historical-price-full/${state.portfolio[index].assetDetails.ticker}?from=2019-03-12&to=2019-03-12&apikey=92f991cbed3c4ac053149578277389e5`,
+          })
+          .then((res) => {
+            console.log("historical update", res.data);
+            try {
+              priceDataArray.splice(
+                priceDataArray.length,
+                0,
+                res.data.historical[0].close
+              );
+              throw new Error("no historical data found in database");
+            } catch (error) {
+              priceDataArray.splice(priceDataArray.length, 0, 0);
+            }
+            console.log(priceDataArray);
+            if (endInterval) {
+              commit("setHistoricalPricesOnAssets", priceDataArray);
+            }
+          });
+        index++;
+      }, 30000);
+    }
   },
 };
 
@@ -255,6 +260,10 @@ const mutations = {
       share.priceChange = payload[index].regularMarketChangePercent;
     });
   },
+  setPortfolio(state, payload) {
+    if (payload) state.portfolio = payload;
+    else state.portfolio = [];
+  },
   updatePortfolioAssetAmount(state, payload) {
     /* eslint-disable no-unused-vars */
     console.log("updated asset", JSON.stringify(payload));
@@ -268,7 +277,7 @@ const mutations = {
     });
   },
   setHistoricalPricesOnAssets(state, historicalPriceArray) {
-    state.shares.forEach(
+    state.portfolio.forEach(
       (asset, index) =>
         (asset = Object.assign({}, asset, {
           historicalPrice: historicalPriceArray[index],

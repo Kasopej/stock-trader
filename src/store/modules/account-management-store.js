@@ -45,6 +45,8 @@ const actions = {
         for (const userIndex in data) {
           if (data[userIndex].email === rootState.email) {
             userAccount = data[userIndex];
+            commit("stockMangementModule/setPortfolio", userAccount.portfolio);
+            delete userAccount.portfolio;
             commit("storeUserAccount", { id: userIndex, ...userAccount });
             commit("login");
             return;
