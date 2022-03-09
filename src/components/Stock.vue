@@ -29,40 +29,7 @@
         Buy
       </a>
     </div>
-    <div v-if="shows.confirmBuyStock" class="myModal" tabindex="-1">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Confirmation</h5>
-            <button
-              type="button"
-              class="btn-close"
-              aria-label="Close"
-              @click="closeModal('confirmBuyStock')"
-            ></button>
-          </div>
-          <div class="modal-body">
-            <p>Buy {{ share.name }} stock?</p>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              @click="closeModal('confirmBuyStock')"
-            >
-              No
-            </button>
-            <button
-              type="button"
-              class="btn btn-primary"
-              @click="buyStock(sharePurchaseCost)"
-            >
-              Yes
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
+    <ConfirmationModal v-if="modals.confirmBuyStock.show" :text="modals.confirmBuyStock.text" :customEventName="modals.confirmBuyStock.customEventName" @[modals.confirmBuyStock.customEventName]="buyStock"></ConfirmationModal>
   </div>
   <div v-else>
     Stocks are loading
@@ -70,48 +37,61 @@
 </template>
 
 <script>
-import { modalControlMixin } from "../mixins/mixins";
 import { mapActions, mapState } from "vuex";
+import ConfirmationModal from "./reused-components/ConfirmationModal.vue";
 export default {
-  mixins: [modalControlMixin],
-  props: {
-    share: {
-      type: Object,
-      default: () => ({}),
+    components: { ConfirmationModal },
+    props: {
+        share: {
+            type: Object,
+            default: () => ({}),
+        },
     },
-  },
-  data() {
-    return {
-      qtyToPurchase: 0,
-    };
-  },
-  computed: {
-    ...mapState({ wallet: (state) => state.accountMangementModule.account.wallet }),
-    sharePurchaseCost() {
-      return this.share.currentPrice * this.qtyToPurchase;
+    data() {
+        return {
+            qtyToPurchase: 0, modals: {
+              confirmBuyStock: {
+                text: `buy ${this.share.name} stock?`, customEventName: "buyStock", show: false
+              }
+            }
+        };
     },
-    percentageStyle() {
-      return {
-        color: this.share.priceChange >= 0 ? "green" : "red",
-      };
+    computed: {
+        ...mapState({ wallet: (state) => state.accountMangementModule.account.wallet }),
+        sharePurchaseCost() {
+            return this.share.currentPrice * this.qtyToPurchase;
+        },
+        percentageStyle() {
+            return {
+                color: this.share.priceChange >= 0 ? "green" : "red",
+            };
+        },
     },
-  },
-  methods: {
-    ...mapActions([
-      "performTransaction",
-      "updatePortfolioFromStock",
-      "fetchUserAccount",
-    ]),
-    buyStock(cost) {
-      if (this.wallet >= cost) {
-        console.log("performing transaction from stock");
-        this.performTransaction(cost)
-          .then(() => this.updatePortfolioFromStock({stock: this.share, quantity: +this.qtyToPurchase}))
-          .then(() => this.fetchUserAccount())
-          .then(() => this.closeModal("confirmBuyStock"));
-      }
+    methods: {
+        ...mapActions([
+            "performTransaction",
+            "updatePortfolioFromStock",
+            "fetchUserAccount",
+        ]),
+        buyStock(isConfirmed) {
+          if(isConfirmed){
+            if (this.wallet >= this.sharePurchaseCost) {
+                console.log("performing transaction from stock", isConfirmed);
+                this.performTransaction(this.sharePurchaseCost)
+                    .then(() => this.updatePortfolioFromStock({ stock: this.share, quantity: +this.qtyToPurchase }))
+                    .then(() => this.fetchUserAccount())
+                    .then(() => this.closeModal("confirmBuyStock"));
+            }
+          }
+          else this.closeModal("confirmBuyStock")
+        },
+        showModal(name){
+          this.modals[name].show = true;
+        },
+        closeModal(name){
+          this.modals[name].show = false;
+        }
     },
-  },
 };
 </script>
 

@@ -12,7 +12,7 @@
           ></button>
         </div>
         <div class="modal-body">
-          <p>Should we sign you out?</p>
+          <p>{{text}}</p>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" @click="close(false)">
@@ -29,10 +29,14 @@
 
 <script>
 export default {
-  name: "SignOutModal",
+  name: "ConfirmationModal",
+  props: {
+    customEventName: String,
+    text: String,
+  },
   methods: {
     close(response) {
-      this.$emit("close", response);
+      this.$emit(this.customEventName, response);
     },
   },
 };

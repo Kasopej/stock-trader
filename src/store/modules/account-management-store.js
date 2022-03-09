@@ -168,6 +168,7 @@ const actions = {
             commit("setHistoricalPricesOnAssets", priceDataArray);
           }
         });
+        index++;
       if (index === state.account.portfolio.length) {
         endInterval = true;
       }

@@ -1,5 +1,5 @@
 <template>
-  <div class="card asset my-2">
+  <div class="card asset my-2 mx-3">
     <div class="card-header d-flex justify-content-between">
       <span>{{ assetDetails.ticker }}</span>
       <span
@@ -58,95 +58,80 @@
     </div>
 
     <!-- Modal -->
-    <div v-if="shows.confirmBuyStock" class="myModal" tabindex="-1">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Confirmation</h5>
-            <button
-              type="button"
-              class="btn-close"
-              aria-label="Close"
-              @click="closeModal('confirmBuyStock')"
-            ></button>
-          </div>
-          <div class="modal-body">
-            <p>Buy {{ assetDetails.name }} stock?</p>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              @click="closeModal('confirmBuyStock')"
-            >
-              No
-            </button>
-            <button
-              type="button"
-              class="btn btn-primary"
-              @click="buyStock(sharePurchaseCost)"
-            >
-              Yes
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
+    <ConfirmationModal v-if="modals.confirmBuyStock.show" :text="modals.confirmBuyStock.text" :customEventName="modals.confirmBuyStock.customEventName" @[modals.confirmBuyStock.customEventName]="buyStock"></ConfirmationModal>
+
+    
   </div>
 </template>
 
 <script>
-import { modalControlMixin } from "../mixins/mixins";
+//import { modalControlMixin } from "../mixins/mixins";
 import { mapActions, mapState } from "vuex";
+import ConfirmationModal from "./reused-components/ConfirmationModal.vue";
 export default {
-  mixins: [modalControlMixin],
-  props: {
-    asset: {
-      type: Object,
-      default: ()=>({})
-    }
-  },
-  data() {
-    return {
-      qtyToPurchase: 0, qtyToSell: 0
-    }
-  },
-  computed: {
-    ...mapState({ wallet: (state) => state.accountMangementModule.account.wallet }),
-    assetDetails(){
-      return this.asset.assetDetails
+    props: {
+        asset: {
+            type: Object,
+            default: () => ({})
+        }
     },
-    sharePurchaseCost() {
-      return this.assetDetails.currentPrice * this.qtyToPurchase;
+    data() {
+        return {
+            qtyToPurchase: 0,
+            qtyToSell: 0,
+            modals: {
+              confirmBuyStock: {
+                text: `buy ${this.asset.assetDetails.name} stock?`, customEventName: "buyStock", show: false
+              }
+            }
+        };
     },
-    assetSaleValue(){
-      return this.assetDetails.currentPrice * this.qtyToSell;
+    computed: {
+        ...mapState({ wallet: (state) => state.accountMangementModule.account.wallet }),
+        assetDetails() {
+            return this.asset.assetDetails;
+        },
+        sharePurchaseCost() {
+            return this.assetDetails.currentPrice * this.qtyToPurchase;
+        },
+        assetSaleValue() {
+            return this.assetDetails.currentPrice * this.qtyToSell;
+        },
+        percentageStyle() {
+            return {
+                color: this.assetDetails.priceChange > 0 ? "green" : "red",
+            };
+        },
     },
-    percentageStyle() {
-      return {
-        color: this.assetDetails.priceChange > 0 ? "green" : "red",
-      };
+    methods: {
+        ...mapActions([
+            "performTransaction",
+            "updatePortfolioFromAsset",
+            "fetchUserAccount",
+        ]),
+        buyStock(isConfirmed) {
+          if(isConfirmed){
+            if (this.wallet >= this.sharePurchaseCost) {
+                console.log("performing transaction");
+                this.performTransaction(this.sharePurchaseCost)
+                    .then(() => this.updatePortfolioFromAsset({ asset: this.asset, quantity: +this.qtyToPurchase }))
+                    .then(() => this.fetchUserAccount())
+                    .then(() => {
+                    this.qtyToPurchase = 0;
+                    this.closeModal("confirmBuyStock");
+                });
+            }
+          }
+          else this.closeModal("confirmBuyStock");
+        },
+        showModal(name){
+          this.modals[name].show = true;
+        },
+        closeModal(name){
+          this.modals[name].show = false;
+        }
     },
-  },
-  methods: {
-    ...mapActions([
-      "performTransaction",
-      "updatePortfolioFromAsset",
-      "fetchUserAccount",
-    ]),
-    buyStock(cost) {
-      if (this.wallet >= cost) {
-        console.log("performing transaction");
-        this.performTransaction(cost)
-          .then(() => this.updatePortfolioFromAsset({asset:this.asset, quantity: +this.qtyToPurchase}))
-          .then(() => this.fetchUserAccount())
-          .then(() => {
-            this.qtyToPurchase = 0;
-            this.closeModal("confirmBuyStock");
-            });
-      }
-    },
-  },
+    components: { ConfirmationModal }
 };
 </script>
 

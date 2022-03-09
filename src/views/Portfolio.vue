@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid d-flex flex-wrap justify-content-between px-4">
+  <div class="container-fluid d-flex flex-wrap justify-content-start px-4">
     <portfolio-asset
       v-for="asset in portfolio"
       :key="asset.assetDetails.ticker"
