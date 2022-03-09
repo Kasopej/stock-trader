@@ -4,23 +4,72 @@ const state = {
   shares: [],
   portfolio: [],
 };
-const mutations = {
-  setSharesData(state, payload) {
-    state.shares.splice(0, state.shares.length, ...payload);
-  },
-  addMissingSymbols(state, payload) {
-    state.shares.splice(state.shares.length - 1, 0, payload[0]);
-    state.shares.sort((a, b) => {
-      return a.ticker < b.ticker ? -1 : 1;
+
+const getters = {
+  areAllSharesPricesAvailable(state) {
+    let sharePricesAvailable = true;
+    state.shares.forEach((share) => {
+      if (!("currentPrice" in share)) sharePricesAvailable = false;
     });
+    return sharePricesAvailable;
   },
-  setSharePrices(state, payload) {
-    state.shares.forEach((share, index) => {
-      share.currentPrice = payload[index].regularMarketPrice;
-      share.priceChange = payload[index].regularMarketChangePercent;
+  portfolioValue(state) {
+    return state.portfolio.reduce(
+      (value, asset) =>
+        value + asset.assetDetails.currentPrice * asset.quantity,
+      0
+    );
+  },
+  bestPerformingAsset(state) {
+    console.log("best");
+    let highestGrowthRate = -1_000_000_000;
+    let bestPerformingAssetIndex;
+    state.portfolio.forEach((asset, index) => {
+      if (asset.assetDetails.priceChange > highestGrowthRate) {
+        highestGrowthRate = asset.assetDetails.priceChange;
+        bestPerformingAssetIndex = index;
+      }
     });
+    if (highestGrowthRate > -1_000_000_000)
+      return state.portfolio[bestPerformingAssetIndex];
+    else
+      return {
+        assetDetails: { ticker: "no assets", priceChange: 0 },
+        quantity: 0,
+      };
+  },
+  worstPerformingAsset(state) {
+    let lowestGrowthRate = 1_000_000_000;
+    let worstPerformingAssetIndex;
+    state.portfolio.forEach((asset, index) => {
+      if (asset.assetDetails.priceChange < lowestGrowthRate) {
+        lowestGrowthRate = asset.assetDetails.priceChange;
+        worstPerformingAssetIndex = index;
+      }
+    });
+    if (lowestGrowthRate < 1_000_000_000)
+      return state.portfolio[worstPerformingAssetIndex];
+    else
+      return {
+        assetDetails: { ticker: "no assets", priceChange: 0 },
+        quantity: 0,
+      };
+  },
+  netGrowth(state, getters) {
+    try {
+      let basePortfolioValue = state.portfolio.reduce((value, asset) => {
+        if ("historicalPrice" in asset)
+          return value + asset.historicalPrice * asset.quantity;
+        else throw Error("historical price not set on asset");
+      }, 0);
+      return getters.portfolioValue - basePortfolioValue;
+    } catch (error) {
+      console.log(error);
+      return 0;
+    }
   },
 };
+
 const actions = {
   /*
   getSymbolsFromMarket({ state, commit, dispatch }) {
@@ -43,7 +92,7 @@ const actions = {
               )
               .then((res) => {
                 if (res.data.length === 1) {
-                  commit("addMissingSymbols", res.data);
+                  commit("addMissingSymbolsToShares", res.data);
                 } else {
                   throw new Error(
                     "asset not found in stock market! Kindly send us a mail"
@@ -74,13 +123,13 @@ const actions = {
         return arrayOfSymbols;
       })
       .then((symbols) => {
-        dispatch("getPriceData", symbols);
+        dispatch("getPriceDataForShares", symbols);
       });
     setTimeout(() => {
       dispatch("getSymbolsFromMarket");
     }, 43200000);
   },
-  getPriceData({ commit, dispatch }, symbols) {
+  getPriceDataForShares({ commit, dispatch }, symbols) {
     let start = 0;
     let end = 10;
     const priceDataArray = [];
@@ -127,8 +176,74 @@ const actions = {
 
     //commit("setSharePrices", prices);
   },
+  updatePortfolioFromStock({ commit, state, dispatch }, payload) {
+    console.log("updating portfolio from stock market");
+    const assetToUpdate = state.portfolio.find(
+      (asset) => payload.stock.ticker === asset.assetDetails.ticker
+    );
+    if (assetToUpdate) {
+      commit("updatePortfolioAssetAmount", {
+        asset: assetToUpdate,
+        quantity: payload.quantity,
+      });
+    } else {
+      commit("createPortfolioAsset", {
+        asset: payload.stock,
+        quantity: payload.quantity,
+      });
+    }
+    return dispatch(
+      "updateUserAccount",
+      {
+        portfolio: state.portfolio,
+      },
+      { root: true }
+    );
+  },
+  updatePortfolioFromAsset({ commit, dispatch, state }, payload) {
+    console.log("portfolio from asset");
+    commit("updatePortfolioAssetAmount", {
+      asset: payload.asset,
+      quantity: payload.quantity,
+    });
+    return dispatch(
+      "updateUserAccount",
+      {
+        portfolio: state.portfolio,
+      },
+      { root: true }
+    );
+  },
 };
-const getters = {};
+
+const mutations = {
+  setSharesData(state, payload) {
+    state.shares.splice(0, state.shares.length, ...payload);
+  },
+  addMissingSymbolsToShares(state, payload) {
+    state.shares.splice(state.shares.length - 1, 0, payload[0]);
+    state.shares.sort((a, b) => {
+      return a.ticker < b.ticker ? -1 : 1;
+    });
+  },
+  setSharePrices(state, payload) {
+    state.shares.forEach((share, index) => {
+      share.currentPrice = payload[index].regularMarketPrice;
+      share.priceChange = payload[index].regularMarketChangePercent;
+    });
+  },
+  updatePortfolioAssetAmount(state, payload) {
+    /* eslint-disable no-unused-vars */
+    console.log("updated asset");
+    payload.asset.quantity += payload.quantity;
+  },
+  createPortfolioAsset(state, payload) {
+    state.portfolio.push({
+      assetDetails: payload.asset,
+      quantity: payload.quantity,
+    });
+  },
+};
 
 export default {
   state,

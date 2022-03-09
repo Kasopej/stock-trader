@@ -10,63 +10,6 @@ const getters = {
       return state.account.email.slice(0, state.account.email.indexOf("@"));
     }
   },
-  portfolioValue(state) {
-    return state.account.portfolio.reduce(
-      (value, asset) =>
-        value + asset.assetDetails.currentPrice * asset.quantity,
-      0
-    );
-  },
-  bestPerformingAsset(state) {
-    let highestGrowthRate = -1_000_000_000;
-    let bestPerformingAssetIndex;
-    state.account.portfolio.forEach((asset, index) => {
-      if (asset.assetDetails.priceChange > highestGrowthRate) {
-        highestGrowthRate = asset.assetDetails.priceChange;
-        bestPerformingAssetIndex = index;
-      }
-    });
-    if (highestGrowthRate > -1_000_000_000)
-      return state.account.portfolio[bestPerformingAssetIndex];
-    else
-      return {
-        assetDetails: { ticker: "no assets", priceChange: 0 },
-        quantity: 0,
-      };
-  },
-  worstPerformingAsset(state) {
-    let lowestGrowthRate = 1_000_000_000;
-    let worstPerformingAssetIndex;
-    state.account.portfolio.forEach((asset, index) => {
-      if (asset.assetDetails.priceChange < lowestGrowthRate) {
-        lowestGrowthRate = asset.assetDetails.priceChange;
-        worstPerformingAssetIndex = index;
-      }
-    });
-    if (lowestGrowthRate < 1_000_000_000)
-      return state.account.portfolio[worstPerformingAssetIndex];
-    else
-      return {
-        assetDetails: { ticker: "no assets", priceChange: 0 },
-        quantity: 0,
-      };
-  },
-  netGrowth(state, getters) {
-    try {
-      let basePortfolioValue = state.account.portfolio.reduce(
-        (value, asset) => {
-          if ("historicalPrice" in asset)
-            return value + asset.historicalPrice * asset.quantity;
-          else throw Error("historical price not set on asset");
-        },
-        0
-      );
-      return getters.portfolioValue - basePortfolioValue;
-    } catch (error) {
-      console.log(error);
-      return 0;
-    }
-  },
 };
 const actions = {
   createNewUserAccount({ dispatch, commit, rootState }, payload) {
@@ -111,36 +54,9 @@ const actions = {
       });
   },
   performTransaction({ commit, dispatch, state }, amount) {
+    console.log("in wallet");
     commit("updateWallet", amount);
     return dispatch("updateUserAccount", { wallet: state.account.wallet });
-  },
-  updatePortfolioFromStock({ commit, state, dispatch }, payload) {
-    const assetToUpdate = state.account.portfolio.find(
-      (asset) => payload.stock.ticker === asset.assetDetails.ticker
-    );
-    if (assetToUpdate) {
-      commit("updatePortfolioAssetAmount", {
-        asset: assetToUpdate,
-        quantity: payload.quantity,
-      });
-    } else {
-      commit("createPortfolioAsset", {
-        asset: payload.stock,
-        quantity: payload.quantity,
-      });
-    }
-    return dispatch("updateUserAccount", {
-      portfolio: state.account.portfolio,
-    });
-  },
-  updatePortfolioFromAsset({ commit, dispatch, state }, payload) {
-    commit("updatePortfolioAssetAmount", {
-      asset: payload.asset,
-      quantity: payload.quantity,
-    });
-    return dispatch("updateUserAccount", {
-      portfolio: state.account.portfolio,
-    });
   },
   getHistoricalPriceDataForAssets({ state, commit }) {
     let index = 0;
@@ -168,7 +84,7 @@ const actions = {
             commit("setHistoricalPricesOnAssets", priceDataArray);
           }
         });
-        index++;
+      index++;
       if (index === state.account.portfolio.length) {
         endInterval = true;
       }
@@ -178,7 +94,6 @@ const actions = {
 const mutations = {
   storeUserAccount(state, payload) {
     state.account = payload;
-    if (!state.account.portfolio) state.account.portfolio = [];
   },
   updateWallet(state, amount) {
     state.account.wallet -= amount;

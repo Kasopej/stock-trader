@@ -1,5 +1,5 @@
 <template>
-  <div v-if="share.currentPrice" class="card stock my-2">
+  <div class="card stock my-2">
     <div class="card-header d-flex justify-content-between">
       <span>{{ share.ticker }}</span>
       <span
@@ -18,7 +18,7 @@
         v-model="qtyToPurchase"
       />
       <p class="m-0 p-0">
-        {{ qtyToPurchase }} x {{ share.currentPrice }} = ${{
+        {{ qtyToPurchase }} x {{ share.currentPrice | setCommas }} = ${{
           sharePurchaseCost | setCommas
         }} 
       </p>
@@ -30,9 +30,6 @@
       </a>
     </div>
     <ConfirmationModal v-if="modals.confirmBuyStock.show" :text="modals.confirmBuyStock.text" :customEventName="modals.confirmBuyStock.customEventName" @[modals.confirmBuyStock.customEventName]="buyStock"></ConfirmationModal>
-  </div>
-  <div v-else>
-    Stocks are loading
   </div>
 </template>
 
@@ -70,9 +67,9 @@ export default {
     methods: {
         ...mapActions([
             "performTransaction",
-            "updatePortfolioFromStock",
             "fetchUserAccount",
         ]),
+        ...mapActions("stockMangementModule", ["updatePortfolioFromStock"]),
         buyStock(isConfirmed) {
           if(isConfirmed){
             if (this.wallet >= this.sharePurchaseCost) {

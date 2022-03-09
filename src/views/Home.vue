@@ -66,7 +66,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(["portfolioValue", "bestPerformingAsset", "worstPerformingAsset", "netGrowth"])
+    ...mapGetters("stockMangementModule", ["portfolioValue", "bestPerformingAsset", "worstPerformingAsset", "netGrowth"]),
   },
 };
 </script>

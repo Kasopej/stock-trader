@@ -1,10 +1,15 @@
 <template>
-  <div class="container-fluid d-flex flex-wrap justify-content-start px-4">
+  <div v-if="portfolio.length" class="container-fluid d-flex flex-wrap justify-content-start px-4">
     <portfolio-asset
       v-for="asset in portfolio"
       :key="asset.assetDetails.ticker"
       :asset="asset"
     ></portfolio-asset>
+  </div>
+  <div v-else class="container-fluid vh-100 d-flex flex-wrap justify-content-center px-4 align-items-center">
+    <div class="spinner-border" role="status">
+    <span class="visually-hidden">Loading...</span>
+    </div>
   </div>
 </template>
 
@@ -18,7 +23,7 @@ export default {
   },
   components: { PortfolioAsset },
   computed: {
-    ...mapState({ portfolio: (state) => state.accountMangementModule.account.portfolio })
+    ...mapState("stockMangementModule", ["portfolio"]),
   },
 };
 </script>

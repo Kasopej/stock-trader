@@ -59,7 +59,7 @@ import { mapGetters, mapState } from "vuex";
 export default {
   components: { TableBodyElement },
   computed: {
-    ...mapGetters(["netGrowth"]),
+    ...mapGetters("stockMangementModule", ["netGrowth"]),
     ...mapState({ wallet: (state) => state.accountMangementModule.account.wallet })
   },
   methods: {

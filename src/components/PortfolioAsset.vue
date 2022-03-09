@@ -13,7 +13,7 @@
       <p>{{ assetDetails.name }}</p>
       <hr>
       <p class="">No. of my shares: <span class="badge bg-secondary">{{asset.quantity}}</span></p>
-      <p class="">Current value: <span class="badge bg-secondary">{{asset.quantity * assetDetails.currentPrice}}</span></p>
+      <p class="">Current value: <span class="badge bg-secondary">{{asset.quantity * assetDetails.currentPrice | setCommas}}</span></p>
     </div>
     <!-- Card footer -->
     <div class="card-footer d-flex justify-content-between p-0">
@@ -25,7 +25,7 @@
         v-model="qtyToPurchase"
       />
       <p class="m-0 p-0">
-        {{ qtyToPurchase }} x {{ assetDetails.currentPrice }} = ${{
+        {{ qtyToPurchase }} x {{ assetDetails.currentPrice | setCommas }} = ${{
           sharePurchaseCost | setCommas
         }}
       </p>
@@ -44,7 +44,7 @@
         v-model="qtyToSell"
       />
       <p class="m-0 p-0">
-        {{ qtyToSell }} x {{ assetDetails.currentPrice }} = ${{
+        {{ qtyToSell }} x {{ assetDetails.currentPrice | setCommas }} = ${{
           assetSaleValue | setCommas
         }}
       </p>
@@ -106,9 +106,9 @@ export default {
     methods: {
         ...mapActions([
             "performTransaction",
-            "updatePortfolioFromAsset",
             "fetchUserAccount",
         ]),
+        ...mapActions("stockMangementModule", ["updatePortfolioFromAsset"]),
         buyStock(isConfirmed) {
           if(isConfirmed){
             if (this.wallet >= this.sharePurchaseCost) {
