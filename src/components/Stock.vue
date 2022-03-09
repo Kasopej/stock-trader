@@ -1,5 +1,5 @@
 <template>
-  <div class="card stock my-2">
+  <div v-if="share.currentPrice" class="card stock my-2">
     <div class="card-header d-flex justify-content-between">
       <span>{{ share.ticker }}</span>
       <span
@@ -19,8 +19,8 @@
       />
       <p class="m-0 p-0">
         {{ qtyToPurchase }} x {{ share.currentPrice }} = ${{
-          sharePurchaseCost
-        }}
+          sharePurchaseCost | setCommas
+        }} 
       </p>
       <a
         class="btn btn-sm btn-success stockPurchaseBtn d-block mr-auto"
@@ -52,7 +52,11 @@
             >
               No
             </button>
-            <button type="button" class="btn btn-primary" @click="confirm">
+            <button
+              type="button"
+              class="btn btn-primary"
+              @click="buyStock(sharePurchaseCost)"
+            >
               Yes
             </button>
           </div>
@@ -60,10 +64,14 @@
       </div>
     </div>
   </div>
+  <div v-else>
+    Stocks are loading
+  </div>
 </template>
 
 <script>
 import { modalControlMixin } from "../mixins/mixins";
+import { mapActions, mapState } from "vuex";
 export default {
   mixins: [modalControlMixin],
   props: {
@@ -78,19 +86,30 @@ export default {
     };
   },
   computed: {
+    ...mapState({ wallet: (state) => state.accountMangementModule.account.wallet }),
     sharePurchaseCost() {
       return this.share.currentPrice * this.qtyToPurchase;
     },
     percentageStyle() {
       return {
-        color: this.share.priceChange > 0 ? "green" : "red",
+        color: this.share.priceChange >= 0 ? "green" : "red",
       };
     },
   },
   methods: {
-    confirm() {
-      console.log("log something");
-      this.closeModal("confirmBuyStock");
+    ...mapActions([
+      "performTransaction",
+      "updatePortfolioFromStock",
+      "fetchUserAccount",
+    ]),
+    buyStock(cost) {
+      if (this.wallet >= cost) {
+        console.log("performing transaction from stock");
+        this.performTransaction(cost)
+          .then(() => this.updatePortfolioFromStock({stock: this.share, quantity: +this.qtyToPurchase}))
+          .then(() => this.fetchUserAccount())
+          .then(() => this.closeModal("confirmBuyStock"));
+      }
     },
   },
 };

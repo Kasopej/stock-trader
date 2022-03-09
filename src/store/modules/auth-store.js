@@ -28,6 +28,7 @@ const actions = {
         const authData = res.data;
         authData.expiresIn = authData.expiresIn * 1000 + new Date().valueOf();
         commit("storeAuthData", authData);
+        commit("storeEmail", payload.email);
         dispatch("createNewUserAccount", payload);
       });
   },
@@ -116,8 +117,9 @@ const actions = {
     }
   },
   logout({ commit }) {
+    console.log("logging out");
     commit("logout");
-    commit("clearStore");
+    commit("clearAccount");
   },
 };
 
@@ -131,7 +133,10 @@ const mutations = {
     console.log("logging in");
     state.authenticated = true;
   },
-  logout() {
+  logout(state) {
+    for (const key in state) {
+      state[key] = "";
+    }
     localStorage.removeItem("data");
     localStorage.removeItem("email");
   },

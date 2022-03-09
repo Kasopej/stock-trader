@@ -1,57 +1,33 @@
 <template>
   <div>
     <div class="d-flex justify-content-around p-4">
-      <section class="card mainWallet">
+      <section class="card mainWallet text-center">
         <div class="card-body">
           <h6 class="card-subtitle">Main Wallet</h6>
-          <h4 class="card-title">$200,000</h4>
+          <h4 class="card-title">${{wallet | setCommas}}</h4>
           <hr />
-          <div class="px-2 d-flex justify-content-between">
-            <div class="text-center">
-              <button class="btn btn-success mx-2">
-                <i class="fa-solid fa-arrow-left"></i>
+          <div class="px-2 d-flex justify-content-center">
+            <div class="w-100">
+              <button class="btn btn-success  w-50" @click="makeWalletDeposit">
+                <i class="fa-solid fa-arrow-right"></i>
               </button>
-              <span class="d-block text-center">Withdraw</span>
-            </div>
-            <div class="text-center">
-              <button class="btn btn-warning mx-2">
-                <i class="fa-solid fa-arrow-left"></i>
-              </button>
-              <span class="d-block text-center">Withdraw</span>
-            </div>
-            <div class="text-center">
-              <button class="btn btn-primary mx-2">
-                <i class="fa-solid fa-arrow-left"></i>
-              </button>
-              <span class="d-block text-center">Withdraw</span>
+              <span class="d-block ">Deposit</span>
             </div>
           </div>
         </div>
       </section>
 
-      <section class="card profitWallet">
+      <section class="card profitWallet text-center">
         <div class="card-body">
           <h6 class="card-subtitle">Profit Wallet</h6>
-          <h4 class="card-title">$1,000</h4>
+          <h4 class="card-title">${{netGrowth | setCommas}}</h4>
           <hr />
-          <div class="px-2 d-flex justify-content-between">
-            <div class="text-center">
-              <button class="btn btn-success mx-2">
+          <div class="px-2 d-flex justify-content-center">
+            <div class="w-100">
+              <button class="btn btn-success w-50" @click="withdrawFromProfit">
                 <i class="fa-solid fa-arrow-left"></i>
               </button>
-              <span class="d-block text-center">Withdraw</span>
-            </div>
-            <div class="text-center">
-              <button class="btn btn-warning mx-2">
-                <i class="fa-solid fa-arrow-left"></i>
-              </button>
-              <span class="d-block text-center">Withdraw</span>
-            </div>
-            <div class="text-center">
-              <button class="btn btn-primary mx-2">
-                <i class="fa-solid fa-arrow-left"></i>
-              </button>
-              <span class="d-block text-center">Withdraw</span>
+              <span class="d-block">Withdraw</span>
             </div>
           </div>
         </div>
@@ -79,8 +55,18 @@
 
 <script>
 import TableBodyElement from "../components/reused-components/TableBodyElement.vue";
+import { mapGetters, mapState } from "vuex";
 export default {
   components: { TableBodyElement },
+  computed: {
+    ...mapGetters(["netGrowth"]),
+    ...mapState({ wallet: (state) => state.accountMangementModule.account.wallet })
+  },
+  methods: {
+    makeWalletDeposit(){
+
+    }
+  },
 };
 </script>
 
@@ -90,6 +76,6 @@ section.card {
 }
 .mainWallet span,
 .profitWallet span {
-  font-size: 12px;
+  font-size: 15px;
 }
 </style>

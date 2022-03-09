@@ -7,8 +7,8 @@
       @mouseenter="addHoverStyle"
       @mouseleave="removeHoverStyle"
     >
-      <p class="lead mb-4">My Portfolio Growth</p>
-      <h2>${{ total | setCommas }}</h2>
+      <p class="lead mb-4">My Portfolio Value</p>
+      <h2>${{ portfolioValue | setCommas }}</h2>
       <button class="btn btn-success btn-md rounded-pill">View More</button>
     </div>
 
@@ -18,7 +18,8 @@
       @mouseleave="removeHoverStyle"
     >
       <p class="lead">Best Performing Asset</p>
-      <h2 class="mb-4">${{ total | setCommas }}</h2>
+      <span>{{ bestPerformingAsset.assetDetails.ticker }}</span>
+      <h2 class="mb-4">{{ bestPerformingAsset.assetDetails.priceChange.toFixed(2) }}%</h2>
       <button class="btn btn-success btn-md rounded-pill">View More</button>
     </div>
 
@@ -28,7 +29,8 @@
       @mouseleave="removeHoverStyle"
     >
       <p class="lead">Worst Performing Asset</p>
-      <h2 class="mb-4">${{ total | setCommas }}</h2>
+      <span>{{ worstPerformingAsset.assetDetails.ticker }}</span>
+      <h2 class="mb-4">{{ worstPerformingAsset.assetDetails.priceChange.toFixed(2) }}%</h2>
       <button class="btn btn-success btn-md rounded-pill">View More</button>
     </div>
 
@@ -37,8 +39,8 @@
       @mouseenter="addHoverStyle"
       @mouseleave="removeHoverStyle"
     >
-      <p class="lead">Your Balance</p>
-      <h2>${{ total | setCommas }}</h2>
+      <p class="lead">Your Profit</p>
+      <h2>${{ netGrowth | setCommas }}</h2>
       <button class="btn btn-success btn-md rounded-pill">Fund Wallet</button>
     </div>
   </div>
@@ -46,7 +48,7 @@
 
 <script>
 // @ is an alias to /src
-
+import { mapGetters } from "vuex";
 export default {
   name: "Home",
   data() {
@@ -63,12 +65,15 @@ export default {
       event.target.classList.remove("shadow");
     },
   },
+  computed: {
+    ...mapGetters(["portfolioValue", "bestPerformingAsset", "worstPerformingAsset", "netGrowth"])
+  },
 };
 </script>
 <style scoped>
 .homePane {
   padding: 35px 55px;
-  flex-basis: 32%;
+  flex-basis: 45%;
   text-align: center;
   transition: transform 0.5s;
 }

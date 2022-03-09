@@ -13,7 +13,7 @@ const firebaseApp = installFirebase();
 console.log(firebaseApp);
 Vue.filter("setCommas", function (value) {
   try {
-    value.toFixed(2);
+    value = value.toFixed(2);
   } catch (error) {
     console.log(error);
   }

@@ -23,9 +23,6 @@ export default new Vuex.Store({
     storeEmail(state, email) {
       state.email = email;
     },
-    clearStore(state) {
-      state = {};
-    },
   },
   actions: {},
   modules: {

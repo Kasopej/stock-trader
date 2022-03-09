@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 import { axiosStocksInstance } from "../../services/network-services/axios-stocks";
-import { prices } from "./shares";
 const state = {
   shares: [],
   portfolio: [],
@@ -75,19 +74,18 @@ const actions = {
         return arrayOfSymbols;
       })
       .then((symbols) => {
-        dispatch("getPriceData");
+        dispatch("getPriceData", symbols);
       });
     setTimeout(() => {
       dispatch("getSymbolsFromMarket");
     }, 43200000);
   },
-  getPriceData({ commit }) {
-    //let start = 0;
-    //let end = 10;
-    //const priceDataArray = [];
-    /*
+  getPriceData({ commit, dispatch }, symbols) {
+    let start = 0;
+    let end = 10;
+    const priceDataArray = [];
+    let endInterval;
     let interval = setInterval(() => {
-      let endInterval;
       let queryURLForTenShares = symbols.slice(start, end).join("%2C");
       console.log(queryURLForTenShares);
       axiosStocksInstance
@@ -100,29 +98,34 @@ const actions = {
         })
         .then((res) => {
           console.log("pricesss");
+          console.log(res.data.quoteResponse.result);
           priceDataArray.splice(
             priceDataArray.length,
             0,
             ...res.data.quoteResponse.result
           );
+          console.log(priceDataArray);
+          /*
           if (res.data.quoteResponse.result.length < 10) {
             endInterval = true;
           }
-          console.log(priceDataArray);
+          */
+          if (endInterval) {
+            console.log("clearing");
+            clearInterval(interval);
+            commit("setSharePrices", priceDataArray);
+            dispatch("getHistoricalPriceDataForAssets", null, { root: true });
+          }
         });
-      console.log("prices");
-      start += 11;
-      end += 11;
-      //end = end > symbols.length ? symbols.length : end;
-      console.log(start, end);
-      if (endInterval) {
-        console.log("clearing");
-        clearInterval(interval);
-        commit("setSharePrices", priceDataArray);
+      start += 10;
+      end += 10;
+      if (start >= symbols.length) {
+        endInterval = true;
       }
+      console.log(start, end);
     }, 30000);
-    */
-    commit("setSharePrices", prices);
+
+    //commit("setSharePrices", prices);
   },
 };
 const getters = {};
