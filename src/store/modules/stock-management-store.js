@@ -29,7 +29,7 @@ const getters = {
       return state.portfolio[bestPerformingAssetIndex];
     else
       return {
-        assetDetails: { ticker: "no assets", priceChange: 0 },
+        assetDetails: { ticker: "", priceChange: 0 },
         quantity: 0,
       };
   },
@@ -46,7 +46,7 @@ const getters = {
       return state.portfolio[worstPerformingAssetIndex];
     else
       return {
-        assetDetails: { ticker: "no assets", priceChange: 0 },
+        assetDetails: { ticker: "", priceChange: 0 },
         quantity: 0,
       };
   },

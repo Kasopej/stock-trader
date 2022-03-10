@@ -53,7 +53,7 @@
       </li>
     </ul>
     <hr />
-    <div class="dropdown">
+    <div class="dropdown" v-if="isAuthenticated">
       <a
         href="#"
         class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
@@ -70,18 +70,19 @@
         <li>
           <router-link class="dropdown-item" to="/profile">Profile</router-link>
         </li>
-        <li><hr class="dropdown-divider" /></li>
-        <li><a class="dropdown-item" href="#">Sign out</a></li>
       </ul>
     </div>
   </aside>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 export default {
   computed: {
-    ...mapGetters(["name"]),
+    ...mapGetters(["name", "isAuthenticated"]),
+  },
+  methods: {
+    ...mapActions(["logout"])
   },
 };
 </script>

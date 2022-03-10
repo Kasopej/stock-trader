@@ -9,6 +9,9 @@ const getters = {
       return state.account.email.slice(0, state.account.email.indexOf("@"));
     }
   },
+  wallet(state) {
+    return state.account?.wallet;
+  },
 };
 const actions = {
   createNewUserAccount({ dispatch, commit, rootState }, payload) {

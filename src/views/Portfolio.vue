@@ -11,10 +11,11 @@
   </div>
   <div
     v-else
-    class="container-fluid vh-100 d-flex flex-wrap justify-content-center px-4 align-items-center"
+    class="container-fluid vh-100 d-flex flex-wrap justify-content-center px-4 align-items-center text-center"
   >
-    <div class="spinner-border" role="status">
-      <span class="visually-hidden">Loading...</span>
+    <div>
+      <p>No assets in portfolio</p>
+      <router-link to="/stocks" class="btn btn-success btn-md">Buy assets now</router-link>
     </div>
   </div>
 </template>

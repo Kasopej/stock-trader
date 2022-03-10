@@ -77,10 +77,9 @@ export default {
   methods: {
     ...mapActions(["performTransaction", "fetchUserAccountUpdates"]),
     ...mapActions("stockMangementModule", ["updatePortfolioFromStock"]),
-    buyStock(isConfirmed) {
-      if (isConfirmed) {
+    buyStock(event) {
+      if (event.response === true) {
         if (this.wallet >= this.sharePurchaseCost) {
-          console.log("performing transaction from stock", isConfirmed);
           this.performTransaction(this.sharePurchaseCost)
             .then(() =>
               this.updatePortfolioFromStock({

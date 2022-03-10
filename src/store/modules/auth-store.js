@@ -130,7 +130,6 @@ const mutations = {
     state.refreshToken = authData.refreshToken;
   },
   login(state) {
-    console.log("logging in");
     state.authenticated = true;
   },
   logout(state) {

@@ -31,55 +31,49 @@
         </div>
       </div>
     </div>
-    <div v-if="shows.confirmSignout" class="myModal" tabindex="-1">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Confirmation</h5>
-            <button
-              type="button"
-              class="btn-close"
-              aria-label="Close"
-              @click="closeModal('confirmSignout')"
-            ></button>
-          </div>
-          <div class="modal-body">
-            <p>Buy stock?</p>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              @click="closeModal('confirmSignout')"
-            >
-              No
-            </button>
-            <button
-              type="button"
-              class="btn btn-primary"
-              @click="closeModal('confirmSignout')"
-            >
-              Yes
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
+    <ConfirmationModal
+      v-if="modals.confirmSignout.show"
+      :text="modals.confirmSignout.text"
+      :customEventName="modals.confirmSignout.customEventName"
+      @[modals.confirmSignout.customEventName]="doLogout"
+    ></ConfirmationModal>
   </main>
 </template>
-
+ 
 <script>
-import { modalControlMixin } from "../mixins/mixins";
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
+import ConfirmationModal from "../components/reused-components/ConfirmationModal.vue";
 export default {
-  mixins: [modalControlMixin],
-  data() {
-    return {};
-  },
-  methods: {},
-  computed: {
-    ...mapGetters(["name"]),
-  },
+    data() {
+        return {
+          modals: {
+        confirmSignout: {
+          text: `sign out?`,
+          customEventName: "signout",
+          show: false,
+        },
+      },
+        };
+    },
+    methods: {
+      ...mapActions(["logout"]),
+      showModal(name) {
+      this.modals[name].show = true;
+    },
+      closeModal(name) {
+        this.modals[name].show = false;
+      },
+      doLogout(event){
+        if (event.response === true) {
+        this.logout();
+        this.closeModal("confirmSignout");
+      } else this.closeModal("confirmSignout");
+      }
+    },
+    computed: {
+        ...mapGetters(["name"]),
+    },
+    components: { ConfirmationModal }
 };
 </script>
 

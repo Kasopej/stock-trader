@@ -7,11 +7,13 @@
   </div>
   <div
     v-else
-    class="container-fluid d-flex flex-wrap justify-content-center px-4 align-items-center"
+    class="container-fluid vh-100 d-flex flex-wrap flex-column justify-content-center px-4 align-items-center"
   >
     <div class="spinner-border" role="status">
       <span class="visually-hidden">Loading...</span>
     </div>
+    <p class="mb-0">Stocks are loading from the stocks market. Please be patient</p>
+    <p class="mt-0">If stocks are not loaded after 3 minutes, please <router-link to="/profile">sign out</router-link>  and sign back in</p>
   </div>
 </template>
 
