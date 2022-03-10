@@ -139,7 +139,7 @@ const actions = {
         .get("", {
           baseURL: `https://yfapi.net/v6/finance/quote?region=US&lang=en&symbols=${queryURLForTenShares}`,
           headers: {
-            "X-API-KEY": "pYMadBtrXJ63bgaGeALZW7IJjzNjpZll25ESNoLV",
+            "X-API-KEY": "JFNit9EO3wadKcooQXZVu85ZyzXFAMqd2dDYb89e",
             accept: "application/json",
           },
         })
