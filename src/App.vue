@@ -14,7 +14,7 @@
 
 <script>
 import Header from "@/components/navigation-components/Header.vue";
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState, mapGetters } from "vuex";
 import Sidebar from "./components/navigation-components/Sidebar.vue";
 export default {
   data() {
@@ -40,8 +40,8 @@ export default {
   created() {
     this.attemptLoginOnLoad();
     //just while I am persisting my full store because of API issues
-    if (this.$store.state.authStoreModule.authenticated) {
-      //this["stockMangementModule/getSymbolsFromMarket"]();
+    if (!this.areAllSharesPricesAvailable) {
+      this["stockMangementModule/getSymbolsFromMarket"]();
     }
   },
   watch: {
@@ -49,7 +49,6 @@ export default {
       console.log("auth changed");
       if (this.$store.state.authStoreModule.authenticated) {
         this.$router.push("/home");
-        this["stockMangementModule/getSymbolsFromMarket"]();
       } else {
         this.$router.push("/login");
       }
@@ -59,6 +58,7 @@ export default {
     ...mapState("stockMangementModule", {
       noOfShares: (state) => state.shares.length,
     }),
+    ...mapGetters("stockMangementModule", ["areAllSharesPricesAvailable"]),
   },
 };
 </script>

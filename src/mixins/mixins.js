@@ -94,4 +94,5 @@ const stockTransactionActionMixin = {
     },
   },
 };
+
 export { modalControlMixin, stockTransactionActionMixin };

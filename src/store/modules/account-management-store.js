@@ -30,7 +30,7 @@ const actions = {
         commit("throwError", { type: "createUserAccountError", value: error });
       });
   },
-  fetchUserAccount({ commit, dispatch, rootState, state }) {
+  fetchUserAccount({ commit, dispatch, rootState }) {
     axiosAccountInstance
       .get("users.json" + `?auth=${rootState.authStoreModule.idToken}`)
       .then((res) => {
@@ -42,7 +42,6 @@ const actions = {
             commit("stockMangementModule/setPortfolio", userAccount.portfolio);
             delete userAccount.portfolio;
             commit("storeUserAccount", { id: userIndex, ...userAccount });
-            console.log("fetched account", state.account);
             commit("login");
             return;
           }

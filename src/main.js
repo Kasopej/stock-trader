@@ -2,6 +2,7 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store/index";
+import dayjs from "dayjs";
 //Vue.config.productionTip = false;
 
 // Import the functions you need from the SDKs you need
@@ -19,6 +20,8 @@ Vue.filter("setCommas", function (value) {
   }
   return value.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
 });
+
+Vue.prototype.$customDate = dayjs;
 new Vue({
   router,
   store,

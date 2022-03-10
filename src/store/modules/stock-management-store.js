@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+import dayjs from "dayjs";
 import { axiosStocksInstance } from "../../services/network-services/axios-stocks";
 const state = {
   shares: [],
@@ -7,7 +8,9 @@ const state = {
 
 const getters = {
   areAllSharesPricesAvailable(state) {
-    return !state.shares.find((share) => !("currentPrice" in share));
+    return state.shares.length
+      ? !state.shares.find((share) => !("currentPrice" in share))
+      : false;
   },
   portfolioValue(state) {
     return state.portfolio.reduce(
@@ -69,43 +72,6 @@ const getters = {
 };
 
 const actions = {
-  /*
-  getSymbolsFromMarket({ state, commit, dispatch }) {
-    axiosStocksInstance
-      .get(
-        "v3/search-ticker?query=&limit=5&exchange=NASDAQ&apikey=92f991cbed3c4ac053149578277389e5"
-      )
-      .then((res) => {
-        const data = res.data;
-        console.log(data);
-        commit("setSharesSymbols", data);
-        const arrayOfSymbols = data.map((element) => {
-          return element.symbol;
-        });
-        for (const asset of state.portfolio) {
-          if (arrayOfSymbols.includes(asset.symbol)) {
-            axiosStocksInstance
-              .get(
-                `v3/search-ticker?query=${asset.symbol}&limit=10&exchange=NASDAQ&apikey=92f991cbed3c4ac053149578277389e5`
-              )
-              .then((res) => {
-                if (res.data.length === 1) {
-                  commit("addMissingSymbolsToShares", res.data);
-                } else {
-                  throw new Error(
-                    "asset not found in stock market! Kindly send us a mail"
-                  );
-                }
-              })
-              .catch((error) => console.log(error));
-          }
-        }
-      })
-      .finally(() => {
-        dispatch("getHistoricalRangeOfPricesOfShares");
-      });
-  },
-  */
   getSymbolsFromMarket({ commit, dispatch, state }) {
     axiosStocksInstance
       .get("", {
@@ -127,13 +93,12 @@ const actions = {
       dispatch("getSymbolsFromMarket");
     }, 43200000);
   },
-  getPriceDataForShares({ commit, dispatch }, symbols) {
+  getPriceDataForShares({ commit, dispatch, state }, symbols) {
     let start = 0;
     let end = 10;
     const priceDataArray = [];
     let endInterval;
     let interval = setInterval(() => {
-      console.log("getting price data for SHARES");
       let queryURLForTenShares = symbols.slice(start, end).join("%2C");
       axiosStocksInstance
         .get("", {
@@ -152,20 +117,24 @@ const actions = {
           console.log(priceDataArray);
           if (endInterval) {
             commit("setSharePrices", priceDataArray);
-            dispatch("getHistoricalPriceDataForAssets");
+            commit("updateAssetsPriceDataFromFetchedStocksData", state.shares);
+            //let dateString = new Date().toISOString();
+            let lastFridayDate = dayjs()
+              .day(5)
+              .subtract(7, "d")
+              .format("YYYY-MM-DD");
+            dispatch("getHistoricalPriceDataForAssets", lastFridayDate);
           }
         });
       start += 10;
       end += 10;
       if (start === symbols.length) {
         endInterval = true;
-        console.log("clearing get price interval");
         clearInterval(interval);
       }
-    }, 30000);
+    }, 20000);
   },
   updatePortfolioFromStock({ commit, state, dispatch }, payload) {
-    console.log("portfolio from stock market");
     const assetToUpdate = state.portfolio.find(
       (asset) => payload.stock.ticker === asset.assetDetails.ticker
     );
@@ -201,7 +170,7 @@ const actions = {
       { root: true }
     );
   },
-  getHistoricalPriceDataForAssets({ state, dispatch, commit }) {
+  getHistoricalPriceDataForAssets({ state, dispatch, commit }, payload) {
     let index = 0;
     const priceDataArray = [];
     let endInterval;
@@ -209,19 +178,13 @@ const actions = {
       let interval = setInterval(() => {
         if (index === state.portfolio.length - 1) {
           endInterval = true;
-          console.log("clearing historical");
           clearInterval(interval);
         }
-        console.log(
-          "getting historical update for portfolio:",
-          state.portfolio[index]
-        );
         axiosStocksInstance
           .get("", {
-            baseURL: `https://financialmodelingprep.com/api/v3/historical-price-full/${state.portfolio[index].assetDetails.ticker}?from=2019-03-12&to=2019-03-12&apikey=92f991cbed3c4ac053149578277389e5`,
+            baseURL: `https://financialmodelingprep.com/api/v3/historical-price-full/${state.portfolio[index].assetDetails.ticker}?from=${payload}&to=${payload}&apikey=92f991cbed3c4ac053149578277389e5`,
           })
           .then((res) => {
-            console.log("historical update", res.data);
             try {
               priceDataArray.splice(
                 priceDataArray.length,
@@ -244,7 +207,7 @@ const actions = {
             }
           });
         index++;
-      }, 30000);
+      }, 20000);
     }
   },
 };
@@ -276,9 +239,6 @@ const mutations = {
           priceChange: sharePriceChangePercent,
         })
       );
-
-      // share.currentPrice = sharePrice;
-      // share.priceChange = sharePriceChangePercent;
     });
   },
   setPortfolio(state, payload) {
@@ -289,25 +249,38 @@ const mutations = {
     /* eslint-disable no-unused-vars */
     payload.asset.quantity += payload.quantity;
     if (!payload.asset.quantity) {
-      console.log(payload.asset.quantity);
-      console.log(state.portfolio.indexOf(payload.asset));
       state.portfolio.splice(state.portfolio.indexOf(payload.asset), 1);
     }
   },
   createPortfolioAsset(state, payload) {
-    console.log("pushing new portfolio asset", JSON.stringify(payload));
     state.portfolio.push({
       assetDetails: payload.asset,
       quantity: payload.quantity,
     });
   },
+  updateAssetsPriceDataFromFetchedStocksData(state) {
+    const assetsToUpdate = state.shares.forEach((share) => {
+      for (const asset of state.portfolio) {
+        if (asset.assetDetails.ticker === share.ticker) {
+          asset.assetDetails.currentPrice = share.currentPrice;
+          asset.assetDetails.priceChange = share.priceChange;
+        }
+      }
+    });
+  },
   setHistoricalPricesOnAssets(state, historicalPriceArray) {
-    state.portfolio.forEach(
-      (asset, index) =>
-        (asset = Object.assign({}, asset, {
+    state.portfolio.forEach((asset, index) => {
+      // asset = Object.assign({}, asset, {
+      // historicalPrice: historicalPriceArray[index],
+      // })
+      state.shares.splice(
+        index,
+        1,
+        Object.assign(asset, {
           historicalPrice: historicalPriceArray[index],
-        }))
-    );
+        })
+      );
+    });
   },
 };
 
