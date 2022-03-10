@@ -39,7 +39,7 @@
         </p>
         <button
           class="btn btn-sm btn-success stockPurchaseBtn"
-          :disabled="!+qtyToPurchase"
+          :disabled="!qtyToPurchase"
           @click="showModal('confirmBuyStock')"
         >
           Buy
@@ -60,7 +60,7 @@
         </p>
         <button
           class="btn btn-sm btn-success stockPurchaseBtn"
-          :disabled="!+qtyToSell"
+          :disabled="!qtyToSell"
           @click="showModal('confirmSellStock')"
         >
           Sell
@@ -73,7 +73,7 @@
       v-if="modals.confirmBuyStock.show"
       :text="modals.confirmBuyStock.text"
       :customEventName="modals.confirmBuyStock.customEventName"
-      @[modals.confirmBuyStock.customEventName]="buyStock"
+      @[modals.confirmBuyStock.customEventName]="buyStockFromAsset"
     ></ConfirmationModal>
     <ConfirmationModal
       v-if="modals.confirmSellStock.show"
@@ -85,10 +85,11 @@
 </template>
 
 <script>
-//import { modalControlMixin } from "../mixins/mixins";
+import { stockTransactionActionMixin } from "../mixins/mixins";
 import { mapActions, mapState } from "vuex";
 import ConfirmationModal from "./reused-components/ConfirmationModal.vue";
 export default {
+  mixins: [stockTransactionActionMixin],
   props: {
     asset: {
       type: Object,
@@ -135,54 +136,6 @@ export default {
   methods: {
     ...mapActions(["performTransaction", "fetchUserAccountUpdates"]),
     ...mapActions("stockMangementModule", ["updatePortfolioFromAsset"]),
-    updateQty(event, mode) {
-      if (event.target.value < 0) {
-        event.target.value = 0;
-        return;
-      }
-      if (mode === "sell") {
-        if(event.target.value > this.asset.quantity) event.target.value = this.asset.quantity;
-        this.qtyToSell = +event.target.value;
-        }
-      else if (mode === "purchase") this.qtyToPurchase = +event.target.value;
-    },
-    buyStock(event) {
-      if (event.response === true) {
-        if (this.wallet >= this.sharePurchaseCost) {
-          console.log("performing transaction");
-          this.performTransaction(this.sharePurchaseCost * -1)
-            .then(() =>
-              this.updatePortfolioFromAsset({
-                asset: this.asset,
-                quantity: this.qtyToPurchase,
-              })
-            )
-            .then(() => {
-              this.qtyToPurchase = 0;
-              this.closeModal("confirmBuyStock");
-            });
-        } else {
-          alert("You do not have enough money in your main wallet to fund this transaction. Please fund your wallet")
-          this.closeModal("confirmBuyStock");
-          }
-      } else this.closeModal("confirmBuyStock");
-    },
-    sellStock(event) {
-      if (event.response === true) {
-        if (+this.qtyToSell) {
-          console.log("performing transaction");
-          this.updatePortfolioFromAsset({
-            asset: this.asset,
-            quantity: this.qtyToSell * -1,
-          })
-            .then(() => this.performTransaction(this.assetSaleValue))
-            .then(() => {
-              this.qtyToSell = 0;
-              this.closeModal("confirmSellStock");
-            });
-        }
-      } else this.closeModal("confirmSellStock");
-    },
     showModal(name) {
       this.modals[name].show = true;
     },

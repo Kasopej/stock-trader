@@ -117,7 +117,6 @@ const actions = {
     }
   },
   logout({ commit }) {
-    console.log("logging out");
     commit("logout");
     commit("clearAccount");
   },

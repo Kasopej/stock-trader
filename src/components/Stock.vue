@@ -15,19 +15,21 @@
         class="stockQtyInput"
         type="number"
         name="stockQty"
-        v-model="qtyToPurchase"
+        :value="qtyToPurchase"
+        @input="updateQty($event, 'purchase')"
       />
       <p class="m-0 p-0">
         {{ qtyToPurchase }} x {{ share.currentPrice | setCommas }} = ${{
           sharePurchaseCost | setCommas
         }}
       </p>
-      <a
-        class="btn btn-sm btn-success stockPurchaseBtn d-block mr-auto"
+      <button
+        class="btn btn-sm btn-success stockPurchaseBtn w-100"
+        :disabled="!qtyToPurchase"
         @click="showModal('confirmBuyStock')"
       >
         Buy
-      </a>
+      </button>
     </div>
     <ConfirmationModal
       v-if="modals.confirmBuyStock.show"
@@ -41,7 +43,9 @@
 <script>
 import { mapActions, mapState } from "vuex";
 import ConfirmationModal from "./reused-components/ConfirmationModal.vue";
+import { stockTransactionActionMixin } from "../mixins/mixins";
 export default {
+  mixins: [stockTransactionActionMixin],
   components: { ConfirmationModal },
   props: {
     share: {
@@ -77,23 +81,6 @@ export default {
   methods: {
     ...mapActions(["performTransaction", "fetchUserAccountUpdates"]),
     ...mapActions("stockMangementModule", ["updatePortfolioFromStock"]),
-    buyStock(event) {
-      if (event.response === true) {
-        if (this.wallet >= this.sharePurchaseCost) {
-          this.performTransaction(this.sharePurchaseCost)
-            .then(() =>
-              this.updatePortfolioFromStock({
-                stock: this.share,
-                quantity: +this.qtyToPurchase,
-              })
-            )
-            .then(() => {
-              this.qtyToPurchase = 0;
-              this.closeModal("confirmBuyStock")
-              });
-        }
-      } else this.closeModal("confirmBuyStock");
-    },
     showModal(name) {
       this.modals[name].show = true;
     },

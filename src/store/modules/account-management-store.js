@@ -78,7 +78,7 @@ const actions = {
         const userAccount = res.data;
         commit("stockMangementModule/setPortfolio", userAccount.portfolio);
         delete userAccount.portfolio;
-        commit("storeUserAccount", userAccount);
+        commit("storeUserAccount", { id: state.account.id, ...userAccount });
         console.log("fetched account updates", state.account);
       });
   },

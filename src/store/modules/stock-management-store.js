@@ -189,7 +189,6 @@ const actions = {
     );
   },
   updatePortfolioFromAsset({ commit, dispatch, state }, payload) {
-    console.log("portfolio from asset", JSON.stringify(payload));
     commit("updatePortfolioAssetAmount", {
       asset: payload.asset,
       quantity: payload.quantity,
@@ -288,8 +287,12 @@ const mutations = {
   },
   updatePortfolioAssetAmount(state, payload) {
     /* eslint-disable no-unused-vars */
-    console.log("updating portfolio asset", JSON.stringify(payload));
     payload.asset.quantity += payload.quantity;
+    if (!payload.asset.quantity) {
+      console.log(payload.asset.quantity);
+      console.log(state.portfolio.indexOf(payload.asset));
+      state.portfolio.splice(state.portfolio.indexOf(payload.asset), 1);
+    }
   },
   createPortfolioAsset(state, payload) {
     console.log("pushing new portfolio asset", JSON.stringify(payload));
