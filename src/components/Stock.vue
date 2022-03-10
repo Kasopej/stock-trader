@@ -75,7 +75,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions(["performTransaction", "fetchUserAccount"]),
+    ...mapActions(["performTransaction", "fetchUserAccountUpdates"]),
     ...mapActions("stockMangementModule", ["updatePortfolioFromStock"]),
     buyStock(isConfirmed) {
       if (isConfirmed) {
@@ -88,8 +88,10 @@ export default {
                 quantity: +this.qtyToPurchase,
               })
             )
-            .then(() => this.fetchUserAccount())
-            .then(() => this.closeModal("confirmBuyStock"));
+            .then(() => {
+              this.qtyToPurchase = 0;
+              this.closeModal("confirmBuyStock")
+              });
         }
       } else this.closeModal("confirmBuyStock");
     },

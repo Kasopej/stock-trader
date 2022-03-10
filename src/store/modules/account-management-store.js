@@ -27,20 +27,11 @@ const actions = {
         commit("throwError", { type: "createUserAccountError", value: error });
       });
   },
-  updateUserAccount({ state, rootState }, payload) {
-    console.log("updating user");
-    return axiosAccountInstance.patch(
-      `users/${state.account.id}.json` +
-        `?auth=${rootState.authStoreModule.idToken}`,
-      payload
-    );
-  },
-  fetchUserAccount({ commit, dispatch, rootState }) {
+  fetchUserAccount({ commit, dispatch, rootState, state }) {
     axiosAccountInstance
       .get("users.json" + `?auth=${rootState.authStoreModule.idToken}`)
       .then((res) => {
         const data = res.data;
-        console.log("allUserData", data);
         let userAccount;
         for (const userIndex in data) {
           if (data[userIndex].email === rootState.email) {
@@ -48,11 +39,44 @@ const actions = {
             commit("stockMangementModule/setPortfolio", userAccount.portfolio);
             delete userAccount.portfolio;
             commit("storeUserAccount", { id: userIndex, ...userAccount });
+            console.log("fetched account", state.account);
             commit("login");
             return;
           }
         }
         dispatch("logout");
+      });
+  },
+  updateUserAccount({ state, rootState, dispatch, commit }, payload) {
+    console.log("updating user");
+    if (state.account.id) {
+      return axiosAccountInstance
+        .patch(
+          `users/${state.account.id}.json` +
+            `?auth=${rootState.authStoreModule.idToken}`,
+          payload
+        )
+        .then(() => {
+          return dispatch("fetchUserAccountUpdates");
+        });
+    } else
+      commit(
+        "throwStoreError",
+        "user not identified. Please refresh your page"
+      );
+  },
+  fetchUserAccountUpdates({ commit, rootState, state }) {
+    axiosAccountInstance
+      .get(
+        `users/${state.account.id}.json` +
+          `?auth=${rootState.authStoreModule.idToken}`
+      )
+      .then((res) => {
+        const userAccount = res.data;
+        commit("stockMangementModule/setPortfolio", userAccount.portfolio);
+        delete userAccount.portfolio;
+        commit("storeUserAccount", userAccount);
+        console.log("fetched account updates", state.account);
       });
   },
   performTransaction({ commit, dispatch, state }, amount) {

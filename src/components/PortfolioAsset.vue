@@ -133,14 +133,17 @@ export default {
     },
   },
   methods: {
-    ...mapActions(["performTransaction", "fetchUserAccount"]),
+    ...mapActions(["performTransaction", "fetchUserAccountUpdates"]),
     ...mapActions("stockMangementModule", ["updatePortfolioFromAsset"]),
     updateQty(event, mode) {
-      if (+event.target.value < 0) {
+      if (event.target.value < 0) {
         event.target.value = 0;
         return;
       }
-      if (mode === "sell") this.qtyToSell = +event.target.value;
+      if (mode === "sell") {
+        if(event.target.value > this.asset.quantity) event.target.value = this.asset.quantity;
+        this.qtyToSell = +event.target.value;
+        }
       else if (mode === "purchase") this.qtyToPurchase = +event.target.value;
     },
     buyStock(event) {
@@ -154,12 +157,14 @@ export default {
                 quantity: this.qtyToPurchase,
               })
             )
-            .then(() => this.fetchUserAccount())
             .then(() => {
               this.qtyToPurchase = 0;
               this.closeModal("confirmBuyStock");
             });
-        }
+        } else {
+          alert("You do not have enough money in your main wallet to fund this transaction. Please fund your wallet")
+          this.closeModal("confirmBuyStock");
+          }
       } else this.closeModal("confirmBuyStock");
     },
     sellStock(event) {
@@ -171,7 +176,6 @@ export default {
             quantity: this.qtyToSell * -1,
           })
             .then(() => this.performTransaction(this.assetSaleValue))
-            .then(() => this.fetchUserAccount())
             .then(() => {
               this.qtyToSell = 0;
               this.closeModal("confirmSellStock");

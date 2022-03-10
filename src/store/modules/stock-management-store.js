@@ -53,9 +53,12 @@ const getters = {
   netGrowth(state, getters) {
     try {
       let basePortfolioValue = state.portfolio.reduce((value, asset) => {
-        if ("historicalPrice" in asset)
+        if ("historicalPrice" in asset) {
           return value + asset.historicalPrice * asset.quantity;
-        else throw Error("historical price not set on asset");
+        } else
+          throw new Error(
+            "No historical data found on asset, profit cannot be calculated"
+          );
       }, 0);
       return getters.portfolioValue - basePortfolioValue;
     } catch (error) {
@@ -130,8 +133,8 @@ const actions = {
     const priceDataArray = [];
     let endInterval;
     let interval = setInterval(() => {
+      console.log("getting price data for SHARES");
       let queryURLForTenShares = symbols.slice(start, end).join("%2C");
-      console.log(queryURLForTenShares);
       axiosStocksInstance
         .get("", {
           baseURL: `https://yfapi.net/v6/finance/quote?region=US&lang=en&symbols=${queryURLForTenShares}`,
@@ -141,8 +144,6 @@ const actions = {
           },
         })
         .then((res) => {
-          console.log("pricesss");
-          console.log(res.data.quoteResponse.result);
           priceDataArray.splice(
             priceDataArray.length,
             0,
@@ -150,22 +151,21 @@ const actions = {
           );
           console.log(priceDataArray);
           if (endInterval) {
-            console.log("clearing");
-            clearInterval(interval);
             commit("setSharePrices", priceDataArray);
             dispatch("getHistoricalPriceDataForAssets");
           }
         });
       start += 10;
       end += 10;
-      if (start >= symbols.length) {
+      if (start === symbols.length) {
         endInterval = true;
+        console.log("clearing get price interval");
+        clearInterval(interval);
       }
-      console.log(start, end);
     }, 30000);
   },
   updatePortfolioFromStock({ commit, state, dispatch }, payload) {
-    console.log("updating portfolio from stock market");
+    console.log("portfolio from stock market");
     const assetToUpdate = state.portfolio.find(
       (asset) => payload.stock.ticker === asset.assetDetails.ticker
     );
@@ -202,7 +202,7 @@ const actions = {
       { root: true }
     );
   },
-  getHistoricalPriceDataForAssets({ state, commit }) {
+  getHistoricalPriceDataForAssets({ state, dispatch, commit }) {
     let index = 0;
     const priceDataArray = [];
     let endInterval;
@@ -215,7 +215,7 @@ const actions = {
         }
         console.log(
           "getting historical update for portfolio:",
-          state.portfolio
+          state.portfolio[index]
         );
         axiosStocksInstance
           .get("", {
@@ -229,13 +229,19 @@ const actions = {
                 0,
                 res.data.historical[0].close
               );
-              throw new Error("no historical data found in database");
             } catch (error) {
               priceDataArray.splice(priceDataArray.length, 0, 0);
             }
             console.log(priceDataArray);
             if (endInterval) {
               commit("setHistoricalPricesOnAssets", priceDataArray);
+              dispatch(
+                "updateUserAccount",
+                {
+                  portfolio: state.portfolio,
+                },
+                { root: true }
+              );
             }
           });
         index++;
@@ -256,8 +262,24 @@ const mutations = {
   },
   setSharePrices(state, payload) {
     state.shares.forEach((share, index) => {
-      share.currentPrice = payload[index].regularMarketPrice;
-      share.priceChange = payload[index].regularMarketChangePercent;
+      let sharePrice = payload[index]?.regularMarketPrice
+        ? payload[index].regularMarketPrice
+        : 0;
+      let sharePriceChangePercent = payload[index]?.regularMarketChangePercent
+        ? payload[index].regularMarketChangePercent
+        : 0;
+      // I have to merge two separate share data from two different APIs as each was insufficient on its own
+      state.shares.splice(
+        index,
+        1,
+        Object.assign(share, {
+          currentPrice: sharePrice,
+          priceChange: sharePriceChangePercent,
+        })
+      );
+
+      // share.currentPrice = sharePrice;
+      // share.priceChange = sharePriceChangePercent;
     });
   },
   setPortfolio(state, payload) {
@@ -266,11 +288,11 @@ const mutations = {
   },
   updatePortfolioAssetAmount(state, payload) {
     /* eslint-disable no-unused-vars */
-    console.log("updated asset", JSON.stringify(payload));
+    console.log("updating portfolio asset", JSON.stringify(payload));
     payload.asset.quantity += payload.quantity;
-    console.log("fully updated asset", JSON.stringify(payload));
   },
   createPortfolioAsset(state, payload) {
+    console.log("pushing new portfolio asset", JSON.stringify(payload));
     state.portfolio.push({
       assetDetails: payload.asset,
       quantity: payload.quantity,

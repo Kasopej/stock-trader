@@ -11,11 +11,13 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   /* eslint-disable no-undef */
   plugins: [createPersistedState()],
-  state: {},
+  state: {
+    storeError: "",
+  },
   getters: {},
   mutations: {
-    throwError(state, error) {
-      state.error = error;
+    throwStoreError(state, error) {
+      state.storeError = error;
     },
     clearError(state) {
       state.error = null;

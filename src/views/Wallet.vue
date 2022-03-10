@@ -98,7 +98,7 @@ export default {
     }),
   },
   methods: {
-    ...mapActions(["performTransactionOnProfitWallet", "performTransaction", "fetchUserAccount", "updateCardTransactionLog"]),
+    ...mapActions(["performTransactionOnProfitWallet", "performTransaction", "fetchUserAccountUpdates", "updateCardTransactionLog"]),
     ...mapActions("stockMangementModule", ["getHistoricalPriceDataForAssets"]),
     fundWallet(event) {
       if(event.response) {
@@ -107,7 +107,6 @@ export default {
           .then(() =>
             this.updateCardTransactionLog({timestamp: new Date().valueOf(), type: "Deposit", amount: event.value, location: "Main Wallet"})
           )
-          .then(() => this.fetchUserAccount())
           .then(() => {
             this.qtyToPurchase = 0;
             this.closeModal("fundWalletDialog");
@@ -123,7 +122,6 @@ export default {
           .then(() =>
             this.updateCardTransactionLog({timestamp: new Date().valueOf(), type: "Withdrawal", amount: event.value, location: "Profit Wallet"})
           )
-          .then(() => this.fetchUserAccount())
           .then(() => {
             this.closeModal("profitWalletDialog");
           });
@@ -137,9 +135,6 @@ export default {
     closeModal(name) {
       this.modals[name].show = false;
     },
-  },
-  created() {
-    this.getHistoricalPriceDataForAssets()
   },
 };
 </script>
