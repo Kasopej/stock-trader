@@ -17,8 +17,9 @@
         class="form-control"
         id="exampleInputPassword"
         v-model="loginDetails.password"
+        ref="password"
       />
-      <i class="inputIcon fa-solid fa-eye"></i>
+      <i class="passwordInputIcon fa-solid fa-eye" @click="togglePasswordVisibility"></i>
     </div>
     <button
       type="submit"
@@ -48,14 +49,10 @@ export default {
   },
   methods: {
     ...mapActions(["attemptLogin"]),
-  },
-  /*
-  watch: {
-    ["$store.state.authStoreModule.authenticated"](){
-      this.$router.push("/home")
+    togglePasswordVisibility(){
+      this.$refs.password.type = (this.$refs.password.type === "password") ? "text" : "password";
     }
   },
-  */
 };
 </script>
 
@@ -63,10 +60,10 @@ export default {
 form > div {
   position: relative;
 }
-.inputIcon {
+.passwordInputIcon {
   position: absolute;
   bottom: 10px;
   right: 10px;
   cursor: pointer;
-}
+  }
 </style>

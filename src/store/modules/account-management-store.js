@@ -5,9 +5,9 @@ const state = {
 };
 const getters = {
   name(state) {
-    if (state.account?.email) {
-      return state.account.email.slice(0, state.account.email.indexOf("@"));
-    }
+      return state.account?.email
+        ? state.account.email.slice(0, state.account.email.indexOf("@"))
+        : "";
   },
   wallet(state) {
     return state.account?.wallet;

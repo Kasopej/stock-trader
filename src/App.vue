@@ -105,6 +105,7 @@ export default {
   outline: 0;
 }
 
+
 @media (min-width: 992px) {
   #app aside {
     flex-basis: 20%;
