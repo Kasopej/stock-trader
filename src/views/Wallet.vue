@@ -20,7 +20,7 @@
       <section class="card profitWallet text-center">
         <div class="card-body">
           <h6 class="card-subtitle">Profit Wallet</h6>
-          <h4 class="card-title">${{ profitWallet | setCommas }}</h4>
+          <h4 class="card-title">${{ profit | setCommas }}</h4>
           <hr />
           <div class="px-2 d-flex justify-content-center">
             <div class="w-100">
@@ -90,10 +90,8 @@ export default {
   },
   components: { TableBodyElement, InputModal },
   computed: {
-    ...mapGetters("stockMangementModule", ["netGrowth"]),
+    ...mapGetters(["wallet", "profit"]),
     ...mapState({
-      wallet: (state) => state.accountMangementModule.account.wallet,
-      profitWallet: (state) => state.accountMangementModule.account.profitWallet,
       cardTransactionLog: (state) => state.accountMangementModule.account.cardTransactionsLog
     }),
   },

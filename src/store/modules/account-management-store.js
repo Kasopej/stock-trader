@@ -5,12 +5,15 @@ const state = {
 };
 const getters = {
   name(state) {
-      return state.account?.email
-        ? state.account.email.slice(0, state.account.email.indexOf("@"))
-        : "";
+    return state.account?.email
+      ? state.account.email.slice(0, state.account.email.indexOf("@"))
+      : "";
   },
   wallet(state) {
     return state.account?.wallet;
+  },
+  profit(state) {
+    return state.account?.profitWallet ? state.account?.profitWallet : 0;
   },
 };
 const actions = {
@@ -41,6 +44,7 @@ const actions = {
             userAccount = data[userIndex];
             commit("stockMangementModule/setPortfolio", userAccount.portfolio);
             delete userAccount.portfolio;
+            dispatch("stockMangementModule/calculateProfitFromPortfolio");
             commit("storeUserAccount", { id: userIndex, ...userAccount });
             commit("login");
             return;
@@ -109,6 +113,10 @@ const mutations = {
   },
   updateWallet(state, amount) {
     state.account.wallet += amount;
+  },
+  setProfitWallet(state, amount) {
+    console.log("setting profit wallet");
+    state.account.profitWallet = amount;
   },
   updateProfitWallet(state, amount) {
     state.account.profitWallet += amount;

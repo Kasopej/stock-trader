@@ -44,7 +44,7 @@
       @mouseleave="removeHoverStyle"
     >
       <p class="lead">Your Profit</p>
-      <h2>${{ netGrowth | setCommas }}</h2>
+      <h2>${{ profit | setCommas }}</h2>
       <router-link to="/wallet" class="btn btn-success btn-md rounded-pill">Withdraw Profits</router-link>
     </div>
   </div>
@@ -74,8 +74,8 @@ export default {
       "portfolioValue",
       "bestPerformingAsset",
       "worstPerformingAsset",
-      "netGrowth",
     ]),
+    ...mapGetters(["profit"]),
   },
 };
 </script>

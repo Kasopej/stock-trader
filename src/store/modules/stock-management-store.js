@@ -53,22 +53,6 @@ const getters = {
         quantity: 0,
       };
   },
-  netGrowth(state, getters) {
-    try {
-      let basePortfolioValue = state.portfolio.reduce((value, asset) => {
-        if ("historicalPrice" in asset) {
-          return value + asset.historicalPrice * asset.quantity;
-        } else
-          throw new Error(
-            "No historical data found on asset, profit cannot be calculated"
-          );
-      }, 0);
-      return getters.portfolioValue - basePortfolioValue;
-    } catch (error) {
-      console.log(error);
-      return 0;
-    }
-  },
 };
 
 const actions = {
@@ -209,6 +193,39 @@ const actions = {
         index++;
       }, 20000);
     }
+  },
+  calculateProfitFromPortfolio({
+    state,
+    rootState,
+    getters,
+    commit,
+    dispatch,
+  }) {
+    console.log("calculating profit!!!");
+    let profitFromPortfolio;
+    try {
+      let basePortfolioValue = state.portfolio.reduce((value, asset) => {
+        if ("historicalPrice" in asset) {
+          console.log("calculating per asset");
+          return value + asset.historicalPrice * asset.quantity;
+        } else
+          throw new Error(
+            "No historical data found on asset, profit cannot be calculated"
+          );
+      }, 0);
+      profitFromPortfolio = getters.portfolioValue - basePortfolioValue;
+    } catch (error) {
+      console.log(error);
+      profitFromPortfolio = 0;
+    }
+    commit("setProfitWallet", profitFromPortfolio, { root: true });
+    dispatch(
+      "updateUserAccount",
+      {
+        profitWallet: rootState.accountMangementModule.account.profitWallet,
+      },
+      { root: true }
+    );
   },
 };
 
