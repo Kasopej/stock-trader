@@ -8,7 +8,7 @@
             type="button"
             class="btn-close"
             aria-label="Close"
-            @click="close(false)"
+            @click="close({response: false})"
           ></button>
         </div>
         <div class="modal-body">
@@ -25,8 +25,8 @@
           <button
             type="button"
             class="btn btn-primary"
-            @click="close({ response: true, value })"
-            :disabled="!+value"
+            @click="close({ response: true, value: value })"
+            :disabled="!value"
           >
             Confirm
           </button>
@@ -41,6 +41,7 @@ export default {
   props: {
     customEventName: String,
     text: String,
+    limit: Number,
   },
   data() {
     return {
@@ -51,8 +52,8 @@ export default {
     updateQty(event) {
       if (+event.target.value < 0) {
         event.target.value = 0;
-        return;
       }
+      else if(+event.target.value > this.limit){ event.target.value = this.limit }
       this.value = +event.target.value;
     },
     close(event) {

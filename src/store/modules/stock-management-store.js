@@ -201,12 +201,10 @@ const actions = {
     commit,
     dispatch,
   }) {
-    console.log("calculating profit!!!");
     let profitFromPortfolio;
     try {
       let basePortfolioValue = state.portfolio.reduce((value, asset) => {
         if ("historicalPrice" in asset) {
-          console.log("calculating per asset");
           return value + asset.historicalPrice * asset.quantity;
         } else
           throw new Error(

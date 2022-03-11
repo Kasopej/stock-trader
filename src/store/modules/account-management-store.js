@@ -44,8 +44,8 @@ const actions = {
             userAccount = data[userIndex];
             commit("stockMangementModule/setPortfolio", userAccount.portfolio);
             delete userAccount.portfolio;
-            dispatch("stockMangementModule/calculateProfitFromPortfolio");
             commit("storeUserAccount", { id: userIndex, ...userAccount });
+            dispatch("stockMangementModule/calculateProfitFromPortfolio");
             commit("login");
             return;
           }
@@ -54,7 +54,6 @@ const actions = {
       });
   },
   updateUserAccount({ state, rootState, dispatch, commit }, payload) {
-    console.log("updating user");
     if (state.account.id) {
       return axiosAccountInstance
         .patch(
@@ -82,7 +81,6 @@ const actions = {
         commit("stockMangementModule/setPortfolio", userAccount.portfolio);
         delete userAccount.portfolio;
         commit("storeUserAccount", { id: state.account.id, ...userAccount });
-        console.log("fetched account updates", state.account);
       });
   },
   performTransaction({ commit, dispatch, state }, amount) {
@@ -91,7 +89,6 @@ const actions = {
     return dispatch("updateUserAccount", { wallet: state.account.wallet });
   },
   performTransactionOnProfitWallet({ commit, dispatch, state }, amount) {
-    console.log("in profit wallet");
     commit("updateProfitWallet", amount);
     return dispatch("updateUserAccount", {
       profitWallet: state.account.profitWallet,
@@ -115,14 +112,12 @@ const mutations = {
     state.account.wallet += amount;
   },
   setProfitWallet(state, amount) {
-    console.log("setting profit wallet");
     state.account.profitWallet = amount;
   },
   updateProfitWallet(state, amount) {
     state.account.profitWallet += amount;
   },
   updateCardTransactionLog(state, payload) {
-    console.log("updating log");
     state.account.cardTransactionsLog.push(payload);
   },
   clearAccount(state) {

@@ -46,7 +46,6 @@ export default {
   },
   watch: {
     ["$store.state.authStoreModule.authenticated"]() {
-      console.log("auth changed");
       if (this.$store.state.authStoreModule.authenticated) {
         this.$router.push("/home");
       } else {

@@ -73,6 +73,7 @@
       v-if="modals.profitWalletDialog.show"
       :text="modals.profitWalletDialog.text"
       :customEventName="modals.profitWalletDialog.customEventName"
+      :limit="profit"
       @[modals.profitWalletDialog.customEventName]="debitProfitWallet"
     ></InputModal>
   </div>
@@ -135,8 +136,7 @@ export default {
     },
     debitProfitWallet(event) {
       if (event.response) {
-        if (event.value <= this.profitWallet) {
-          console.log("performing transaction");
+        if (event.value) {
           this.performTransactionOnProfitWallet(event.value * -1)
             .then(() =>
               this.updateCardTransactionLog({
@@ -149,6 +149,7 @@ export default {
             .then(() => {
               this.closeModal("profitWalletDialog");
             });
+            return
         }
         this.closeModal("profitWalletDialog");
       } else this.closeModal("profitWalletDialog");
