@@ -24,8 +24,9 @@ const stockTransactionActionMixin = {
         return;
       }
       if (mode === "sell") {
-        if (event.target.value > this.asset.quantity)
+        if (event.target.value > this.asset.quantity) {
           event.target.value = this.asset.quantity;
+        }
         this.qtyToSell = +event.target.value;
       } else if (mode === "purchase") this.qtyToPurchase = +event.target.value;
     },

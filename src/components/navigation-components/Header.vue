@@ -42,7 +42,7 @@
           active-class="active"
           exact
           to="/profile"
-          ><a v-show="name" class="nav-link">{{ name }}</a></router-link
+          ><a v-if="name" class="nav-link">{{ name }}</a></router-link
         >
 
         <li

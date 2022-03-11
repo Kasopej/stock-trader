@@ -15,6 +15,7 @@
         class="stockQtyInput"
         type="number"
         name="stockQty"
+        data-testid="purchaseInput"
         :value="qtyToPurchase"
         @input="updateQty($event, 'purchase')"
       />
