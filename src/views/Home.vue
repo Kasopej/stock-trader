@@ -9,7 +9,9 @@
     >
       <p class="lead mb-4">My Portfolio Value</p>
       <h2>${{ portfolioValue | setCommas }}</h2>
-      <router-link to="/portfolio" class="btn btn-success btn-md rounded-pill">View All</router-link>
+      <router-link to="/portfolio" class="btn btn-success btn-md rounded-pill"
+        >View All</router-link
+      >
     </div>
 
     <div
@@ -22,7 +24,9 @@
       <h2 class="mb-4">
         {{ bestPerformingAsset.assetDetails.priceChange.toFixed(2) }}%
       </h2>
-      <router-link to="/portfolio" class="btn btn-success btn-md rounded-pill">View All</router-link>
+      <router-link to="/portfolio" class="btn btn-success btn-md rounded-pill"
+        >View All</router-link
+      >
     </div>
 
     <div
@@ -35,7 +39,9 @@
       <h2 class="mb-4">
         {{ worstPerformingAsset.assetDetails.priceChange.toFixed(2) }}%
       </h2>
-      <router-link to="/portfolio" class="btn btn-success btn-md rounded-pill">View All</router-link>
+      <router-link to="/portfolio" class="btn btn-success btn-md rounded-pill"
+        >View All</router-link
+      >
     </div>
 
     <div
@@ -45,7 +51,9 @@
     >
       <p class="lead">Your Profit</p>
       <h2>${{ profit | setCommas }}</h2>
-      <router-link to="/wallet" class="btn btn-success btn-md rounded-pill">Withdraw Profits</router-link>
+      <router-link to="/wallet" class="btn btn-success btn-md rounded-pill"
+        >Withdraw Profits</router-link
+      >
     </div>
   </div>
 </template>

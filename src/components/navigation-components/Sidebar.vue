@@ -82,7 +82,7 @@ export default {
     ...mapGetters(["name", "isAuthenticated"]),
   },
   methods: {
-    ...mapActions(["logout"])
+    ...mapActions(["logout"]),
   },
 };
 </script>

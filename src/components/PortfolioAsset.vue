@@ -18,9 +18,10 @@
       </p>
       <p class="">
         Current value:
-        <span class="badge bg-secondary">$ {{
-          (asset.quantity * assetDetails.currentPrice) | setCommas
-        }}</span>
+        <span class="badge bg-secondary"
+          >$
+          {{ (asset.quantity * assetDetails.currentPrice) | setCommas }}</span
+        >
       </p>
     </div>
     <!-- Card footer -->

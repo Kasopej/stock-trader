@@ -12,14 +12,22 @@
           ></button>
         </div>
         <div class="modal-body">
-            <input type="number" 
-            name="fund" id="fund" 
+          <input
+            type="number"
+            name="fund"
+            id="fund"
             :value="value"
-            @input="updateQty($event)">
+            @input="updateQty($event)"
+          />
           <p>{{ text }}</p>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" @click="close({response: true, value})" :disabled="!+value">
+          <button
+            type="button"
+            class="btn btn-primary"
+            @click="close({ response: true, value })"
+            :disabled="!+value"
+          >
             Confirm
           </button>
         </div>
@@ -30,30 +38,28 @@
 
 <script>
 export default {
-    props: {
+  props: {
     customEventName: String,
     text: String,
   },
-    data() {
-        return {
-            value: 0
-        }
+  data() {
+    return {
+      value: 0,
+    };
+  },
+  methods: {
+    updateQty(event) {
+      if (+event.target.value < 0) {
+        event.target.value = 0;
+        return;
+      }
+      this.value = +event.target.value;
     },
-    methods: {
-        updateQty(event) {
-        if (+event.target.value < 0) {
-            event.target.value = 0;
-            return;
-        }
-        this.value = +event.target.value;
-        },
-        close(event) {
-            this.$emit(this.customEventName, event);
-        },
+    close(event) {
+      this.$emit(this.customEventName, event);
     },
-}
+  },
+};
 </script>
 
-<style>
-
-</style>
+<style></style>

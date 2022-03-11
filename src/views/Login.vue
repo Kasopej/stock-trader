@@ -19,7 +19,10 @@
         v-model="loginDetails.password"
         ref="password"
       />
-      <i class="passwordInputIcon fa-solid fa-eye" @click="togglePasswordVisibility"></i>
+      <i
+        class="passwordInputIcon fa-solid fa-eye"
+        @click="togglePasswordVisibility"
+      ></i>
     </div>
     <button
       type="submit"
@@ -49,9 +52,10 @@ export default {
   },
   methods: {
     ...mapActions(["attemptLogin"]),
-    togglePasswordVisibility(){
-      this.$refs.password.type = (this.$refs.password.type === "password") ? "text" : "password";
-    }
+    togglePasswordVisibility() {
+      this.$refs.password.type =
+        this.$refs.password.type === "password" ? "text" : "password";
+    },
   },
 };
 </script>
@@ -65,5 +69,5 @@ form > div {
   bottom: 10px;
   right: 10px;
   cursor: pointer;
-  }
+}
 </style>

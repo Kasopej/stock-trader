@@ -15,7 +15,9 @@
   >
     <div>
       <p>No assets in portfolio</p>
-      <router-link to="/stocks" class="btn btn-success btn-md">Buy assets now</router-link>
+      <router-link to="/stocks" class="btn btn-success btn-md"
+        >Buy assets now</router-link
+      >
     </div>
   </div>
 </template>

@@ -14,7 +14,7 @@
 
 <script>
 import Header from "@/components/navigation-components/Header.vue";
-import { mapActions, mapState, mapGetters, } from "vuex";
+import { mapActions, mapState, mapGetters } from "vuex";
 import Sidebar from "./components/navigation-components/Sidebar.vue";
 export default {
   data() {
@@ -104,7 +104,6 @@ export default {
   overflow-y: auto;
   outline: 0;
 }
-
 
 @media (min-width: 992px) {
   #app aside {

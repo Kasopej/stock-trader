@@ -12,8 +12,13 @@
     <div class="spinner-border" role="status">
       <span class="visually-hidden">Loading...</span>
     </div>
-    <p class="mb-0">Stocks are loading from the stocks market. Please be patient</p>
-    <p class="mt-0">If stocks are not loaded after 3 minutes, please <router-link to="/profile">sign out</router-link>  and sign back in</p>
+    <p class="mb-0">
+      Stocks are loading from the stocks market. Please be patient
+    </p>
+    <p class="mt-0">
+      If stocks are not loaded after 3 minutes, please
+      <router-link to="/profile">sign out</router-link> and sign back in
+    </p>
   </div>
 </template>
 

@@ -45,7 +45,11 @@
           ><a v-show="name" class="nav-link">{{ name }}</a></router-link
         >
 
-        <li v-if="wallet" class="nav-link fw-bold" style="vertical-align: middle">
+        <li
+          v-if="wallet"
+          class="nav-link fw-bold"
+          style="vertical-align: middle"
+        >
           ${{ account.wallet | setCommas }}
         </li>
       </ul>

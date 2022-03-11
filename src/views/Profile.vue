@@ -39,41 +39,41 @@
     ></ConfirmationModal>
   </main>
 </template>
- 
+
 <script>
 import { mapGetters, mapActions } from "vuex";
 import ConfirmationModal from "../components/reused-components/ConfirmationModal.vue";
 export default {
-    data() {
-        return {
-          modals: {
+  data() {
+    return {
+      modals: {
         confirmSignout: {
           text: `sign out?`,
           customEventName: "signout",
           show: false,
         },
       },
-        };
-    },
-    methods: {
-      ...mapActions(["logout"]),
-      showModal(name) {
+    };
+  },
+  methods: {
+    ...mapActions(["logout"]),
+    showModal(name) {
       this.modals[name].show = true;
     },
-      closeModal(name) {
-        this.modals[name].show = false;
-      },
-      doLogout(event){
-        if (event.response === true) {
+    closeModal(name) {
+      this.modals[name].show = false;
+    },
+    doLogout(event) {
+      if (event.response === true) {
         this.logout();
         this.closeModal("confirmSignout");
       } else this.closeModal("confirmSignout");
-      }
     },
-    computed: {
-        ...mapGetters(["name"]),
-    },
-    components: { ConfirmationModal }
+  },
+  computed: {
+    ...mapGetters(["name"]),
+  },
+  components: { ConfirmationModal },
 };
 </script>
 
