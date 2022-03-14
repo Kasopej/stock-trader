@@ -33,6 +33,7 @@
           name="stockQty"
           :value="qtyToPurchase"
           @input="updateQty($event, 'purchase')"
+          data-testid="purchaseInput"
         />
         <p class="m-0 p-0">
           {{ qtyToPurchase }} x {{ assetDetails.currentPrice | setCommas }} =
@@ -53,6 +54,7 @@
           name="stockQty"
           :value="qtyToSell"
           @input="updateQty($event, 'sell')"
+          data-testid="saleInput"
         />
         <p class="m-0 p-0">
           {{ qtyToSell }} x {{ assetDetails.currentPrice | setCommas }} = ${{

@@ -1,5 +1,5 @@
 <template>
-  <div class="myModal" tabindex="-1">
+  <div class="myModal" tabindex="-1" data-testid="purchaseConfirmationModal">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
