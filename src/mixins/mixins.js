@@ -56,7 +56,6 @@ const stockTransactionActionMixin = {
     buyStockFromAsset(event) {
       if (event.response === true) {
         if (this.qtyToPurchase && this.wallet >= this.sharePurchaseCost) {
-          console.log("performing transaction");
           this.performTransaction(this.sharePurchaseCost * -1)
             .then(() =>
               this.updatePortfolioFromAsset({
@@ -80,7 +79,6 @@ const stockTransactionActionMixin = {
       if (event.response === true) {
         //check quantity case user forces button to be undisabled
         if (this.qtyToSell) {
-          console.log("performing transaction");
           this.updatePortfolioFromAsset({
             asset: this.asset,
             quantity: this.qtyToSell * -1,

@@ -20,6 +20,8 @@ describe("Stock is a component that represents a single stock from the stcck mar
     wrapper = mount(Stock, {
       propsData: {
         share: {
+          ticker: "AAPL",
+          name: "Apple Coporation",
           currentPrice: 20,
           priceChange: 0.5,
         },
@@ -102,7 +104,7 @@ describe("Stock is a component that represents a single stock from the stcck mar
       },
     });
     await fireEvent.click(screen.getByText("Buy"));
-    const confirmModal = screen.getByTestId("purchaseConfirmationModal");
+    const confirmModal = screen.getByText(`buy Apple Coporation stock?`);
     expect(confirmModal).toBeInTheDocument();
     await wrapper.vm.closeModal("confirmBuyStock");
     expect(confirmModal).not.toBeInTheDocument();
