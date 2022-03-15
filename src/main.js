@@ -40,6 +40,5 @@ function installFirebase() {
   };
 
   // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  return app;
+  return initializeApp(firebaseConfig);
 }

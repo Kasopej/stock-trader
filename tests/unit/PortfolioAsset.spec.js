@@ -1,5 +1,5 @@
 import { createLocalVue, mount } from "@vue/test-utils";
-import { fireEvent, screen, render } from "@testing-library/vue";
+import { fireEvent, screen } from "@testing-library/vue";
 import Vuex from "vuex";
 import PortfolioAsset from "@/components/PortfolioAsset.vue";
 

@@ -61,14 +61,6 @@ describe("Stock is a component that represents a single stock from the stcck mar
     });
     expect(screen.getByText("$", { exact: false })).toHaveTextContent("40.00");
   });
-  it("renders the cost of the share purchase quantity", async () => {
-    await fireEvent.input(screen.getByTestId("purchaseInput"), {
-      target: {
-        value: "2",
-      },
-    });
-    expect(screen.getByText("$", { exact: false })).toHaveTextContent("40.00");
-  });
   it("dispatches store actions on confirmation", async () => {
     wrapper.destroy(); // destroys wrapper mounted in beforeEach hook
     localVue.use(Vuex);
