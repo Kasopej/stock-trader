@@ -1,6 +1,5 @@
 import { createLocalVue, mount } from "@vue/test-utils";
 import { fireEvent, screen } from "@testing-library/vue";
-import Vuex from "vuex";
 import Login from "@/views/Login.vue";
 
 describe("Login is a component that allows a user to authenticate themselves by providing an email & password", function () {

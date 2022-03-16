@@ -153,18 +153,6 @@ describe("PortfolioAsset is the component that represents a single asset of a us
     ).toStrictEqual({ ...asset, quantity: -1 });
   });
   it("toggles the display of a confirmation modal", async () => {
-    await fireEvent.input(screen.getByTestId("purchaseInput"), {
-      target: {
-        value: "2",
-      },
-    });
-    await fireEvent.click(screen.getByText("Buy"));
-    const confirmModal = screen.getByText(`buy Apple Coporation share?`);
-    expect(confirmModal).toBeInTheDocument();
-    await wrapper.vm.closeModal("confirmBuyStock");
-    expect(confirmModal).not.toBeInTheDocument();
-  });
-  it("toggles the display of a confirmation modal", async () => {
     await fireEvent.input(screen.getByTestId("saleInput"), {
       target: {
         value: "2",
