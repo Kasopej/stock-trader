@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1647441426410" clover="3.2.0">
-  <project timestamp="1647441426410" name="All files">
-    <metrics statements="393" coveredstatements="64" conditionals="114" coveredconditionals="17" methods="155" coveredmethods="25" elements="662" coveredelements="106" complexity="0" loc="393" ncloc="393" packages="11" files="27" classes="27"/>
+<coverage generated="1647446126560" clover="3.2.0">
+  <project timestamp="1647446126560" name="All files">
+    <metrics statements="389" coveredstatements="68" conditionals="114" coveredconditionals="21" methods="155" coveredmethods="28" elements="658" coveredelements="117" complexity="0" loc="389" ncloc="389" packages="10" files="23" classes="23"/>
     <package name="stock-trader-app">
       <metrics statements="7" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="0"/>
       <file name="gulpfile.js" path="C:\Users\Admin\Desktop\Kasope\Work\Vue Projects\stock-trader-app\gulpfile.js">
@@ -96,20 +96,20 @@
       </file>
     </package>
     <package name="stock-trader-app.src.components.reused-components">
-      <metrics statements="8" coveredstatements="1" conditionals="4" coveredconditionals="0" methods="4" coveredmethods="1"/>
+      <metrics statements="8" coveredstatements="8" conditionals="4" coveredconditionals="4" methods="4" coveredmethods="4"/>
       <file name="ConfirmationModal.vue" path="C:\Users\Admin\Desktop\Kasope\Work\Vue Projects\stock-trader-app\src\components\reused-components\ConfirmationModal.vue">
         <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
         <line num="47" count="2" type="stmt"/>
       </file>
       <file name="InputModal.vue" path="C:\Users\Admin\Desktop\Kasope\Work\Vue Projects\stock-trader-app\src\components\reused-components\InputModal.vue">
-        <metrics statements="7" coveredstatements="0" conditionals="4" coveredconditionals="0" methods="3" coveredmethods="0"/>
-        <line num="47" count="0" type="stmt"/>
-        <line num="53" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="54" count="0" type="stmt"/>
-        <line num="55" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="56" count="0" type="stmt"/>
-        <line num="58" count="0" type="stmt"/>
-        <line num="61" count="0" type="stmt"/>
+        <metrics statements="7" coveredstatements="7" conditionals="4" coveredconditionals="4" methods="3" coveredmethods="3"/>
+        <line num="49" count="5" type="stmt"/>
+        <line num="55" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="56" count="1" type="stmt"/>
+        <line num="57" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="58" count="1" type="stmt"/>
+        <line num="60" count="4" type="stmt"/>
+        <line num="63" count="2" type="stmt"/>
       </file>
     </package>
     <package name="stock-trader-app.src.mixins">
@@ -178,25 +178,6 @@
         <line num="90" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="94" count="0" type="stmt"/>
         <line num="95" count="0" type="stmt"/>
-      </file>
-    </package>
-    <package name="stock-trader-app.src.services.network-services">
-      <metrics statements="4" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-      <file name="axios-account.js" path="C:\Users\Admin\Desktop\Kasope\Work\Vue Projects\stock-trader-app\src\services\network-services\axios-account.js">
-        <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-        <line num="2" count="2" type="stmt"/>
-      </file>
-      <file name="axios-auth.js" path="C:\Users\Admin\Desktop\Kasope\Work\Vue Projects\stock-trader-app\src\services\network-services\axios-auth.js">
-        <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-        <line num="2" count="2" type="stmt"/>
-      </file>
-      <file name="axios-global.js" path="C:\Users\Admin\Desktop\Kasope\Work\Vue Projects\stock-trader-app\src\services\network-services\axios-global.js">
-        <metrics statements="1" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-        <line num="2" count="0" type="stmt"/>
-      </file>
-      <file name="axios-stocks.js" path="C:\Users\Admin\Desktop\Kasope\Work\Vue Projects\stock-trader-app\src\services\network-services\axios-stocks.js">
-        <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-        <line num="2" count="2" type="stmt"/>
       </file>
     </package>
     <package name="stock-trader-app.src.store">

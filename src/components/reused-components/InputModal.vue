@@ -8,6 +8,7 @@
             type="button"
             class="btn-close"
             aria-label="Close"
+            data-testid="closeModalButton"
             @click="close({ response: false })"
           ></button>
         </div>
@@ -18,6 +19,7 @@
             id="fund"
             :value="value"
             @input="updateQty($event)"
+            data-testid="modalInput"
           />
           <p>{{ text }}</p>
         </div>
