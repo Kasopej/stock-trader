@@ -149,7 +149,7 @@ export default {
             .then(() => {
               this.closeModal("profitWalletDialog");
             });
-            return
+          return;
         }
         this.closeModal("profitWalletDialog");
       } else this.closeModal("profitWalletDialog");

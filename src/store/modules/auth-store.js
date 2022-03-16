@@ -89,7 +89,7 @@ const actions = {
       .catch((error) => {
         commit("throwError", { type: "auth refresh error", value: error });
         commit("logout");
-        throw error
+        throw error;
       })
       .then((res) => {
         const data = res.data;

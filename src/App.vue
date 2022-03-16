@@ -25,21 +25,21 @@ export default {
     closeSignOut() {
       this.closeSignOutModal = true;
     },
-    fetchShares(checkAuthenticationBeforeFetch){
-      if(!this.areAllSharesPricesAvailable){
-        if(checkAuthenticationBeforeFetch && this.isAuthenticated){
+    fetchShares(checkAuthenticationBeforeFetch) {
+      if (!this.areAllSharesPricesAvailable) {
+        if (checkAuthenticationBeforeFetch && this.isAuthenticated) {
           this["stockMangementModule/getSymbolsFromMarket"]();
           return;
         }
         this["stockMangementModule/getSymbolsFromMarket"]();
       }
-    }
+    },
   },
 
   created() {
     this.attemptLoginOnLoad();
     //just while I am persisting my full store because of API issues
-    this.fetchShares(true)
+    this.fetchShares(true);
   },
   watch: {
     ["$store.state.authStoreModule.authenticated"]() {

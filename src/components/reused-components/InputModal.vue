@@ -8,7 +8,7 @@
             type="button"
             class="btn-close"
             aria-label="Close"
-            @click="close({response: false})"
+            @click="close({ response: false })"
           ></button>
         </div>
         <div class="modal-body">
@@ -52,8 +52,9 @@ export default {
     updateQty(event) {
       if (+event.target.value < 0) {
         event.target.value = 0;
+      } else if (+event.target.value > this.limit) {
+        event.target.value = this.limit;
       }
-      else if(+event.target.value > this.limit){ event.target.value = this.limit }
       this.value = +event.target.value;
     },
     close(event) {
