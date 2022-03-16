@@ -22,30 +22,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">88.89% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/9</span>
+                <span class='fraction'>8/9</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">50% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/2</span>
+                <span class='fraction'>1/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/4</span>
+                <span class='fraction'>4/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">88.89% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/9</span>
+                <span class='fraction'>8/9</span>
             </div>
         
             
@@ -54,7 +54,7 @@
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -188,14 +188,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -205,15 +202,18 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -277,11 +277,11 @@
 &lt;/template&gt;
 &nbsp;
 &lt;script&gt;
-<span class="cstat-no" title="statement not covered" >import { mapGetters, mapActions } from "vuex";</span>
-<span class="cstat-no" title="statement not covered" >import ConfirmationModal from "../components/reused-components/ConfirmationModal.vue";</span>
+import { mapGetters, mapActions } from "vuex";
+import ConfirmationModal from "../components/reused-components/ConfirmationModal.vue";
 export default {
-<span class="fstat-no" title="function not covered" >  data() {</span>
-<span class="cstat-no" title="statement not covered" >    return {</span>
+  data() {
+    return {
       modals: {
         confirmSignout: {
           text: `sign out?`,
@@ -293,16 +293,16 @@ export default {
   },
   methods: {
     ...mapActions(["logout"]),
-<span class="fstat-no" title="function not covered" >    showModal(name) {</span>
-<span class="cstat-no" title="statement not covered" >      this.modals[name].show = true;</span>
+    showModal(name) {
+      this.modals[name].show = true;
     },
-<span class="fstat-no" title="function not covered" >    closeModal(name) {</span>
-<span class="cstat-no" title="statement not covered" >      this.modals[name].show = false;</span>
+    closeModal(name) {
+      this.modals[name].show = false;
     },
-<span class="fstat-no" title="function not covered" >    confirmLogout(event) {</span>
-<span class="cstat-no" title="statement not covered" >      if (event.response === true) {</span>
-<span class="cstat-no" title="statement not covered" >        this.logout();</span>
-<span class="cstat-no" title="statement not covered" >        this.closeModal("confirmSignout");</span>
+    confirmLogout(event) {
+<span class="missing-if-branch" title="else path not taken" >E</span>      if (event.response === true) {
+        this.logout();
+        this.closeModal("confirmSignout");
 <span class="cstat-no" title="statement not covered" >      } else this.closeModal("confirmSignout");</span>
     },
   },
@@ -330,7 +330,7 @@ export default {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Wed Mar 16 2022 16:55:26 GMT+0100 (West Africa Standard Time)
+                at Wed Mar 16 2022 22:26:13 GMT+0100 (West Africa Standard Time)
             </div>
         </div>
         <script src="..\..\..\prettify.js"></script>
