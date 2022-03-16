@@ -26,9 +26,6 @@
 import PortfolioAsset from "../components/PortfolioAsset.vue";
 import { mapState } from "vuex";
 export default {
-  data() {
-    return {};
-  },
   components: { PortfolioAsset },
   computed: {
     ...mapState("stockMangementModule", ["portfolio"]),

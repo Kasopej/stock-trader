@@ -1,27 +1,18 @@
 <template>
   <div id="app" class="d-flex">
-    <Sidebar @openSignOut="closeSignOutModal = false"></Sidebar>
+    <Sidebar></Sidebar>
     <main>
       <Header></Header>
       <router-view />
-      <sign-out-modal
-        v-if="!closeSignOutModal"
-        @close="closeSignOutModal = true"
-      ></sign-out-modal>
     </main>
   </div>
 </template>
 
 <script>
 import Header from "@/components/navigation-components/Header.vue";
-import { mapActions, mapState, mapGetters } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 import Sidebar from "./components/navigation-components/Sidebar.vue";
 export default {
-  data() {
-    return {
-      closeSignOutModal: true,
-    };
-  },
   components: {
     Header,
     Sidebar,
@@ -30,34 +21,39 @@ export default {
     ...mapActions([
       "attemptLoginOnLoad",
       "stockMangementModule/getSymbolsFromMarket",
-      "fetchUserAccount",
     ]),
     closeSignOut() {
       this.closeSignOutModal = true;
     },
+    fetchShares(checkAuthenticationBeforeFetch){
+      if(!this.areAllSharesPricesAvailable){
+        if(checkAuthenticationBeforeFetch && this.isAuthenticated){
+          this["stockMangementModule/getSymbolsFromMarket"]();
+          return;
+        }
+        this["stockMangementModule/getSymbolsFromMarket"]();
+      }
+    }
   },
 
   created() {
     this.attemptLoginOnLoad();
     //just while I am persisting my full store because of API issues
-    if (!this.areAllSharesPricesAvailable) {
-      this["stockMangementModule/getSymbolsFromMarket"]();
-    }
+    this.fetchShares(true)
   },
   watch: {
     ["$store.state.authStoreModule.authenticated"]() {
       if (this.$store.state.authStoreModule.authenticated) {
         this.$router.push("/home");
+        this.fetchShares(false);
       } else {
         this.$router.push("/login");
       }
     },
   },
   computed: {
-    ...mapState("stockMangementModule", {
-      noOfShares: (state) => state.shares.length,
-    }),
     ...mapGetters("stockMangementModule", ["areAllSharesPricesAvailable"]),
+    ...mapGetters(["isAuthenticated"]),
   },
 };
 </script>

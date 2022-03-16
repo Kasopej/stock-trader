@@ -35,7 +35,7 @@
       v-if="modals.confirmSignout.show"
       :text="modals.confirmSignout.text"
       :customEventName="modals.confirmSignout.customEventName"
-      @[modals.confirmSignout.customEventName]="doLogout"
+      @[modals.confirmSignout.customEventName]="confirmLogout"
     ></ConfirmationModal>
   </main>
 </template>
@@ -63,7 +63,7 @@ export default {
     closeModal(name) {
       this.modals[name].show = false;
     },
-    doLogout(event) {
+    confirmLogout(event) {
       if (event.response === true) {
         this.logout();
         this.closeModal("confirmSignout");

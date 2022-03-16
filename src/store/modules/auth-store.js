@@ -44,6 +44,7 @@ const actions = {
       )
       .catch((error) => {
         commit("throwError", { type: "login error", value: error });
+        throw error;
       })
       .then((res) => {
         const authData = res.data;
@@ -88,6 +89,7 @@ const actions = {
       .catch((error) => {
         commit("throwError", { type: "auth refresh error", value: error });
         commit("logout");
+        throw error
       })
       .then((res) => {
         const data = res.data;
@@ -100,11 +102,11 @@ const actions = {
         dispatch("persistAuthData");
       });
   },
-  attemptLoginOnLoad({ commit, dispatch, rootState }) {
+  attemptLoginOnLoad({ commit, dispatch }) {
     try {
       const email = localStorage.getItem("email");
       const authData = JSON.parse(localStorage.getItem("data"));
-      if (authData.expiresIn < new Date().valueOf() || !rootState.email) {
+      if (authData.expiresIn < new Date().valueOf() || !email) {
         throw new Error("Authentication has expired");
       }
       commit("storeEmail", email);

@@ -112,13 +112,8 @@ export default {
         this.$refs.repeatPassword.type === "password" ? "text" : "password";
     },
     submitLoginForm() {
-      if (this.formValidated)
+      if (this.formValidated && this.termsAreAgreed)
         this.$store.dispatch("attemptUserRegistration", this.user);
-    },
-  },
-  watch: {
-    ["$store.state.authStoreModule.authenticated"]() {
-      this.$router.push("/home");
     },
   },
 };

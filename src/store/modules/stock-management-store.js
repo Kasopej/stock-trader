@@ -102,7 +102,6 @@ const actions = {
           if (endInterval) {
             commit("setSharePrices", priceDataArray);
             commit("updateAssetsPriceDataFromFetchedStocksData", state.shares);
-            //let dateString = new Date().toISOString();
             let lastFridayDate = dayjs()
               .day(5)
               .subtract(7, "d")
@@ -274,7 +273,7 @@ const mutations = {
     });
   },
   updateAssetsPriceDataFromFetchedStocksData(state) {
-    const assetsToUpdate = state.shares.forEach((share) => {
+    state.shares.forEach((share) => {
       for (const asset of state.portfolio) {
         if (asset.assetDetails.ticker === share.ticker) {
           asset.assetDetails.currentPrice = share.currentPrice;
