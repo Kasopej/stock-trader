@@ -11,6 +11,7 @@
               <button
                 class="btn btn-success w-50"
                 @click="showModal('fundWalletDialog')"
+                data-testid="depositBtn"
               >
                 <i class="fa-solid fa-arrow-right"></i>
               </button>
@@ -30,6 +31,7 @@
               <button
                 class="btn btn-success w-50"
                 @click="showModal('profitWalletDialog')"
+                data-testid="withdrawBtn"
               >
                 <i class="fa-solid fa-arrow-left"></i>
               </button>
@@ -118,7 +120,6 @@ export default {
     ...mapActions("stockMangementModule", ["getHistoricalPriceDataForAssets"]),
     fundWallet(event) {
       if (event.response) {
-        console.log("performing transaction");
         this.performTransaction(event.value)
           .then(() =>
             this.updateCardTransactionLog({
@@ -129,7 +130,6 @@ export default {
             })
           )
           .then(() => {
-            this.qtyToPurchase = 0;
             this.closeModal("fundWalletDialog");
           });
       } else this.closeModal("fundWalletDialog");

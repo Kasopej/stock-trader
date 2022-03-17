@@ -103,6 +103,7 @@ const actions = {
       });
   },
   attemptLoginOnLoad({ commit, dispatch }) {
+    console.log("Login on load");
     try {
       const email = localStorage.getItem("email");
       const authData = JSON.parse(localStorage.getItem("data"));

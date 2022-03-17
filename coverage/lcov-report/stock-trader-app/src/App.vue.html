@@ -22,30 +22,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">73.33% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/15</span>
+                <span class='fraction'>11/15</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">62.5% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/8</span>
+                <span class='fraction'>5/8</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">75% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/4</span>
+                <span class='fraction'>3/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">73.33% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/15</span>
+                <span class='fraction'>11/15</span>
             </div>
         
             
@@ -54,7 +54,7 @@
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line medium'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -179,9 +179,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -196,26 +196,26 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -291,9 +291,9 @@
 &lt;/template&gt;
 &nbsp;
 &lt;script&gt;
-<span class="cstat-no" title="statement not covered" >import Header from "@/components/navigation-components/Header.vue";</span>
-<span class="cstat-no" title="statement not covered" >import { mapActions, mapGetters } from "vuex";</span>
-<span class="cstat-no" title="statement not covered" >import Sidebar from "./components/navigation-components/Sidebar.vue";</span>
+import Header from "@/components/navigation-components/Header.vue";
+import { mapActions, mapGetters } from "vuex";
+import Sidebar from "./components/navigation-components/Sidebar.vue";
 export default {
   components: {
     Header,
@@ -307,27 +307,27 @@ export default {
 <span class="fstat-no" title="function not covered" >    closeSignOut() {</span>
 <span class="cstat-no" title="statement not covered" >      this.closeSignOutModal = true;</span>
     },
-<span class="fstat-no" title="function not covered" >    fetchShares(checkAuthenticationBeforeFetch) {</span>
-<span class="cstat-no" title="statement not covered" >      if (!this.areAllSharesPricesAvailable) {</span>
-<span class="cstat-no" title="statement not covered" >        if (checkAuthenticationBeforeFetch &amp;&amp; this.isAuthenticated) {</span>
+    fetchShares(checkAuthenticationBeforeFetch) {
+<span class="missing-if-branch" title="else path not taken" >E</span>      if (!this.areAllSharesPricesAvailable) {
+<span class="missing-if-branch" title="if path not taken" >I</span>        if (checkAuthenticationBeforeFetch &amp;&amp; this.isAuthenticated) {
 <span class="cstat-no" title="statement not covered" >          this["stockMangementModule/getSymbolsFromMarket"]();</span>
 <span class="cstat-no" title="statement not covered" >          return;</span>
         }
-<span class="cstat-no" title="statement not covered" >        this["stockMangementModule/getSymbolsFromMarket"]();</span>
+        this["stockMangementModule/getSymbolsFromMarket"]();
       }
     },
   },
 &nbsp;
-<span class="fstat-no" title="function not covered" >  created() {</span>
-<span class="cstat-no" title="statement not covered" >    this.attemptLoginOnLoad();</span>
+  created() {
+    this.attemptLoginOnLoad();
     //just while I am persisting my full store because of API issues
-<span class="cstat-no" title="statement not covered" >    this.fetchShares(true);</span>
+    this.fetchShares(true);
   },
   watch: {
-<span class="fstat-no" title="function not covered" >    ["$store.state.authStoreModule.authenticated"]() {</span>
-<span class="cstat-no" title="statement not covered" >      if (this.$store.state.authStoreModule.authenticated) {</span>
-<span class="cstat-no" title="statement not covered" >        this.$router.push("/home");</span>
-<span class="cstat-no" title="statement not covered" >        this.fetchShares(false);</span>
+    ["$store.state.authStoreModule.authenticated"]() {
+<span class="missing-if-branch" title="else path not taken" >E</span>      if (this.$store.state.authStoreModule.authenticated) {
+        this.$router.push("/home");
+        this.fetchShares(false);
       } else {
 <span class="cstat-no" title="statement not covered" >        this.$router.push("/login");</span>
       }
@@ -399,7 +399,7 @@ export default {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Wed Mar 16 2022 22:49:51 GMT+0100 (West Africa Standard Time)
+                at Thu Mar 17 2022 10:46:47 GMT+0100 (West Africa Standard Time)
             </div>
         </div>
         <script src="..\..\prettify.js"></script>

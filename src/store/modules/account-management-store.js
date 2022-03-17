@@ -13,7 +13,7 @@ const getters = {
     return state.account?.wallet;
   },
   profit(state) {
-    return state.account?.profitWallet ? state.account?.profitWallet : 0;
+    return state.account?.profitWallet ? state.account.profitWallet : 0;
   },
 };
 const actions = {
