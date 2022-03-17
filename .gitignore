@@ -2,7 +2,7 @@
 node_modules
 .scannerwork
 dist
-
+coverage
 
 
 # local env files
