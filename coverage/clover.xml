@@ -1,21 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1647510408001" clover="3.2.0">
-  <project timestamp="1647510408001" name="All files">
-    <metrics statements="388" coveredstatements="107" conditionals="114" coveredconditionals="32" methods="155" coveredmethods="46" elements="657" coveredelements="185" complexity="0" loc="388" ncloc="388" packages="10" files="23" classes="23"/>
-    <package name="stock-trader-app">
-      <metrics statements="7" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="0"/>
-      <file name="gulpfile.js" path="C:\Users\Admin\Desktop\Kasope\Work\Vue Projects\stock-trader-app\gulpfile.js">
-        <metrics statements="7" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="0"/>
-        <line num="8" count="0" type="stmt"/>
-        <line num="9" count="0" type="stmt"/>
-        <line num="10" count="0" type="stmt"/>
-        <line num="13" count="0" type="stmt"/>
-        <line num="14" count="0" type="stmt"/>
-        <line num="22" count="0" type="stmt"/>
-        <line num="23" count="0" type="stmt"/>
-      </file>
-    </package>
-    <package name="stock-trader-app.src">
+<coverage generated="1647510607610" clover="3.2.0">
+  <project timestamp="1647510607611" name="All files">
+    <metrics statements="381" coveredstatements="107" conditionals="114" coveredconditionals="32" methods="153" coveredmethods="46" elements="648" coveredelements="185" complexity="0" loc="381" ncloc="381" packages="9" files="22" classes="22"/>
+    <package name="src">
       <metrics statements="27" coveredstatements="11" conditionals="8" coveredconditionals="5" methods="7" coveredmethods="3"/>
       <file name="App.vue" path="C:\Users\Admin\Desktop\Kasope\Work\Vue Projects\stock-trader-app\src\App.vue">
         <metrics statements="15" coveredstatements="11" conditionals="8" coveredconditionals="5" methods="4" coveredmethods="3"/>
@@ -51,7 +38,7 @@
         <line num="43" count="0" type="stmt"/>
       </file>
     </package>
-    <package name="stock-trader-app.src.components">
+    <package name="src.components">
       <metrics statements="22" coveredstatements="20" conditionals="4" coveredconditionals="2" methods="16" coveredmethods="14"/>
       <file name="PortfolioAsset.vue" path="C:\Users\Admin\Desktop\Kasope\Work\Vue Projects\stock-trader-app\src\components\PortfolioAsset.vue">
         <metrics statements="12" coveredstatements="11" conditionals="2" coveredconditionals="1" methods="9" coveredmethods="8"/>
@@ -82,7 +69,7 @@
         <line num="89" count="2" type="stmt"/>
       </file>
     </package>
-    <package name="stock-trader-app.src.components.navigation-components">
+    <package name="src.components.navigation-components">
       <metrics statements="4" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="0"/>
       <file name="Header.vue" path="C:\Users\Admin\Desktop\Kasope\Work\Vue Projects\stock-trader-app\src\components\navigation-components\Header.vue">
         <metrics statements="3" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="0"/>
@@ -95,7 +82,7 @@
         <line num="79" count="1" type="stmt"/>
       </file>
     </package>
-    <package name="stock-trader-app.src.components.reused-components">
+    <package name="src.components.reused-components">
       <metrics statements="8" coveredstatements="8" conditionals="4" coveredconditionals="4" methods="4" coveredmethods="4"/>
       <file name="ConfirmationModal.vue" path="C:\Users\Admin\Desktop\Kasope\Work\Vue Projects\stock-trader-app\src\components\reused-components\ConfirmationModal.vue">
         <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
@@ -112,7 +99,7 @@
         <line num="63" count="4" type="stmt"/>
       </file>
     </package>
-    <package name="stock-trader-app.src.mixins">
+    <package name="src.mixins">
       <metrics statements="39" coveredstatements="28" conditionals="22" coveredconditionals="15" methods="13" coveredmethods="10"/>
       <file name="mixins.js" path="C:\Users\Admin\Desktop\Kasope\Work\Vue Projects\stock-trader-app\src\mixins\mixins.js">
         <metrics statements="39" coveredstatements="28" conditionals="22" coveredconditionals="15" methods="13" coveredmethods="10"/>
@@ -157,7 +144,7 @@
         <line num="92" count="0" type="stmt"/>
       </file>
     </package>
-    <package name="stock-trader-app.src.router">
+    <package name="src.router">
       <metrics statements="17" coveredstatements="0" conditionals="10" coveredconditionals="0" methods="9" coveredmethods="0"/>
       <file name="index.js" path="C:\Users\Admin\Desktop\Kasope\Work\Vue Projects\stock-trader-app\src\router\index.js">
         <metrics statements="17" coveredstatements="0" conditionals="10" coveredconditionals="0" methods="9" coveredmethods="0"/>
@@ -180,7 +167,7 @@
         <line num="95" count="0" type="stmt"/>
       </file>
     </package>
-    <package name="stock-trader-app.src.store">
+    <package name="src.store">
       <metrics statements="4" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="0"/>
       <file name="index.js" path="C:\Users\Admin\Desktop\Kasope\Work\Vue Projects\stock-trader-app\src\store\index.js">
         <metrics statements="4" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="0"/>
@@ -190,7 +177,7 @@
         <line num="26" count="0" type="stmt"/>
       </file>
     </package>
-    <package name="stock-trader-app.src.store.modules">
+    <package name="src.store.modules">
       <metrics statements="217" coveredstatements="12" conditionals="50" coveredconditionals="0" methods="76" coveredmethods="0"/>
       <file name="account-management-store.js" path="C:\Users\Admin\Desktop\Kasope\Work\Vue Projects\stock-trader-app\src\store\modules\account-management-store.js">
         <metrics statements="49" coveredstatements="4" conditionals="10" coveredconditionals="0" methods="21" coveredmethods="0"/>
@@ -422,7 +409,7 @@
         <line num="290" count="0" type="stmt"/>
       </file>
     </package>
-    <package name="stock-trader-app.src.views">
+    <package name="src.views">
       <metrics statements="43" coveredstatements="26" conditionals="16" coveredconditionals="6" methods="23" coveredmethods="15"/>
       <file name="Home.vue" path="C:\Users\Admin\Desktop\Kasope\Work\Vue Projects\stock-trader-app\src\views\Home.vue">
         <metrics statements="3" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="0"/>

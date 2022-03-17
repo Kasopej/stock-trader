@@ -10,8 +10,8 @@ import { initializeApp } from "firebase/app";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
-const firebaseApp = installFirebase();
-console.log(firebaseApp);
+installFirebase();
+
 Vue.filter("setCommas", function (value) {
   try {
     value = value.toFixed(2);

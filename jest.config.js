@@ -6,6 +6,7 @@ module.exports = {
     "**/*.{js,jsx,vue}",
     "!**/jest.config.js",
     "!**/babel.config.js",
+    "!**/gulpfile.js",
     "!**/node_modules/**",
     "!**/vendor/**",
     "!**/network-services/**",
