@@ -39,6 +39,7 @@
     "gulp": "^4.0.2",
     "gulp-sass": "^5.1.0",
     "jest-location-mock": "^1.0.9",
+    "lodash": "^4.17.21",
     "prettier": "^2.2.1",
     "sass": "^1.49.8",
     "vue-template-compiler": "^2.6.11"

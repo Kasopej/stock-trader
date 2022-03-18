@@ -13,7 +13,7 @@ const getters = {
     return state.account?.wallet;
   },
   profit(state) {
-    return state.account?.profitWallet ? state.account.profitWallet : 0;
+    return state.account?.profitWallet;
   },
 };
 const actions = {
@@ -25,11 +25,13 @@ const actions = {
         "users.json" + `?auth=${rootState.authStoreModule.idToken}`,
         payload
       )
-      .then(() => {
+      .then((val) => {
+        console.log(val);
         dispatch("fetchUserAccount");
         dispatch("persistAuthData");
       })
       .catch((error) => {
+        console.log(error);
         commit("throwError", { type: "createUserAccountError", value: error });
       });
   },
@@ -41,6 +43,8 @@ const actions = {
         let userAccount;
         for (const userIndex in data) {
           if (data[userIndex].email === rootState.email) {
+            console.log("found account");
+            console.log(data[userIndex].email);
             userAccount = data[userIndex];
             commit("stockMangementModule/setPortfolio", userAccount.portfolio);
             delete userAccount.portfolio;
