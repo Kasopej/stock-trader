@@ -58,7 +58,7 @@ const actions = {
       });
   },
   updateUserAccount({ state, rootState, dispatch, commit }, payload) {
-    if (state.account.id) {
+    if (state.account?.id) {
       return axiosAccountInstance
         .patch(
           `users/${state.account.id}.json` +
@@ -66,7 +66,9 @@ const actions = {
           payload
         )
         .then(() => {
-          return dispatch("fetchUserAccountUpdates");
+          return dispatch(
+            "fetchUserAccountUpdates"
+          ); /*Am I returning this? or returning the promise that returns this dispatch? How about using async/await and then returning this dispatch after the await */
         });
     } else
       commit(

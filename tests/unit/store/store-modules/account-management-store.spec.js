@@ -10,9 +10,9 @@ describe("account-management-store is a store module that manages the account of
     ctx = {
       dispatch: jest.fn(),
       commit: jest.fn(),
+      state: { account: null },
       rootState: {
         authStoreModule: {},
-        accountMangementModule: {},
         stockMangementModule: {},
       },
     };
@@ -92,6 +92,7 @@ describe("account-management-store is a store module that manages the account of
       },
     });
     await accountMangementModule.actions.fetchUserAccount(ctx);
+    expect(axios.get).toHaveBeenCalledTimes(1);
     expect(ctx.commit.mock.calls).toEqual([
       ["stockMangementModule/setPortfolio", [{ quantity: 10 }]],
       [
@@ -118,6 +119,15 @@ describe("account-management-store is a store module that manages the account of
       },
     });
     await accountMangementModule.actions.fetchUserAccount(ctx);
+    expect(axios.get).toHaveBeenCalledTimes(1);
     expect(ctx.dispatch).toHaveBeenCalledWith("logout");
+  });
+  it("has a updateUserAccount action which patches the current user account on the DB with an update payload. But if the user account does not have an id token field, it does not execute the patch", () => {
+    accountMangementModule.actions.updateUserAccount(ctx, { wallet: 200 });
+    expect(axios.patch).not.toHaveBeenCalled();
+    expect(ctx.commit).toHaveBeenCalledWith(
+      "throwStoreError",
+      "user not identified. Please refresh your page"
+    );
   });
 });
