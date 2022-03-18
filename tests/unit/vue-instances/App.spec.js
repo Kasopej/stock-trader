@@ -22,6 +22,7 @@ describe("App is the root Vue instance", function () {
       mocks: {
         $router,
       },
+      stubs: ["router-view"],
     });
   });
   afterEach(() => {
