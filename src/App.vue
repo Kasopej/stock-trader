@@ -27,9 +27,12 @@ export default {
     },
     fetchShares(checkAuthenticationBeforeFetch) {
       if (!this.areAllSharesPricesAvailable) {
-        if (checkAuthenticationBeforeFetch && this.isAuthenticated) {
-          this["stockMangementModule/getSymbolsFromMarket"]();
-          return;
+        if (checkAuthenticationBeforeFetch) {
+          if(this.isAuthenticated) {
+            this["stockMangementModule/getSymbolsFromMarket"]();
+            return;
+          }
+          else return;
         }
         this["stockMangementModule/getSymbolsFromMarket"]();
       }

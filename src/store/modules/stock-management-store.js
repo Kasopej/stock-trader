@@ -68,11 +68,8 @@ const actions = {
         const arrayOfSymbols = state.shares.map((element) => {
           return element.ticker;
         });
-        return arrayOfSymbols;
+        if(arrayOfSymbols.length) dispatch("getPriceDataForShares", arrayOfSymbols);
       })
-      .then((symbols) => {
-        dispatch("getPriceDataForShares", symbols);
-      });
     setTimeout(() => {
       dispatch("getSymbolsFromMarket");
     }, 43200000);
@@ -88,7 +85,7 @@ const actions = {
         .get("", {
           baseURL: `https://yfapi.net/v6/finance/quote?region=US&lang=en&symbols=${queryURLForTenShares}`,
           headers: {
-            "X-API-KEY": "JFNit9EO3wadKcooQXZVu85ZyzXFAMqd2dDYb89e",
+            "X-API-KEY": "ub01U3BpIb7btlg8e6cD41azFJqmDCt76HUMA019",
             accept: "application/json",
           },
         })
@@ -111,7 +108,7 @@ const actions = {
         });
       start += 10;
       end += 10;
-      if (start === symbols.length) {
+      if (start >= symbols.length) {
         endInterval = true;
         clearInterval(interval);
       }
@@ -177,7 +174,6 @@ const actions = {
             } catch (error) {
               priceDataArray.splice(priceDataArray.length, 0, 0);
             }
-            console.log(priceDataArray);
             if (endInterval) {
               commit("setHistoricalPricesOnAssets", priceDataArray);
               dispatch(

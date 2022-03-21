@@ -17,7 +17,7 @@ const getters = {
   },
 };
 const actions = {
-  createNewUserAccount({ dispatch, commit, rootState }, payload) {
+  async createNewUserAccount({ dispatch, commit, rootState }, payload) {
     delete payload.password;
     payload = { ...payload, wallet: 0, profitWallet: 0, portfolio: null };
     axiosAccountInstance
@@ -25,8 +25,7 @@ const actions = {
         "users.json" + `?auth=${rootState.authStoreModule.idToken}`,
         payload
       )
-      .then((val) => {
-        console.log(val);
+      .then(() => {
         dispatch("fetchUserAccount");
         dispatch("persistAuthData");
       })
@@ -43,8 +42,6 @@ const actions = {
         let userAccount;
         for (const userIndex in data) {
           if (data[userIndex].email === rootState.email) {
-            console.log("found account");
-            console.log(data[userIndex].email);
             userAccount = data[userIndex];
             commit("stockMangementModule/setPortfolio", userAccount.portfolio);
             delete userAccount.portfolio;
@@ -59,7 +56,6 @@ const actions = {
   },
   updateUserAccount({ state, rootState, dispatch, commit }, payload) {
     if (state.account?.id) {
-      console.log("uodating account");
       return axiosAccountInstance
         .patch(
           `users/${state.account.id}.json` +
@@ -91,7 +87,6 @@ const actions = {
       });
   },
   performTransaction({ commit, dispatch, state }, amount) {
-    console.log("in wallet");
     commit("updateWallet", amount);
     return dispatch("updateUserAccount", { wallet: state.account.wallet });
   },

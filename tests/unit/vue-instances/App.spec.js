@@ -32,10 +32,10 @@ describe("App is the root Vue instance", function () {
   it("It dispatches an authentication action once created", () => {
     expect(store.dispatch).toHaveBeenCalledWith("attemptLoginOnLoad");
   });
-  it("It pushes a new route record to the router object if the authentication state changes", async () => {
+  it("It pushes a new route record to the router object if the authentication state changes to true", async () => {
     wrapper.vm.$store.state.authStoreModule.authenticated = true;
     expect.assertions(2);
-    expect(store.dispatch).toHaveBeenCalledTimes(2);
+    expect(store.dispatch).toHaveBeenCalledTimes(1);
     await wrapper.vm.$nextTick();
     expect(wrapper.vm.$router.push).toBeCalled();
   });
