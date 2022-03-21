@@ -1,6 +1,5 @@
 import axios from "axios";
 
-//import cloneDeep from "lodash/cloneDeep";
 let accountMangementModule, ctx;
 describe("account-management-store is a store module that manages the account of the user, and all operations performed on the account", function () {
   beforeEach(async () => {
@@ -12,7 +11,7 @@ describe("account-management-store is a store module that manages the account of
       commit: jest.fn(),
       state: { account: null },
       rootState: {
-        authStoreModule: {},
+        authStoreModule: { idToken: "qwertyuio" },
         stockMangementModule: {},
       },
     };
@@ -21,6 +20,7 @@ describe("account-management-store is a store module that manages the account of
     accountMangementModule.state.account = null;
     jest.resetAllMocks();
   });
+  /* This section of test cases covers getters */
   it("has a name getter that returns the name of the user extracting it from the email. If no email has been set, it returns an empty string", () => {
     expect(
       accountMangementModule.getters.name(accountMangementModule.state)
@@ -60,6 +60,7 @@ describe("account-management-store is a store module that manages the account of
       accountMangementModule.getters.profit(accountMangementModule.state)
     ).toBe(100);
   });
+  /* This section of test cases covers actions */
   it("has a createNewUserAccount action that posts a new user account to the users database. If post is successful, it dispatches store actions", async () => {
     axios.post.mockResolvedValue(1);
     await accountMangementModule.actions.createNewUserAccount(ctx, {
@@ -122,6 +123,15 @@ describe("account-management-store is a store module that manages the account of
     expect(axios.get).toHaveBeenCalledTimes(1);
     expect(ctx.dispatch).toHaveBeenCalledWith("logout");
   });
+  it("has a updateUserAccount action which patches the current user account on the DB with an update payload.", async () => {
+    axios.patch.mockResolvedValue(1);
+    ctx.state.account = { id: "abcdefg" };
+    await accountMangementModule.actions.updateUserAccount(ctx, {
+      wallet: 200,
+    });
+    expect(axios.patch).toHaveBeenCalled();
+    expect(ctx.dispatch).toHaveBeenCalledWith("fetchUserAccountUpdates");
+  });
   it("has a updateUserAccount action which patches the current user account on the DB with an update payload. But if the user account does not have an id token field, it does not execute the patch", () => {
     accountMangementModule.actions.updateUserAccount(ctx, { wallet: 200 });
     expect(axios.patch).not.toHaveBeenCalled();
@@ -129,5 +139,100 @@ describe("account-management-store is a store module that manages the account of
       "throwStoreError",
       "user not identified. Please refresh your page"
     );
+  });
+  it("has a fetchUserAccountUpdates action which fetches the user account on the DB after any updates have been carried out. But if the user account does not have an id token field, the action throws an error", async () => {
+    try {
+      await accountMangementModule.actions.fetchUserAccountUpdates(ctx);
+    } catch (error) {
+      expect(axios.get).not.toHaveBeenCalled();
+      expect(ctx.commit).not.toHaveBeenCalled();
+    }
+  });
+  it("has a fetchUserAccountUpdates action which fetches the user account on the DB after any updates have been carried out.", async () => {
+    axios.get.mockResolvedValue({
+      data: {
+        abcdefg: {
+          portfolio: [{ quantity: 10 }],
+        },
+      },
+    });
+    ctx.state.account = { id: "abcdefg" };
+    await accountMangementModule.actions.fetchUserAccountUpdates(ctx);
+    expect(ctx.commit).toHaveBeenCalledTimes(2);
+  });
+  it("has a performTransaction action which commits a mutation to modify the user's wallet, then dispatches an action to patch this change into the DB", async () => {
+    ctx.state.account = { wallet: 100 };
+    await accountMangementModule.actions.performTransaction(ctx, 100);
+    expect(ctx.commit).toHaveBeenCalled();
+    expect(ctx.dispatch).toHaveBeenCalled();
+  });
+  it("has a performTransactionOnProfitWallet action which commits a mutation to modify the user's profit wallet, then dispatches an action to patch this change into the DB", async () => {
+    ctx.state.account = { profitWallet: 100 };
+    await accountMangementModule.actions.performTransactionOnProfitWallet(
+      ctx,
+      100
+    );
+    expect(ctx.commit).toHaveBeenCalled();
+    expect(ctx.dispatch).toHaveBeenCalled();
+  });
+  it("has a updateCardTransactionLog action which commits a mutation to modify the user's transaction records, then dispatches an action to patch this change into the DB", async () => {
+    ctx.state.account = { cardTransactionsLog: [] };
+    await accountMangementModule.actions.updateCardTransactionLog(ctx, {
+      location: "profit wallet",
+    });
+    expect(ctx.commit).toHaveBeenCalled();
+    expect(ctx.dispatch).toHaveBeenCalled();
+  });
+  /* This section of test cases covers mutations */
+  it("has a storeUserAccount mutation that saves a user account payload received from the DB into the application store. It adds an empty ransaction log array if no logs are in the payload", () => {
+    expect(accountMangementModule.state.account).toBeNull();
+    accountMangementModule.mutations.storeUserAccount(
+      accountMangementModule.state,
+      { id: "abcdefg", email: "kasopej@gmail.com" }
+    );
+    expect(accountMangementModule.state.account).toEqual(
+      expect.objectContaining({ id: "abcdefg", email: "kasopej@gmail.com" })
+    );
+    expect(
+      "cardTransactionsLog" in accountMangementModule.state.account
+    ).toBeTruthy();
+  });
+  it("has a updateWallet mutation that updates (increment or decrement) the user's wallet", () => {
+    accountMangementModule.state.account = {
+      wallet: 50,
+    };
+    accountMangementModule.mutations.updateWallet(
+      accountMangementModule.state,
+      -10
+    );
+    expect(accountMangementModule.state.account.wallet).toBe(40);
+  });
+  it("has a setProfitWallet mutation that sets the profit wallet. The profit payload for this action comes from calculating the profit value of the assets", () => {
+    accountMangementModule.state.account = {
+      profitWallet: 0,
+    };
+    accountMangementModule.mutations.setProfitWallet(
+      accountMangementModule.state,
+      100
+    );
+    expect(accountMangementModule.state.account.profitWallet).toBe(100);
+  });
+  it("has a updateProfitWallet mutation that updates the profit wallet. The update payload comes from a transaction on the profit wallet", () => {
+    accountMangementModule.state.account = {
+      profitWallet: 100,
+    };
+    accountMangementModule.mutations.updateProfitWallet(
+      accountMangementModule.state,
+      50
+    );
+    expect(accountMangementModule.state.account.profitWallet).toBe(150);
+  });
+  it("has a clearAccount mutation that sets the account to null", () => {
+    accountMangementModule.state.account = {
+      profitWallet: 100,
+    };
+    expect(accountMangementModule.state.account).not.toBeNull();
+    accountMangementModule.mutations.clearAccount(accountMangementModule.state);
+    expect(accountMangementModule.state.account).toBeNull();
   });
 });

@@ -59,6 +59,7 @@ const actions = {
   },
   updateUserAccount({ state, rootState, dispatch, commit }, payload) {
     if (state.account?.id) {
+      console.log("uodating account");
       return axiosAccountInstance
         .patch(
           `users/${state.account.id}.json` +
