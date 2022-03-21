@@ -8,9 +8,7 @@ import stockMangementModule from "./modules/stock-management-store";
 import createPersistedState from "vuex-persistedstate";
 Vue.use(Vuex);
 
-export default new Vuex.Store({
-  /* eslint-disable no-undef */
-  plugins: [createPersistedState()],
+export const storeData = {
   state: {
     storeError: "",
   },
@@ -20,7 +18,7 @@ export default new Vuex.Store({
       state.storeError = error;
     },
     clearError(state) {
-      state.error = null;
+      state.storeError = null;
     },
     storeEmail(state, email) {
       state.email = email;
@@ -35,4 +33,9 @@ export default new Vuex.Store({
       ...stockMangementModule,
     },
   },
+};
+export default new Vuex.Store({
+  /* eslint-disable no-undef */
+  plugins: [createPersistedState()],
+  ...storeData,
 });
