@@ -1,6 +1,5 @@
-import axios from "axios";
 describe("Parent store is where the modularized store is arranged. It consists of several store modules, however it has its own functions (mutations & getters)", function () {
-  let mutations, state, ctx;
+  let mutations, state;
   beforeEach(() => {
     mutations = {
       throwStoreError(state, error) {

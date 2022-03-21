@@ -68,8 +68,9 @@ const actions = {
         const arrayOfSymbols = state.shares.map((element) => {
           return element.ticker;
         });
-        if(arrayOfSymbols.length) dispatch("getPriceDataForShares", arrayOfSymbols);
-      })
+        if (arrayOfSymbols.length)
+          dispatch("getPriceDataForShares", arrayOfSymbols);
+      });
     setTimeout(() => {
       dispatch("getSymbolsFromMarket");
     }, 43200000);
@@ -95,7 +96,6 @@ const actions = {
             0,
             ...res.data.quoteResponse.result
           );
-          console.log(priceDataArray);
           if (endInterval) {
             commit("setSharePrices", priceDataArray);
             commit("updateAssetsPriceDataFromFetchedStocksData", state.shares);

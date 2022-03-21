@@ -28,11 +28,10 @@ export default {
     fetchShares(checkAuthenticationBeforeFetch) {
       if (!this.areAllSharesPricesAvailable) {
         if (checkAuthenticationBeforeFetch) {
-          if(this.isAuthenticated) {
+          if (this.isAuthenticated) {
             this["stockMangementModule/getSymbolsFromMarket"]();
             return;
-          }
-          else return;
+          } else return;
         }
         this["stockMangementModule/getSymbolsFromMarket"]();
       }
