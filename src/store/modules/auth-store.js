@@ -14,6 +14,7 @@ const getters = {
 
 const actions = {
   attemptUserRegistration({ commit, dispatch }, payload) {
+    //register new user for authentication
     axiosAuthInstance
       .post("accounts:signUp?key=AIzaSyDHcX11Hra8hH42TUNKyHltC8B-lgaifzg", {
         email: payload.email,
@@ -24,7 +25,6 @@ const actions = {
         commit("throwError", { type: "registeration error", value: error });
       })
       .then((res) => {
-        console.log(res);
         const authData = res.data;
         authData.expiresIn = authData.expiresIn * 1000 + new Date().valueOf();
         commit("storeAuthData", authData);
@@ -33,6 +33,7 @@ const actions = {
       });
   },
   attemptLogin({ commit, dispatch }, payload) {
+    //authenticate existing user
     axiosAuthInstance
       .post(
         "accounts:signInWithPassword?key=AIzaSyDHcX11Hra8hH42TUNKyHltC8B-lgaifzg",
@@ -59,20 +60,21 @@ const actions = {
       });
   },
   persistAuthData({ rootState, dispatch }) {
+    //persist details needed to identify & authenticate user on app load
     localStorage.setItem("email", rootState.email);
     const { refreshToken, expiresIn, idToken } = rootState.authStoreModule;
     localStorage.setItem(
       "data",
       JSON.stringify({ refreshToken, expiresIn, idToken })
     );
-    dispatch("scheduleAuthRefresh");
+    dispatch("scheduleAuthRefresh"); //action to schedule the action that will refresh idToken from authentication server. This is done in a number of places hence it is in its own function
   },
   scheduleAuthRefresh({ dispatch, state }) {
     setTimeout(function () {
       dispatch("refreshAuth");
-    }, state.expiresIn - new Date().valueOf());
+    }, state.expiresIn - new Date().valueOf());//schedule action that refreshes token just before token expires
   },
-  refreshAuth({ dispatch, commit, state }) {
+  refreshAuth({ dispatch, commit, state }) {//this is the action that refreshes token just before token expires
     axiosAuthInstance
       .post(
         "",
@@ -102,18 +104,20 @@ const actions = {
         dispatch("persistAuthData");
       });
   },
-  attemptLoginOnLoad({ commit, dispatch }) {
+  attemptLoginOnLoad({ commit, dispatch }) {//login user on app start by identifying user & checking validity of token
     try {
       const email = localStorage.getItem("email");
       const authData = JSON.parse(localStorage.getItem("data"));
       if (authData.expiresIn < new Date().valueOf() || !email) {
-        throw new Error("Authentication has expired");
+        throw new Error("Authentication has expired");//throw if token is expired
       }
+      //only runs if token is valid
       commit("storeEmail", email);
       commit("storeAuthData", authData);
       dispatch("fetchUserAccount");
       dispatch("persistAuthData");
     } catch (error) {
+      //if expired logout...log error details
       console.log(error);
       dispatch("logout");
     }

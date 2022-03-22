@@ -5,6 +5,7 @@ const state = {
 };
 const getters = {
   name(state) {
+    //returns the portion of the email before the @ sign
     return state.account?.email
       ? state.account.email.slice(0, state.account.email.indexOf("@"))
       : "";
@@ -39,6 +40,7 @@ const actions = {
       .get("users.json" + `?auth=${rootState.authStoreModule.idToken}`)
       .then((res) => {
         const data = res.data;
+        /*loop through the container object containing all users from the db, then filter out the accoun corresponding to the signed in user by comparing the email values. If corresponding user account not found in db, log out */
         let userAccount;
         for (const userIndex in data) {
           if (data[userIndex].email === rootState.email) {
@@ -63,9 +65,7 @@ const actions = {
           payload
         )
         .then(() => {
-          return dispatch(
-            "fetchUserAccountUpdates"
-          ); /*Am I returning this? or returning the promise that returns this dispatch? How about using async/await and then returning this dispatch after the await */
+          return dispatch("fetchUserAccountUpdates");
         });
     } else
       commit(
@@ -74,6 +74,7 @@ const actions = {
       );
   },
   fetchUserAccountUpdates({ commit, rootState, state }) {
+    /* After an update is carried out on a user account in the db, fetch the updated record from the db */
     axiosAccountInstance
       .get(
         `users/${state.account.id}.json` +
@@ -88,7 +89,7 @@ const actions = {
   },
   performTransaction({ commit, dispatch, state }, amount) {
     commit("updateWallet", amount);
-    return dispatch("updateUserAccount", { wallet: state.account.wallet });
+    return dispatch("updateUserAccount", { wallet: state.account.wallet });//update account on db with new db value
   },
   performTransactionOnProfitWallet({ commit, dispatch, state }, amount) {
     commit("updateProfitWallet", amount);
@@ -106,7 +107,7 @@ const actions = {
 const mutations = {
   storeUserAccount(state, payload) {
     state.account = payload;
-    if (!state.account.cardTransactionsLog) {
+    if (!state.account.cardTransactionsLog) {//if no transaction logs in payload, initialize empty array for transaction logging
       state.account.cardTransactionsLog = [];
     }
   },
