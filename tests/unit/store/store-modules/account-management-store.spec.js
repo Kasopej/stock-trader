@@ -82,7 +82,7 @@ describe("account-management-store is a store module that manages the account of
     expect(axios.post).toHaveBeenCalledTimes(1);
     expect(ctx.dispatch).not.toHaveBeenCalled();
   });
-  it("has a fetchUserAccount that gets a user from the db. If it receives a user matching the logged in user, it commits the matching account and portfolio to the store, as well as dispatching an action to calculate the user profit", async () => {
+  it("has a fetchUserAccount that gets a user from the db. If it receives a user matching the logged in user, it commits the matching account and portfolio to the store", async () => {
     ctx.rootState.email = "kasopej@gmail.com";
     axios.get.mockResolvedValue({
       data: {
@@ -105,9 +105,6 @@ describe("account-management-store is a store module that manages the account of
       ],
       ["login"],
     ]);
-    expect(ctx.dispatch).toHaveBeenCalledWith(
-      "stockMangementModule/calculateProfitFromPortfolio"
-    );
   });
   it("has a fetchUserAccount that gets a user from the db. If it does not receives a user from the db matching the logged in user, it dispatches an action to logout the user", async () => {
     ctx.rootState.email = "kasopej@gmail.com";
@@ -130,7 +127,7 @@ describe("account-management-store is a store module that manages the account of
       wallet: 200,
     });
     expect(axios.patch).toHaveBeenCalled();
-    expect(ctx.dispatch).toHaveBeenCalledWith("fetchUserAccountUpdates");
+    expect(ctx.commit).toHaveBeenCalledTimes(1);
   });
   it("has a updateUserAccount action which patches the current user account on the DB with an update payload. But if the user account does not have an id token field, it does not execute the patch", () => {
     accountMangementModule.actions.updateUserAccount(ctx, { wallet: 200 });
@@ -147,18 +144,6 @@ describe("account-management-store is a store module that manages the account of
       expect(axios.get).not.toHaveBeenCalled();
       expect(ctx.commit).not.toHaveBeenCalled();
     }
-  });
-  it("has a fetchUserAccountUpdates action which fetches the user account on the DB after any updates have been carried out.", async () => {
-    axios.get.mockResolvedValue({
-      data: {
-        abcdefg: {
-          portfolio: [{ quantity: 10 }],
-        },
-      },
-    });
-    ctx.state.account = { id: "abcdefg" };
-    await accountMangementModule.actions.fetchUserAccountUpdates(ctx);
-    expect(ctx.commit).toHaveBeenCalledTimes(2);
   });
   it("has a performTransaction action which commits a mutation to modify the user's wallet, then dispatches an action to patch this change into the DB", async () => {
     ctx.state.account = { wallet: 100 };

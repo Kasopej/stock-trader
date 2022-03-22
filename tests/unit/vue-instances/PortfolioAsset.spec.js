@@ -111,7 +111,7 @@ describe("PortfolioAsset is the component that represents a single asset of a us
         value: "2",
       },
     });
-    await wrapper.vm.buyStockFromAsset({ response: true });
+    await wrapper.vm.buyStock({ response: true, type: "assetStock" });
     expect(
       storeObj.modules.accountMangementModule.actions.performTransaction.mock
         .calls[0][1]

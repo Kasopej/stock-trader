@@ -59,11 +59,11 @@ describe("Wallet is the component that allows the user to view and manage their 
       "please specify how much you want to deposit"
     );
     wrapper.vm.fundWallet({ response: false });
-    expect(store.dispatch).not.toHaveBeenCalled();
+    expect(store.dispatch).not.toHaveBeenCalledTimes(2);
     await wrapper.vm.$nextTick();
     expect(mainWalletInputModal).not.toBeInTheDocument();
   });
-  it("has a method that does not dispatch store actions if it receives an event object with a false repsonse property", async () => {
+  it("has a method that does dispatches a store action if it receives an event object with a true repsonse property", async () => {
     await fireEvent.click(screen.getByTestId("depositBtn"));
     const mainWalletInputModal = screen.getByText(
       "please specify how much you want to deposit"
@@ -71,8 +71,8 @@ describe("Wallet is the component that allows the user to view and manage their 
     wrapper.vm.fundWallet({ response: true, value: 5 });
     await wrapper.vm.$nextTick();
     expect.assertions(3); //makes sure all asssertions are run
-    expect(store.dispatch.mock.calls[0]).toEqual(["performTransaction", 5]);
-    expect(store.dispatch.mock.calls[1]).toEqual(
+    expect(store.dispatch.mock.calls[1]).toEqual(["performTransaction", 5]);
+    expect(store.dispatch.mock.calls[2]).toEqual(
       expect.arrayContaining(["updateCardTransactionLog"])
     );
     //fund wallet queues the closing of the modal as a micro task(promise), hence it will not be caught in normal flow

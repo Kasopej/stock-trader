@@ -2,7 +2,7 @@ import { createLocalVue, mount } from "@vue/test-utils";
 import { fireEvent, screen } from "@testing-library/vue";
 import InputModal from "@/components/reused-components/InputModal.vue";
 
-describe("InoutModal is a component that allows the user to enter a number type input and confirm the entry", function () {
+describe("InputModal is a component that allows the user to enter a number type input and confirm the entry", function () {
   let localVue, wrapper;
   beforeEach(() => {
     localVue = createLocalVue();
@@ -11,6 +11,7 @@ describe("InoutModal is a component that allows the user to enter a number type 
         customEventName: "testModalEvent",
         text: "Enter your age",
         limit: 99,
+        inputModal: true,
       },
       localVue,
       attachTo: document.body,
@@ -37,7 +38,7 @@ describe("InoutModal is a component that allows the user to enter a number type 
     });
     expect(inputElement).toHaveValue(0);
   });
-  it("updates 'value' data property if number entered is equal or greater than 0 but not more than the limit set", async () => {
+  it("updates 'modalInputValue' data property if number entered is equal or greater than 0 but not more than the limit set", async () => {
     const inputElement = screen.getByTestId("modalInput");
     await fireEvent.input(inputElement, {
       target: {
@@ -45,7 +46,7 @@ describe("InoutModal is a component that allows the user to enter a number type 
       },
     });
     expect(inputElement).toHaveValue(10);
-    expect(wrapper.vm.value).toBe(10);
+    expect(wrapper.vm.modalInputValue).toBe(10);
   });
   it("emits an event if the close icon is clicked. The event object contains a response property with value of false", async () => {
     await fireEvent.click(screen.getByTestId("closeModalButton"));
