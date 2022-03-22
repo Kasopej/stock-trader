@@ -1,6 +1,12 @@
 /* eslint-disable no-unused-vars */
 import dayjs from "dayjs";
 import { axiosStocksInstance } from "../../services/network-services/axios-stocks";
+Number.prototype.toFixedDown = function (digits) {
+  var re = new RegExp("(\\d+\\.\\d{" + digits + "})(\\d)"),
+    m = this.toString().match(re);
+  return m ? parseFloat(m[1]) : this.valueOf();
+};
+
 const state = {
   shares: [],
   portfolio: [],
@@ -119,6 +125,7 @@ const actions = {
     }, 20000);
   },
   getHistoricalPriceDataForAssets({ state, dispatch, commit }, payload) {
+    console.log("last friday date: ", payload);
     //use last week friday date to query last week close price from API
     let index = 0;
     const priceDataArray = [];
@@ -139,7 +146,7 @@ const actions = {
               priceDataArray.splice(
                 priceDataArray.length,
                 0,
-                res.data.historical[0].close
+                res.data.historical[0].close.toFixedDown(2)
               );
             } catch (error) {
               //if asset stock does not have record in the db or if the request otherwise fails, set last week price to zero
@@ -153,7 +160,9 @@ const actions = {
                   portfolio: state.portfolio,
                 },
                 { root: true }
-              );
+              ).then(() => {
+                dispatch("calculateProfitFromPortfolio");
+              });
             }
           });
         index++;
@@ -211,9 +220,9 @@ const actions = {
       let basePortfolioValue = state.portfolio.reduce((value, asset) => {
         //use reduce method to cumulatively calculate value of asset based on last week close prices
         if ("historicalPrice" in asset) {
-          return asset.historicalPrice === 0
+          return asset.historicalPrice !== 0
             ? value + asset.historicalPrice * asset.quantity
-            : value + asset.currentPrice * asset.quantity; //if historical price is zero i.e was not found during API call, use current pruice for calculation instead
+            : value + asset.assetDetails.currentPrice * asset.quantity; //if historical price is zero i.e was not found during API call, use current pruice for calculation instead
         } else
           throw new Error( //if historicalPrice property does not exist throw out of reduce method
             "No historical data found on asset, profit cannot be calculated"
@@ -289,7 +298,7 @@ const mutations = {
   },
   setHistoricalPricesOnAssets(state, historicalPriceArray) {
     state.portfolio.forEach((asset, index) => {
-      state.shares.splice(
+      state.portfolio.splice(
         index,
         1,
         Object.assign(asset, {

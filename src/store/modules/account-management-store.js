@@ -48,7 +48,6 @@ const actions = {
             commit("stockMangementModule/setPortfolio", userAccount.portfolio);
             delete userAccount.portfolio;
             commit("storeUserAccount", { id: userIndex, ...userAccount });
-            dispatch("stockMangementModule/calculateProfitFromPortfolio");
             commit("login");
             return;
           }
@@ -56,7 +55,7 @@ const actions = {
         dispatch("logout");
       });
   },
-  updateUserAccount({ state, rootState, dispatch, commit }, payload) {
+  updateUserAccount({ state, rootState, commit }, payload) {//patch userAccount record, update store with response
     if (state.account?.id) {
       return axiosAccountInstance
         .patch(
@@ -64,8 +63,15 @@ const actions = {
             `?auth=${rootState.authStoreModule.idToken}`,
           payload
         )
-        .then(() => {
-          return dispatch("fetchUserAccountUpdates");
+        .then(({data}) => {
+          const updatedAccount = { ...state.account, ...data };//combines existing state account data with update payload from patch operation
+          if(updatedAccount.portfolio){
+            commit("stockMangementModule/setPortfolio", updatedAccount.portfolio);
+            delete updatedAccount.portfolio;
+          }
+          commit("storeUserAccount", {
+            ...updatedAccount,
+          });
         });
     } else
       commit(
@@ -73,23 +79,9 @@ const actions = {
         "user not identified. Please refresh your page"
       );
   },
-  fetchUserAccountUpdates({ commit, rootState, state }) {
-    /* After an update is carried out on a user account in the db, fetch the updated record from the db */
-    axiosAccountInstance
-      .get(
-        `users/${state.account.id}.json` +
-          `?auth=${rootState.authStoreModule.idToken}`
-      )
-      .then((res) => {
-        const userAccount = res.data;
-        commit("stockMangementModule/setPortfolio", userAccount.portfolio);
-        delete userAccount.portfolio;
-        commit("storeUserAccount", { id: state.account.id, ...userAccount });
-      });
-  },
   performTransaction({ commit, dispatch, state }, amount) {
     commit("updateWallet", amount);
-    return dispatch("updateUserAccount", { wallet: state.account.wallet });//update account on db with new db value
+    return dispatch("updateUserAccount", { wallet: state.account.wallet }); //update account on db with new db value
   },
   performTransactionOnProfitWallet({ commit, dispatch, state }, amount) {
     commit("updateProfitWallet", amount);

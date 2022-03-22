@@ -1,22 +1,5 @@
-const modalControlMixin = {
-  data() {
-    return {
-      shows: {
-        //confirmBuyStock: false,
-      },
-    };
-  },
-  methods: {
-    closeModal(modalName) {
-      this.shows = Object.assign({}, this.shows, { [modalName]: false });
-    },
-    showModal(modalName) {
-      this.shows = Object.assign({}, this.shows, { [modalName]: true });
-    },
-  },
-};
-
 const stockTransactionActionMixin = {
+  //this mixin is called used in components that take input
   methods: {
     updateQty(event, mode) {
       if (event.target.value < 0) {
@@ -94,4 +77,4 @@ const stockTransactionActionMixin = {
   },
 };
 
-export { modalControlMixin, stockTransactionActionMixin };
+export { stockTransactionActionMixin };
