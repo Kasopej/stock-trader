@@ -69,12 +69,14 @@
       v-if="modals.fundWalletDialog.show"
       :text="modals.fundWalletDialog.text"
       :customEventName="modals.fundWalletDialog.customEventName"
+      :inputModal="modals.fundWalletDialog.inputModal"
       @[modals.fundWalletDialog.customEventName]="fundWallet"
     ></InputModal>
     <InputModal
       v-if="modals.profitWalletDialog.show"
       :text="modals.profitWalletDialog.text"
       :customEventName="modals.profitWalletDialog.customEventName"
+      :inputModal="modals.profitWalletDialog.inputModal"
       :limit="profit"
       @[modals.profitWalletDialog.customEventName]="debitProfitWallet"
     ></InputModal>
@@ -93,11 +95,13 @@ export default {
           text: `please specify how much you want to deposit`,
           customEventName: "fundWallet",
           show: false,
+          inputModal: true,
         },
         profitWalletDialog: {
           text: `please specify how much you want to withdraw`,
           customEventName: "debitProfitWallet",
           show: false,
+          inputModal: true,
         },
       },
     };

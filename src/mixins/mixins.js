@@ -6,7 +6,17 @@ const stockTransactionActionMixin = {
         event.target.value = 0;
         return;
       }
-      if (mode === "sell") {
+      if (this.inputModal) {
+        if (this.limit) {
+          event.target.value =
+            event.target.value <= this.limit
+              ? event.target.value
+              : this.limit < 0
+              ? 0
+              : 0;
+        }
+        this.modalInputValue = +event.target.value;
+      } else if (mode === "sell") {
         if (event.target.value > this.asset.quantity) {
           event.target.value = this.asset.quantity;
         }

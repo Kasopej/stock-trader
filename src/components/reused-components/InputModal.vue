@@ -17,7 +17,7 @@
             type="number"
             name="fund"
             id="fund"
-            :value="value"
+            :value="modalInputValue"
             @input="updateQty($event)"
             data-testid="modalInput"
           />
@@ -27,8 +27,8 @@
           <button
             type="button"
             class="btn btn-primary"
-            @click="close({ response: true, value: value })"
-            :disabled="!value"
+            @click="close({ response: true, value: modalInputValue })"
+            :disabled="!modalInputValue"
           >
             Confirm
           </button>
@@ -39,26 +39,21 @@
 </template>
 
 <script>
+import { stockTransactionActionMixin } from "../../mixins/mixins";
 export default {
+  mixins: [stockTransactionActionMixin],
   props: {
     customEventName: String,
     text: String,
     limit: Number,
+    inputModal: Boolean,
   },
   data() {
     return {
-      value: 0,
+      modalInputValue: 0,
     };
   },
   methods: {
-    updateQty(event) {
-      if (+event.target.value < 0) {
-        event.target.value = 0;
-      } else if (+event.target.value > this.limit) {
-        event.target.value = this.limit;
-      }
-      this.value = +event.target.value;
-    },
     close(event) {
       this.$emit(this.customEventName, event);
     },
