@@ -35,6 +35,7 @@
     <ConfirmationModal
       v-if="modals.confirmBuyStock.show"
       :text="modals.confirmBuyStock.text"
+      :type="modals.confirmBuyStock.type"
       :customEventName="modals.confirmBuyStock.customEventName"
       @[modals.confirmBuyStock.customEventName]="buyStock"
     ></ConfirmationModal>
@@ -44,9 +45,12 @@
 <script>
 import { mapActions, mapState } from "vuex";
 import ConfirmationModal from "./reused-components/ConfirmationModal.vue";
-import { stockTransactionActionMixin } from "../mixins/mixins";
+import {
+  stockTransactionActionMixin,
+  numericalInputControlMixin,
+} from "../mixins/mixins";
 export default {
-  mixins: [stockTransactionActionMixin],
+  mixins: [stockTransactionActionMixin, numericalInputControlMixin],
   components: { ConfirmationModal },
   props: {
     share: {
@@ -62,6 +66,7 @@ export default {
           text: `buy ${this.share.name} stock?`,
           customEventName: "buyStock",
           show: false,
+          type: "marketStock",
         },
       },
     };

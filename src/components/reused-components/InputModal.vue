@@ -39,9 +39,9 @@
 </template>
 
 <script>
-import { stockTransactionActionMixin } from "../../mixins/mixins";
+import { numericalInputControlMixin } from "../../mixins/mixins";
 export default {
-  mixins: [stockTransactionActionMixin],
+  mixins: [numericalInputControlMixin],
   props: {
     customEventName: String,
     text: String,

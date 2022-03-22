@@ -25,7 +25,7 @@
           <button
             type="button"
             class="btn btn-primary"
-            @click="close({ response: true })"
+            @click="close({ response: true, type: type })"
           >
             Yes
           </button>
@@ -41,6 +41,7 @@ export default {
   props: {
     customEventName: String,
     text: String,
+    type: String,
   },
   methods: {
     close(response) {

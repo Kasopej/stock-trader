@@ -55,7 +55,8 @@ const actions = {
         dispatch("logout");
       });
   },
-  updateUserAccount({ state, rootState, commit }, payload) {//patch userAccount record, update store with response
+  updateUserAccount({ state, rootState, commit }, payload) {
+    //patch userAccount record, update store with response
     if (state.account?.id) {
       return axiosAccountInstance
         .patch(
@@ -63,10 +64,13 @@ const actions = {
             `?auth=${rootState.authStoreModule.idToken}`,
           payload
         )
-        .then(({data}) => {
-          const updatedAccount = { ...state.account, ...data };//combines existing state account data with update payload from patch operation
-          if(updatedAccount.portfolio){
-            commit("stockMangementModule/setPortfolio", updatedAccount.portfolio);
+        .then(({ data }) => {
+          const updatedAccount = { ...state.account, ...data }; //combines existing state account data with update payload from patch operation
+          if (updatedAccount.portfolio) {
+            commit(
+              "stockMangementModule/setPortfolio",
+              updatedAccount.portfolio
+            );
             delete updatedAccount.portfolio;
           }
           commit("storeUserAccount", {
@@ -99,7 +103,8 @@ const actions = {
 const mutations = {
   storeUserAccount(state, payload) {
     state.account = payload;
-    if (!state.account.cardTransactionsLog) {//if no transaction logs in payload, initialize empty array for transaction logging
+    if (!state.account.cardTransactionsLog) {
+      //if no transaction logs in payload, initialize empty array for transaction logging
       state.account.cardTransactionsLog = [];
     }
   },

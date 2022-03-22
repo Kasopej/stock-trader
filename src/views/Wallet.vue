@@ -107,8 +107,8 @@ export default {
     };
   },
   components: { TableBodyElement, InputModal },
-  created(){
-    this.calculateProfitFromPortfolio()
+  created() {
+    this.calculateProfitFromPortfolio();
   },
   computed: {
     ...mapGetters(["wallet", "profit"]),
@@ -124,7 +124,10 @@ export default {
       "fetchUserAccountUpdates",
       "updateCardTransactionLog",
     ]),
-    ...mapActions("stockMangementModule", ["getHistoricalPriceDataForAssets", "calculateProfitFromPortfolio"]),
+    ...mapActions("stockMangementModule", [
+      "getHistoricalPriceDataForAssets",
+      "calculateProfitFromPortfolio",
+    ]),
     fundWallet(event) {
       if (event.response) {
         this.performTransaction(event.value)

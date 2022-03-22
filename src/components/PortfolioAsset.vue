@@ -75,8 +75,9 @@
     <ConfirmationModal
       v-if="modals.confirmBuyStock.show"
       :text="modals.confirmBuyStock.text"
+      :type="modals.confirmBuyStock.type"
       :customEventName="modals.confirmBuyStock.customEventName"
-      @[modals.confirmBuyStock.customEventName]="buyStockFromAsset"
+      @[modals.confirmBuyStock.customEventName]="buyStock"
     ></ConfirmationModal>
     <ConfirmationModal
       v-if="modals.confirmSellStock.show"
@@ -88,11 +89,14 @@
 </template>
 
 <script>
-import { stockTransactionActionMixin } from "../mixins/mixins";
+import {
+  stockTransactionActionMixin,
+  numericalInputControlMixin,
+} from "../mixins/mixins";
 import { mapActions, mapState } from "vuex";
 import ConfirmationModal from "./reused-components/ConfirmationModal.vue";
 export default {
-  mixins: [stockTransactionActionMixin],
+  mixins: [stockTransactionActionMixin, numericalInputControlMixin],
   props: {
     asset: {
       type: Object,
@@ -108,6 +112,7 @@ export default {
           text: `buy ${this.asset.assetDetails.name} share?`,
           customEventName: "buyStock",
           show: false,
+          type: "assetStock",
         },
         confirmSellStock: {
           text: `sell ${this.asset.assetDetails.name} stock?`,

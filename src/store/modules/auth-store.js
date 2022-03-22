@@ -72,9 +72,10 @@ const actions = {
   scheduleAuthRefresh({ dispatch, state }) {
     setTimeout(function () {
       dispatch("refreshAuth");
-    }, state.expiresIn - new Date().valueOf());//schedule action that refreshes token just before token expires
+    }, state.expiresIn - new Date().valueOf()); //schedule action that refreshes token just before token expires
   },
-  refreshAuth({ dispatch, commit, state }) {//this is the action that refreshes token just before token expires
+  refreshAuth({ dispatch, commit, state }) {
+    //this is the action that refreshes token just before token expires
     axiosAuthInstance
       .post(
         "",
@@ -104,12 +105,13 @@ const actions = {
         dispatch("persistAuthData");
       });
   },
-  attemptLoginOnLoad({ commit, dispatch }) {//login user on app start by identifying user & checking validity of token
+  attemptLoginOnLoad({ commit, dispatch }) {
+    //login user on app start by identifying user & checking validity of token
     try {
       const email = localStorage.getItem("email");
       const authData = JSON.parse(localStorage.getItem("data"));
       if (authData.expiresIn < new Date().valueOf() || !email) {
-        throw new Error("Authentication has expired");//throw if token is expired
+        throw new Error("Authentication has expired"); //throw if token is expired
       }
       //only runs if token is valid
       commit("storeEmail", email);
