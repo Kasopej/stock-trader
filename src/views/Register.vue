@@ -29,7 +29,12 @@
                 type="password"
                 id="registerPassword"
                 class="form-control form-control-lg"
+                ref="password"
               />
+              <i
+                class="passwordInputIcon fa-solid fa-eye"
+                @click="togglePasswordVisibility"
+              ></i>
               <label class="form-label" for="registerPassword">Password</label>
             </div>
 
@@ -39,7 +44,12 @@
                 id="registerConfirmPassword"
                 class="form-control form-control-lg"
                 v-model="user.password"
+                ref="repeatPassword"
               />
+              <i
+                class="passwordInputIcon fa-solid fa-eye"
+                @click="toggleRepeatPasswordVisibility"
+              ></i>
               <label class="form-label" for="registerConfirmPassword"
                 >Repeat your password</label
               >
@@ -93,17 +103,30 @@ export default {
   },
   methods: {
     ...mapActions({ registerUser: "attemptUserRegistration" }),
+    togglePasswordVisibility() {
+      this.$refs.password.type =
+        this.$refs.password.type === "password" ? "text" : "password";
+    },
+    toggleRepeatPasswordVisibility() {
+      this.$refs.repeatPassword.type =
+        this.$refs.repeatPassword.type === "password" ? "text" : "password";
+    },
     submitLoginForm() {
-      if (this.formValidated)
+      if (this.formValidated && this.termsAreAgreed)
         this.$store.dispatch("attemptUserRegistration", this.user);
     },
-  },
-  watch: {
-    ["$store.state.authStoreModule.authenticated"](){
-      this.$router.push("/home")
-    }
   },
 };
 </script>
 
-<style></style>
+<style>
+form > div {
+  position: relative;
+}
+.passwordInputIcon {
+  position: absolute;
+  bottom: 45px;
+  right: 10px;
+  cursor: pointer;
+}
+</style>

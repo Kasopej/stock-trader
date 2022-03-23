@@ -1,57 +1,41 @@
 <template>
   <div>
     <div class="d-flex justify-content-around p-4">
-      <section class="card mainWallet">
+      <section class="card mainWallet text-center">
         <div class="card-body">
           <h6 class="card-subtitle">Main Wallet</h6>
-          <h4 class="card-title">$200,000</h4>
+          <h4 class="card-title">${{ wallet | setCommas }}</h4>
           <hr />
-          <div class="px-2 d-flex justify-content-between">
-            <div class="text-center">
-              <button class="btn btn-success mx-2">
-                <i class="fa-solid fa-arrow-left"></i>
+          <div class="px-2 d-flex justify-content-center">
+            <div class="w-100">
+              <button
+                class="btn btn-success w-50"
+                @click="showModal('fundWalletDialog')"
+                data-testid="depositBtn"
+              >
+                <i class="fa-solid fa-arrow-right"></i>
               </button>
-              <span class="d-block text-center">Withdraw</span>
-            </div>
-            <div class="text-center">
-              <button class="btn btn-warning mx-2">
-                <i class="fa-solid fa-arrow-left"></i>
-              </button>
-              <span class="d-block text-center">Withdraw</span>
-            </div>
-            <div class="text-center">
-              <button class="btn btn-primary mx-2">
-                <i class="fa-solid fa-arrow-left"></i>
-              </button>
-              <span class="d-block text-center">Withdraw</span>
+              <span class="d-block">Deposit</span>
             </div>
           </div>
         </div>
       </section>
 
-      <section class="card profitWallet">
+      <section class="card profitWallet text-center">
         <div class="card-body">
           <h6 class="card-subtitle">Profit Wallet</h6>
-          <h4 class="card-title">$1,000</h4>
+          <h4 class="card-title">${{ profit | setCommas }}</h4>
           <hr />
-          <div class="px-2 d-flex justify-content-between">
-            <div class="text-center">
-              <button class="btn btn-success mx-2">
+          <div class="px-2 d-flex justify-content-center">
+            <div class="w-100">
+              <button
+                class="btn btn-success w-50"
+                @click="showModal('profitWalletDialog')"
+                data-testid="withdrawBtn"
+              >
                 <i class="fa-solid fa-arrow-left"></i>
               </button>
-              <span class="d-block text-center">Withdraw</span>
-            </div>
-            <div class="text-center">
-              <button class="btn btn-warning mx-2">
-                <i class="fa-solid fa-arrow-left"></i>
-              </button>
-              <span class="d-block text-center">Withdraw</span>
-            </div>
-            <div class="text-center">
-              <button class="btn btn-primary mx-2">
-                <i class="fa-solid fa-arrow-left"></i>
-              </button>
-              <span class="d-block text-center">Withdraw</span>
+              <span class="d-block">Withdraw</span>
             </div>
           </div>
         </div>
@@ -70,17 +54,123 @@
               <th scope="col">Wallet</th>
             </tr>
           </thead>
-          <TableBodyElement></TableBodyElement>
+          <tbody>
+            <TableBodyElement
+              v-for="(record, index) in cardTransactionLog"
+              :key="record.timestamp"
+              :record="record"
+              :index="index"
+            ></TableBodyElement>
+          </tbody>
         </table>
       </section>
     </div>
+    <InputModal
+      v-if="modals.fundWalletDialog.show"
+      :text="modals.fundWalletDialog.text"
+      :customEventName="modals.fundWalletDialog.customEventName"
+      :inputModal="modals.fundWalletDialog.inputModal"
+      @[modals.fundWalletDialog.customEventName]="fundWallet"
+    ></InputModal>
+    <InputModal
+      v-if="modals.profitWalletDialog.show"
+      :text="modals.profitWalletDialog.text"
+      :customEventName="modals.profitWalletDialog.customEventName"
+      :inputModal="modals.profitWalletDialog.inputModal"
+      :limit="profit"
+      @[modals.profitWalletDialog.customEventName]="debitProfitWallet"
+    ></InputModal>
   </div>
 </template>
 
 <script>
-import TableBodyElement from "../components/UtilityComponents/TableBodyElement.vue";
+import TableBodyElement from "../components/reused-components/TableBodyElement.vue";
+import { mapGetters, mapState, mapActions } from "vuex";
+import InputModal from "../components/reused-components/InputModal.vue";
 export default {
-  components: { TableBodyElement },
+  data() {
+    return {
+      modals: {
+        fundWalletDialog: {
+          text: `please specify how much you want to deposit`,
+          customEventName: "fundWallet",
+          show: false,
+          inputModal: true,
+        },
+        profitWalletDialog: {
+          text: `please specify how much you want to withdraw`,
+          customEventName: "debitProfitWallet",
+          show: false,
+          inputModal: true,
+        },
+      },
+    };
+  },
+  components: { TableBodyElement, InputModal },
+  created() {
+    this.calculateProfitFromPortfolio();
+  },
+  computed: {
+    ...mapGetters(["wallet", "profit"]),
+    ...mapState({
+      cardTransactionLog: (state) =>
+        state.accountMangementModule.account.cardTransactionsLog,
+    }),
+  },
+  methods: {
+    ...mapActions([
+      "performTransactionOnProfitWallet",
+      "performTransaction",
+      "fetchUserAccountUpdates",
+      "updateCardTransactionLog",
+    ]),
+    ...mapActions("stockMangementModule", [
+      "getHistoricalPriceDataForAssets",
+      "calculateProfitFromPortfolio",
+    ]),
+    fundWallet(event) {
+      if (event.response) {
+        this.performTransaction(event.value)
+          .then(() =>
+            this.updateCardTransactionLog({
+              timestamp: new Date().valueOf(),
+              type: "Deposit",
+              amount: event.value,
+              location: "Main Wallet",
+            })
+          )
+          .then(() => {
+            this.closeModal("fundWalletDialog");
+          });
+      } else this.closeModal("fundWalletDialog");
+    },
+    debitProfitWallet(event) {
+      if (event.response) {
+        if (event.value) {
+          this.performTransactionOnProfitWallet(event.value * -1)
+            .then(() =>
+              this.updateCardTransactionLog({
+                timestamp: new Date().valueOf(),
+                type: "Withdrawal",
+                amount: event.value,
+                location: "Profit Wallet",
+              })
+            )
+            .then(() => {
+              this.closeModal("profitWalletDialog");
+            });
+          return;
+        }
+        this.closeModal("profitWalletDialog");
+      } else this.closeModal("profitWalletDialog");
+    },
+    showModal(name) {
+      this.modals[name].show = true;
+    },
+    closeModal(name) {
+      this.modals[name].show = false;
+    },
+  },
 };
 </script>
 
@@ -90,6 +180,6 @@ section.card {
 }
 .mainWallet span,
 .profitWallet span {
-  font-size: 12px;
+  font-size: 15px;
 }
 </style>

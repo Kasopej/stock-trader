@@ -1,5 +1,5 @@
 <template>
-  <div class="myModal" tabindex="-1">
+  <div class="myModal" tabindex="-1" data-testid="purchaseConfirmationModal">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -7,23 +7,26 @@
           <button
             type="button"
             class="btn-close"
-            data-bs-dismiss="modal"
             aria-label="Close"
+            @click="close({ response: false })"
           ></button>
         </div>
         <div class="modal-body">
-          <p>Should we sign you out?</p>
+          <p>{{ text }}</p>
         </div>
         <div class="modal-footer">
           <button
             type="button"
             class="btn btn-secondary"
-            data-bs-dismiss="modal"
-            @click="close(false)"
+            @click="close({ response: false })"
           >
             No
           </button>
-          <button type="button" class="btn btn-primary" @click="close(true)">
+          <button
+            type="button"
+            class="btn btn-primary"
+            @click="close({ response: true, type: type })"
+          >
             Yes
           </button>
         </div>
@@ -34,10 +37,15 @@
 
 <script>
 export default {
-  name: "SignOutModal",
+  name: "ConfirmationModal",
+  props: {
+    customEventName: String,
+    text: String,
+    type: String,
+  },
   methods: {
     close(response) {
-      this.$emit("close", response);
+      this.$emit(this.customEventName, response);
     },
   },
 };

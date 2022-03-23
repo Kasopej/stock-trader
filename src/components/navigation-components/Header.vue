@@ -23,6 +23,7 @@
           active-class="active"
           exact
           to="/login"
+          v-if="!isAuthenticated"
           ><a class="nav-link">Login</a></router-link
         >
         <router-link
@@ -31,6 +32,7 @@
           active-class="active"
           exact
           to="/register"
+          v-if="!isAuthenticated"
           ><a class="nav-link">Register</a></router-link
         >
 
@@ -40,11 +42,15 @@
           active-class="active"
           exact
           to="/profile"
-          ><a class="nav-link">{{ name }}</a></router-link
+          ><a v-if="name" class="nav-link">{{ name }}</a></router-link
         >
 
-        <li class="nav-link fw-bold" style="vertical-align: middle">
-          ${{ "1,000" }}
+        <li
+          v-if="wallet"
+          class="nav-link fw-bold"
+          style="vertical-align: middle"
+        >
+          ${{ account.wallet | setCommas }}
         </li>
       </ul>
     </div>
@@ -52,11 +58,14 @@
 </template>
 
 <script>
+import { mapGetters, mapState } from "vuex";
 export default {
   data() {
-    return {
-      name: "Kasope",
-    };
+    return {};
+  },
+  computed: {
+    ...mapGetters(["name", "isAuthenticated", "wallet"]),
+    ...mapState({ account: (state) => state.accountMangementModule.account }),
   },
 };
 </script>

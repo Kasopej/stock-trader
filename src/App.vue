@@ -4,21 +4,61 @@
     <main>
       <Header></Header>
       <router-view />
-      <SignOutModal v-if="false"></SignOutModal>
     </main>
   </div>
 </template>
 
 <script>
-import Header from "@/components/Header.vue";
-import Sidebar from "./components/Sidebar.vue";
+import Header from "@/components/navigation-components/Header.vue";
+import { mapActions, mapGetters } from "vuex";
+import Sidebar from "./components/navigation-components/Sidebar.vue";
 export default {
-  data() {
-    return {};
-  },
   components: {
     Header,
     Sidebar,
+  },
+  methods: {
+    ...mapActions([
+      "attemptLoginOnLoad",
+      "stockMangementModule/getSymbolsFromMarket",
+    ]),
+    closeSignOut() {
+      this.closeSignOutModal = true;
+    },
+    fetchShares(checkAuthenticationBeforeFetch) {
+      //just while I am persisting my full store because of free API issues.. I have to check if price data is already available
+      if (!this.areAllSharesPricesAvailable) {
+        if (checkAuthenticationBeforeFetch) {
+          if (this.isAuthenticated) {
+            this["stockMangementModule/getSymbolsFromMarket"]();
+            return;
+          } else return;
+        }
+        this["stockMangementModule/getSymbolsFromMarket"]();
+      } else
+        setTimeout(
+          () => this["stockMangementModule/getSymbolsFromMarket"](),
+          43200000
+        ); //make call in 12 hours to refresh data
+    },
+  },
+  created() {
+    this.attemptLoginOnLoad();
+    this.fetchShares(true);
+  },
+  watch: {
+    ["$store.state.authStoreModule.authenticated"]() {
+      if (this.$store.state.authStoreModule.authenticated) {
+        this.$router.push("/home");
+        this.fetchShares(false);
+      } else {
+        this.$router.push("/login");
+      }
+    },
+  },
+  computed: {
+    ...mapGetters("stockMangementModule", ["areAllSharesPricesAvailable"]),
+    ...mapGetters(["isAuthenticated"]),
   },
 };
 </script>
@@ -43,18 +83,26 @@ export default {
   flex-basis: 30%;
   flex-grow: 0;
 }
+/*
 .stockPurchaseBtn,
 .sellAssetsBtn {
-  position: absolute;
 }
+*/
 .stockQtyInput,
 .qtyToSell {
   left: 0px;
   width: 65%;
 }
-.stockPurchaseBtn,
-.sellAssetsBtn {
-  right: 1rem;
+.myModal {
+  position: fixed;
+  top: 20%;
+  left: 15%;
+  z-index: 1055;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  outline: 0;
 }
 
 @media (min-width: 992px) {

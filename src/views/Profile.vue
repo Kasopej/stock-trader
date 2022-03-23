@@ -20,7 +20,10 @@
                 This is your profile page. You can see the progress you've made
                 with your work and manage your projects or assigned tasks
               </p>
-              <a href="#0" class="btn btn-info" @click="showModal = !showModal"
+              <a
+                href="#0"
+                class="btn btn-info"
+                @click.prevent="showModal('confirmSignout')"
                 >Sign Out</a
               >
             </div>
@@ -28,25 +31,49 @@
         </div>
       </div>
     </div>
-    <SignOutModal v-show="showModal" @close="closeSignOutModal"></SignOutModal>
+    <ConfirmationModal
+      v-if="modals.confirmSignout.show"
+      :text="modals.confirmSignout.text"
+      :customEventName="modals.confirmSignout.customEventName"
+      @[modals.confirmSignout.customEventName]="confirmLogout"
+    ></ConfirmationModal>
   </main>
 </template>
 
 <script>
-//import SignOutModal from '../components/UtilityComponents/SignOutModal.vue'
+import { mapGetters, mapActions } from "vuex";
+import ConfirmationModal from "../components/reused-components/ConfirmationModal.vue";
 export default {
   data() {
     return {
-      name: "Kasope",
-      showModal: false,
+      modals: {
+        confirmSignout: {
+          text: `sign out?`,
+          customEventName: "signout",
+          show: false,
+        },
+      },
     };
   },
   methods: {
-    closeSignOutModal(response) {
-      this.showModal = !this.showModal;
-      console.log(response);
+    ...mapActions(["logout"]),
+    showModal(name) {
+      this.modals[name].show = true;
+    },
+    closeModal(name) {
+      this.modals[name].show = false;
+    },
+    confirmLogout(event) {
+      if (event.response === true) {
+        this.logout();
+        this.closeModal("confirmSignout");
+      } else this.closeModal("confirmSignout");
     },
   },
+  computed: {
+    ...mapGetters(["name"]),
+  },
+  components: { ConfirmationModal },
 };
 </script>
 

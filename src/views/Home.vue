@@ -7,9 +7,11 @@
       @mouseenter="addHoverStyle"
       @mouseleave="removeHoverStyle"
     >
-      <p class="lead mb-4">My Portfolio Growth</p>
-      <h2>${{ 125000 }}</h2>
-      <button class="btn btn-success btn-md rounded-pill">View More</button>
+      <p class="lead mb-4">My Portfolio Value</p>
+      <h2>${{ portfolioValue | setCommas }}</h2>
+      <router-link to="/portfolio" class="btn btn-success btn-md rounded-pill"
+        >View All</router-link
+      >
     </div>
 
     <div
@@ -18,8 +20,13 @@
       @mouseleave="removeHoverStyle"
     >
       <p class="lead">Best Performing Asset</p>
-      <h2 class="mb-4">${{ 125000 }}</h2>
-      <button class="btn btn-success btn-md rounded-pill">View More</button>
+      <span>{{ bestPerformingAsset.assetDetails.ticker }}</span>
+      <h2 class="mb-4">
+        {{ bestPerformingAsset.assetDetails.priceChange.toFixed(2) }}%
+      </h2>
+      <router-link to="/portfolio" class="btn btn-success btn-md rounded-pill"
+        >View All</router-link
+      >
     </div>
 
     <div
@@ -28,8 +35,13 @@
       @mouseleave="removeHoverStyle"
     >
       <p class="lead">Worst Performing Asset</p>
-      <h2 class="mb-4">${{ 125000 }}</h2>
-      <button class="btn btn-success btn-md rounded-pill">View More</button>
+      <span>{{ worstPerformingAsset.assetDetails.ticker }}</span>
+      <h2 class="mb-4">
+        {{ worstPerformingAsset.assetDetails.priceChange.toFixed(2) }}%
+      </h2>
+      <router-link to="/portfolio" class="btn btn-success btn-md rounded-pill"
+        >View All</router-link
+      >
     </div>
 
     <div
@@ -37,21 +49,20 @@
       @mouseenter="addHoverStyle"
       @mouseleave="removeHoverStyle"
     >
-      <p class="lead">Your Balance</p>
-      <h2>${{ 125000 }}</h2>
-      <button class="btn btn-success btn-md rounded-pill">Fund Wallet</button>
+      <p class="lead">Your Profit</p>
+      <h2>${{ profit | setCommas }}</h2>
+      <router-link to="/wallet" class="btn btn-success btn-md rounded-pill"
+        >Withdraw Profits</router-link
+      >
     </div>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-
+import { mapGetters } from "vuex";
 export default {
   name: "Home",
-  data() {
-    return {};
-  },
   components: {},
   methods: {
     addHoverStyle(event) {
@@ -61,12 +72,20 @@ export default {
       event.target.classList.remove("shadow");
     },
   },
+  computed: {
+    ...mapGetters("stockMangementModule", [
+      "portfolioValue",
+      "bestPerformingAsset",
+      "worstPerformingAsset",
+    ]),
+    ...mapGetters(["profit"]),
+  },
 };
 </script>
 <style scoped>
 .homePane {
   padding: 35px 55px;
-  flex-basis: 32%;
+  flex-basis: 45%;
   text-align: center;
   transition: transform 0.5s;
 }

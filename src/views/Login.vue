@@ -1,18 +1,28 @@
 <template>
-  <form class="w-50 m-auto mt-5">
+  <form @submit.prevent="attemptLogin(loginDetails)" class="w-50 m-auto mt-5">
     <div class="mb-3">
-      <label for="exampleInputEmail1" class="form-label">Email address</label>
+      <label for="exampleInputEmail" class="form-label">Email address</label>
       <input
         type="email"
         class="form-control"
-        id="exampleInputEmail1"
+        id="exampleInputEmail"
         aria-describedby="emailHelp"
+        v-model="loginDetails.email"
       />
     </div>
     <div class="mb-4">
-      <label for="exampleInputPassword1" class="form-label">Password</label>
-      <input type="password" class="form-control" id="exampleInputPassword1" />
-      <i class="inputIcon fa-solid fa-eye"></i>
+      <label for="exampleInputPassword" class="form-label">Password</label>
+      <input
+        type="password"
+        class="form-control"
+        id="exampleInputPassword"
+        v-model="loginDetails.password"
+        ref="password"
+      />
+      <i
+        class="passwordInputIcon fa-solid fa-eye"
+        @click="togglePasswordVisibility"
+      ></i>
     </div>
     <button
       type="submit"
@@ -30,9 +40,22 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
-  created() {
-    console.log("created login");
+  data() {
+    return {
+      loginDetails: {
+        email: "",
+        password: "",
+      },
+    };
+  },
+  methods: {
+    ...mapActions(["attemptLogin"]),
+    togglePasswordVisibility() {
+      this.$refs.password.type =
+        this.$refs.password.type === "password" ? "text" : "password";
+    },
   },
 };
 </script>
@@ -41,7 +64,7 @@ export default {
 form > div {
   position: relative;
 }
-.inputIcon {
+.passwordInputIcon {
   position: absolute;
   bottom: 10px;
   right: 10px;

@@ -2,7 +2,7 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store/index";
-import SignOutModal from "./components/UtilityComponents/SignOutModal.vue";
+import dayjs from "dayjs";
 //Vue.config.productionTip = false;
 
 // Import the functions you need from the SDKs you need
@@ -10,9 +10,18 @@ import { initializeApp } from "firebase/app";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
-const firebaseApp = installFirebase();
-console.log(firebaseApp);
-Vue.component("SignOutModal", SignOutModal);
+installFirebase();
+
+Vue.filter("setCommas", function (value) {
+  try {
+    value = value.toFixed(2);
+  } catch (error) {
+    console.log(error);
+  }
+  return value.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+});
+
+Vue.prototype.$customDate = dayjs;
 new Vue({
   router,
   store,
@@ -31,6 +40,5 @@ function installFirebase() {
   };
 
   // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  return app;
+  return initializeApp(firebaseConfig);
 }
