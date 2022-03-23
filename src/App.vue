@@ -26,6 +26,7 @@ export default {
       this.closeSignOutModal = true;
     },
     fetchShares(checkAuthenticationBeforeFetch) {
+      //just while I am persisting my full store because of free API issues.. I have to check if price data is already available
       if (!this.areAllSharesPricesAvailable) {
         if (checkAuthenticationBeforeFetch) {
           if (this.isAuthenticated) {
@@ -34,13 +35,15 @@ export default {
           } else return;
         }
         this["stockMangementModule/getSymbolsFromMarket"]();
-      }
+      } else
+        setTimeout(
+          () => this["stockMangementModule/getSymbolsFromMarket"](),
+          43200000
+        ); //make call in 12 hours to refresh data
     },
   },
-
   created() {
     this.attemptLoginOnLoad();
-    //just while I am persisting my full store because of API issues
     this.fetchShares(true);
   },
   watch: {

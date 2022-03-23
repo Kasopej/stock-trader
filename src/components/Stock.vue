@@ -85,7 +85,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions(["performTransaction", "fetchUserAccountUpdates"]),
+    ...mapActions(["performTransaction"]),
     ...mapActions("stockMangementModule", ["updatePortfolioFromStock"]),
     showModal(name) {
       this.modals[name].show = true;

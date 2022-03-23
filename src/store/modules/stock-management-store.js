@@ -125,7 +125,6 @@ const actions = {
     }, 20000);
   },
   getHistoricalPriceDataForAssets({ state, dispatch, commit }, payload) {
-    console.log("last friday date: ", payload);
     //use last week friday date to query last week close price from API
     let index = 0;
     const priceDataArray = [];
