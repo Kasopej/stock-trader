@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { axiosAuthInstance } from "../../services/network-services/axios-auth";
+import { axiosAuthInstance } from "../../services/http/axios-auth";
 import { firebaseConfig } from "../../firebase_config";
 
 const state = {

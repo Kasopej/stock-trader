@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { axios } from "../../services/network-services/axios-global";
+import { axios } from "../../services/http/axios-global";
 import store from "..";
 const state = {
   account: null,
