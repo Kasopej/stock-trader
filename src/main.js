@@ -7,11 +7,10 @@ import SignOutModal from "./components/UtilityComponents/SignOutModal.vue";
 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-// TODO: Add SDKs for Firebase products that you want to use
+// Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
-const firebaseApp = installFirebase();
-console.log(firebaseApp);
+installFirebase();
 Vue.component("SignOutModal", SignOutModal);
 new Vue({
   router,

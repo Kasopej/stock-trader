@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 import { axiosAuthInstance } from "../../services/network-services/axios-auth";
-import axios from "axios";
 
 const state = {
   authenticated: false,
@@ -35,7 +34,7 @@ const actions = {
 
 const mutations = {
   storeAuthData(state, authData, rootState) {
-    console.log("locak storeAuthData mutation");
+    console.log("local storeAuthData mutation");
     state.idToken = authData.idToken;
     state.tokenExpiresBy = new Date(
       new Date().valueOf() + authData.expiresIn

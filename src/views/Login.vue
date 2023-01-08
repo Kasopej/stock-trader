@@ -30,21 +30,17 @@
 </template>
 
 <script>
-export default {
-  created() {
-    console.log("created login");
-  },
-};
+  export default {};
 </script>
 
 <style scoped>
-form > div {
-  position: relative;
-}
-.inputIcon {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-  cursor: pointer;
-}
+  form > div {
+    position: relative;
+  }
+  .inputIcon {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    cursor: pointer;
+  }
 </style>
