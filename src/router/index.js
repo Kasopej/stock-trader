@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "../views/Home.vue";
 import store from "../store";
 
 Vue.use(VueRouter);
@@ -10,7 +9,7 @@ const routes = [
   {
     path: "/",
     name: "landingPage",
-    component: Home,
+    redirect: "/home",
   },
   {
     path: "/home",
@@ -33,12 +32,18 @@ const routes = [
   {
     path: "/register",
     name: "register",
+    meta: {
+      layout: "empty",
+    },
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/Register.vue"),
   },
   {
     path: "/login",
     name: "login",
+    meta: {
+      layout: "empty",
+    },
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/Login.vue"),
   },

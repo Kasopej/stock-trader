@@ -1,5 +1,5 @@
 <template>
-  <form class="w-50 m-auto mt-5">
+  <form @submit.prevent="submitLogin" class="w-50 m-auto mt-5">
     <div class="mb-3">
       <label for="exampleInputEmail1" class="form-label">Email address</label>
       <input
@@ -7,11 +7,17 @@
         class="form-control"
         id="exampleInputEmail1"
         aria-describedby="emailHelp"
+        v-model="email"
       />
     </div>
     <div class="mb-4">
       <label for="exampleInputPassword1" class="form-label">Password</label>
-      <input type="password" class="form-control" id="exampleInputPassword1" />
+      <input
+        type="password"
+        v-model="password"
+        class="form-control"
+        id="exampleInputPassword1"
+      />
       <i class="inputIcon fa-solid fa-eye"></i>
     </div>
     <button
@@ -30,7 +36,24 @@
 </template>
 
 <script>
-  export default {};
+  import { mapActions } from "vuex";
+  export default {
+    data() {
+      return {
+        email: "",
+        password: "",
+      };
+    },
+    methods: {
+      ...mapActions({ login: "attemptLogin" }),
+      submitLogin() {
+        if (!(this.email && this.password)) return;
+        this.login({ email: this.email, password: this.password }).then(() => {
+          this.$router.push("/");
+        });
+      },
+    },
+  };
 </script>
 
 <style scoped>

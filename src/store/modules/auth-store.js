@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { axiosAuthInstance } from "../../services/network-services/axios-auth";
+import { firebaseConfig } from "../../firebase_config";
 
 const state = {
   authenticated: false,
@@ -10,31 +11,37 @@ const getters = {};
 const actions = {
   attemptUserRegistration({ commit, dispatch, rootState }, payload) {
     axiosAuthInstance
-      .post("accounts:signUp?key=AIzaSyDHcX11Hra8hH42TUNKyHltC8B-lgaifzg", {
-        email: payload.email,
-        password: payload.password,
+      .post(`:signUp?key=${firebaseConfig.apiKey}`, {
+        ...payload,
         returnSecureToken: true,
       })
       .then((res) => {
-        console.log(res);
         const authData = res.data;
         authData.expiresIn *= 1000;
         commit("storeAuthData", authData);
-        setTimeout(() => {
-          dispatch("createNewUserAccount", payload);
-        }, 500);
+        dispatch("createNewUserAccount", payload);
       })
       .catch((error) => {
         commit("throwError", { type: "registerationError", value: error });
       });
   },
-  attemptLogin() {},
-  logout() {},
+  attemptLogin({ commit }, payload) {
+    return axiosAuthInstance
+      .post(`:signInWithPassword?key=${firebaseConfig.apiKey}`, {
+        ...payload,
+        returnSecureToken: true,
+      })
+      .then((res) => {
+        const authData = res.data;
+        authData.expiresIn *= 1000;
+        commit("storeAuthData", authData);
+        commit("login");
+      });
+  },
 };
 
 const mutations = {
   storeAuthData(state, authData, rootState) {
-    console.log("local storeAuthData mutation");
     state.idToken = authData.idToken;
     state.tokenExpiresBy = new Date(
       new Date().valueOf() + authData.expiresIn
@@ -44,7 +51,9 @@ const mutations = {
   login(state) {
     state.authenticated = true;
   },
-  logout() {},
+  logout(state) {
+    state.authenticated = false;
+  },
 };
 
 export default {
