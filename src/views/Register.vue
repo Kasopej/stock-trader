@@ -82,28 +82,30 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
-export default {
-  data() {
-    return {
-      user: { email: "", password: "" },
-      termsAreAgreed: false,
-      formValidated: true,
-    };
-  },
-  methods: {
-    ...mapActions({ registerUser: "attemptUserRegistration" }),
-    submitLoginForm() {
-      if (this.formValidated)
-        this.$store.dispatch("attemptUserRegistration", this.user);
+  import { mapActions } from "vuex";
+  export default {
+    data() {
+      return {
+        user: { email: "", password: "" },
+        termsAreAgreed: false,
+        formValidated: true,
+      };
     },
-  },
-  watch: {
-    ["$store.state.authStoreModule.authenticated"](){
-      this.$router.push("/home")
-    }
-  },
-};
+    methods: {
+      ...mapActions("authStoreModule", {
+        registerUser: "attemptUserRegistration",
+      }),
+      submitLoginForm() {
+        if (this.formValidated)
+          this.$store.dispatch("attemptUserRegistration", this.user);
+      },
+    },
+    watch: {
+      ["$store.state.authStoreModule.authenticated"]() {
+        this.$router.push("/home");
+      },
+    },
+  };
 </script>
 
 <style></style>

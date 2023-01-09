@@ -45,7 +45,7 @@
       };
     },
     methods: {
-      ...mapActions({ login: "attemptLogin" }),
+      ...mapActions("authStoreModule", { login: "attemptLogin" }),
       submitLogin() {
         if (!(this.email && this.password)) return;
         this.login({ email: this.email, password: this.password }).then(() => {
