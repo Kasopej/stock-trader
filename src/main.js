@@ -1,11 +1,13 @@
 import Vue from "vue";
 // import { createApp } from "vue";
+import { h } from "vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store/index";
 import SignOutModal from "./components/UtilityComponents/SignOutModal.vue";
 //Vue.config.productionTip = false;
 
+import "bootstrap";
 import "@/assets/scss/custom.scss";
 
 // Import the functions you need from the SDKs you need
@@ -19,7 +21,7 @@ Vue.component("SignOutModal", SignOutModal);
 new Vue({
   router,
   store,
-  render: (h) => h(App),
+  render: () => h(App),
 }).$mount("#app");
 
 function installFirebase() {
