@@ -5,10 +5,10 @@
 </template>
 
 <script>
-  export default {};
+export default {};
 </script>
 <style scoped>
-  main {
-    width: 100vw;
-  }
+main {
+  width: 100vw;
+}
 </style>

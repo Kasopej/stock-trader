@@ -36,34 +36,34 @@
 </template>
 
 <script>
-  import { mapActions } from "vuex";
-  export default {
-    data() {
-      return {
-        email: "",
-        password: "",
-      };
+import { mapActions } from "vuex";
+export default {
+  data() {
+    return {
+      email: "",
+      password: "",
+    };
+  },
+  methods: {
+    ...mapActions("authStoreModule", { login: "attemptLogin" }),
+    submitLogin() {
+      if (!(this.email && this.password)) return;
+      this.login({ email: this.email, password: this.password }).then(() => {
+        this.$router.push("/");
+      });
     },
-    methods: {
-      ...mapActions("authStoreModule", { login: "attemptLogin" }),
-      submitLogin() {
-        if (!(this.email && this.password)) return;
-        this.login({ email: this.email, password: this.password }).then(() => {
-          this.$router.push("/");
-        });
-      },
-    },
-  };
+  },
+};
 </script>
 
 <style scoped>
-  form > div {
-    position: relative;
-  }
-  .inputIcon {
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
-    cursor: pointer;
-  }
+form > div {
+  position: relative;
+}
+.inputIcon {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  cursor: pointer;
+}
 </style>

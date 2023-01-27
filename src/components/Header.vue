@@ -53,41 +53,41 @@
 </template>
 
 <script>
-  import { mapState, mapMutations } from "vuex";
-  export default {
-    data() {
-      return {
-        name: "Kasope",
-      };
+import { mapState, mapMutations } from "vuex";
+export default {
+  data() {
+    return {
+      name: "Kasope",
+    };
+  },
+  computed: {
+    ...mapState("authStoreModule", ["authenticated"]),
+  },
+  methods: {
+    ...mapMutations("authStoreModule", ["logout"]),
+    doLogout() {
+      this.logout();
+      this.$router.push("/login");
     },
-    computed: {
-      ...mapState("authStoreModule", ["authenticated"]),
-    },
-    methods: {
-      ...mapMutations("authStoreModule", ["logout"]),
-      doLogout() {
-        this.logout();
-        this.$router.push("/login");
-      },
-    },
-  };
+  },
+};
 </script>
 
 <style scoped>
-  @media (min-width: 992px) {
-    nav {
-      padding-top: 0;
-      padding-bottom: 2px;
-    }
-    .navbar-expand-lg {
-      justify-content: space-around;
-    }
-    .navbar-collapse {
-      position: relative;
-      top: 2px;
-    }
-    li.active {
-      background-color: rgb(219, 216, 216);
-    }
+@media (min-width: 992px) {
+  nav {
+    padding-top: 0;
+    padding-bottom: 2px;
   }
+  .navbar-expand-lg {
+    justify-content: space-around;
+  }
+  .navbar-collapse {
+    position: relative;
+    top: 2px;
+  }
+  li.active {
+    background-color: rgb(219, 216, 216);
+  }
+}
 </style>
