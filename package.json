@@ -46,6 +46,7 @@
     "gulp-sass": "^5.1.0",
     "jest": "^27.1.0",
     "jest-location-mock": "^1.0.9",
+    "postcss": "^8.4.21",
     "prettier": "^2.4.1",
     "sass": "^1.49.8"
   }
