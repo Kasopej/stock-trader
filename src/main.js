@@ -1,6 +1,4 @@
-import Vue from "vue";
-// import { createApp } from "vue";
-import { h } from "vue";
+import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store/index";
@@ -17,12 +15,9 @@ import { firebaseConfig } from "./firebase_config";
 // https://firebase.google.com/docs/web/setup#available-libraries
 installFirebase();
 
-Vue.component("SignOutModal", SignOutModal);
-new Vue({
-  router,
-  store,
-  render: () => h(App),
-}).$mount("#app");
+const app = createApp(App);
+app.component("SignOutModal", SignOutModal);
+app.use(router).use(store).mount("#app");
 
 function installFirebase() {
   // Initialize Firebase
