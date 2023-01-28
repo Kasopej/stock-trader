@@ -7,11 +7,12 @@
 </template>
 
 <script>
+import { defineComponent } from "vue";
 import DefaultLayout from "./layouts/Default.vue";
 import EmptyLayout from "./layouts/Empty.vue";
 import Header from "@/components/Header.vue";
 import Sidebar from "./components/Sidebar.vue";
-export default {
+const APP = defineComponent({
   data() {
     return {};
   },
@@ -26,7 +27,9 @@ export default {
       return this.$route.meta.layout || "default";
     },
   },
-};
+});
+
+export default APP;
 </script>
 
 <style></style>

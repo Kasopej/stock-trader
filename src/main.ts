@@ -20,6 +20,6 @@ app.use(router).use(store).mount("#app");
 
 function installFirebase() {
   // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  return app;
+  const firebaseApp = initializeApp(firebaseConfig);
+  return firebaseApp;
 }
