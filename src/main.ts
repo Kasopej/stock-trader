@@ -5,7 +5,6 @@ import store from "./store/index";
 import SignOutModal from "./components/UtilityComponents/SignOutModal.vue";
 //Vue.config.productionTip = false;
 
-import "bootstrap";
 import "@/assets/scss/custom.scss";
 
 // Import the functions you need from the SDKs you need
