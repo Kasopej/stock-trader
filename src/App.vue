@@ -8,17 +8,13 @@
 
 <script>
 import { defineComponent } from "vue";
-import DefaultLayout from "./layouts/Default.vue";
-import EmptyLayout from "./layouts/Empty.vue";
-import Header from "@/components/Header.vue";
-import Sidebar from "./components/Sidebar.vue";
-const APP = defineComponent({
+import DefaultLayout from "@/layouts/Default.vue";
+import EmptyLayout from "@/layouts/Empty.vue";
+const App = defineComponent({
   data() {
     return {};
   },
   components: {
-    Header,
-    Sidebar,
     default: DefaultLayout,
     empty: EmptyLayout,
   },
@@ -29,7 +25,7 @@ const APP = defineComponent({
   },
 });
 
-export default APP;
+export default App;
 </script>
 
 <style></style>
