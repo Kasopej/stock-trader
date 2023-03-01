@@ -7,7 +7,7 @@
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
-    "lint-fix": "vue-cli-service lint --fix"
+    "lint-fix-watch": "nodemon -e js,ts,vue --watch src --watch tests --exec 'vue-cli-service lint --fix'"
   },
   "dependencies": {
     "axios": "^0.26.0",
@@ -45,8 +45,10 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-vue": "^8.0.3",
+    "eslint-watch": "^7.0.0",
     "jest": "^27.1.0",
     "jest-location-mock": "^1.0.9",
+    "nodemon": "^2.0.20",
     "postcss": "^8.4.21",
     "prettier": "^2.4.1",
     "sass": "^1.49.8",
