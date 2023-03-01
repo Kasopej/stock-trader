@@ -23,8 +23,8 @@
           class="nav-item"
           active-class="active"
           exact
-          ><a class="nav-link" @onclick="doLogout">Logout</a></span
-        >
+          ><a class="nav-link" @onclick="doLogout">Logout</a>
+        </span>
         <router-link
           v-if="!authenticated"
           tag="li"
@@ -41,7 +41,7 @@
           active-class="active"
           exact
           to="/profile"
-          ><a class="nav-link" @click="logout">{{ name }}</a></router-link
+          ><a class="nav-link">{{ name }}</a></router-link
         >
 
         <li class="nav-link fw-bold" style="vertical-align: middle">
