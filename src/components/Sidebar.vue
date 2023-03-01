@@ -43,14 +43,6 @@
           Stock Market</router-link
         >
       </li>
-      <li tag="li" class="nav-item">
-        <router-link class="nav-link" active-class="active" exact to="/wallet">
-          <svg class="bi me-2" width="16" height="16">
-            <use xlink:href="#wallet"></use>
-          </svg>
-          Wallet</router-link
-        >
-      </li>
     </ul>
     <hr />
     <div class="dropdown">

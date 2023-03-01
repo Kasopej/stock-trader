@@ -10,20 +10,19 @@ const routes = [
   {
     path: "/home",
     name: "home",
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/Home.vue"),
+    component: () => import(/* webpackChunkName: "home" */ "../views/Home.vue"),
   },
   {
     path: "/stocks",
     name: "stocks",
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/StocksView.vue"),
+      import(/* webpackChunkName: "stocks" */ "../views/StocksView.vue"),
   },
   {
     path: "/portfolio",
     name: "portfolio",
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/Portfolio.vue"),
+      import(/* webpackChunkName: "portfolio" */ "../views/Portfolio.vue"),
   },
   {
     path: "/register",
@@ -32,7 +31,7 @@ const routes = [
       layout: "empty",
     },
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/Register.vue"),
+      import(/* webpackChunkName: "regiser" */ "../views/Register.vue"),
   },
   {
     path: "/login",
@@ -41,19 +40,13 @@ const routes = [
       layout: "empty",
     },
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/Login.vue"),
+      import(/* webpackChunkName: "login" */ "../views/Login.vue"),
   },
   {
     path: "/profile",
     name: "profile",
     component: () =>
-      import(/* webpackChunkName: "about" */ "../views/Profile.vue"),
-  },
-  {
-    path: "/wallet",
-    name: "wallet",
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/Wallet.vue"),
+      import(/* webpackChunkName: "profile" */ "../views/Profile.vue"),
   },
 ];
 
