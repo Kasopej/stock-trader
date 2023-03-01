@@ -3,7 +3,7 @@
     <div class="card-header">Featured</div>
     <div class="card-body">
       <input class="qtyToSell" type="number" name="qtyToSell" />
-      <a href="#" class="btn btn-sm btn-warning sellAssetsBtn">Buy</a>
+      <a href="#" class="btn btn-sm btn-warning sellAssetsBtn">Sell</a>
     </div>
   </div>
 </template>
